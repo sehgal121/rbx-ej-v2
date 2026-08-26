@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Eternal Journey</title>
+    <meta
+      name="description"
+      content="Eternal Journey — luxury fragrance by Pierre Ravan. Outer Journey, Inner Journey, and Flow Infinite. Are you ready for the journey?"
+    />
+    <meta property="og:title" content="Eternal Journey" />
+    <meta
+      property="og:description"
+      content="Luxury fragrance by Pierre Ravan. Outer Journey, Inner Journey, and Flow Infinite."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/assets/bottles/flow-infinite.png" />
+    <meta name="theme-color" content="#050506" />
+    <link rel="icon" href="/assets/brand/ej-logo-steel.png" type="image/png" />
+    <link rel="preload" as="image" href="/assets/brand/ej-logo-steel.png" />
+    <link rel="preload" as="image" href="/assets/bottles/flow-infinite.png" />
+    <link rel="preload" as="image" href="/assets/brand/night-sky-deep.jpeg" />
+    <link rel="stylesheet" href="/src/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
+  </head>
+  <body>
+    <div class="review-bar" id="review-bar" aria-hidden="true">
+      <span class="review-label">for review</span>
+      <span id="review-pct">0.0%</span>
+    </div>
+
+    <aside class="hud" id="hud" aria-live="polite">
+      <div class="hud-act">
+        <span class="hud-k">ACT</span>
+        <span id="hud-num">0</span>
+        <span id="hud-name">THE MONOGRAM</span>
+      </div>
+      <div class="hud-progress">
+        <span id="hud-pct">0%</span>
+        <div class="hud-bar"><i id="hud-bar"></i></div>
+      </div>
+      <div class="hud-keys">
+        <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd><kbd>5</kbd><kbd>6</kbd><kbd>7</kbd><kbd>8</kbd>
+        <span>jump</span>
+        <span class="hud-hint">scroll to play</span>
+      </div>
+    </aside>
+
+    <div class="stage" id="stage">
+      <div class="bg-black"></div>
+      <div class="grade" id="grade" aria-hidden="true"></div>
+      <div class="temp" id="temp" aria-hidden="true">
+        <div class="temp-teal" id="temp-teal"></div>
+        <div class="temp-ember" id="temp-ember"></div>
+      </div>
+      <div class="night" id="night" aria-hidden="true"></div>
+      <div class="split" id="split" aria-hidden="true">
+        <div class="split-cool"></div>
+        <div class="split-warm"></div>
+      </div>
+      <div class="vortex" id="vortex" aria-hidden="true"></div>
+
+      <div class="flow-bg" id="flow-bg" aria-hidden="true"></div>
+      <div class="act4-sky" id="act4-sky" aria-hidden="true">
+        <div class="act4-sky-zoom" id="act4-sky-zoom"></div>
+      </div>
+
+      <div class="anchor" id="anchor">
+        <div class="stardust" id="stardust" aria-hidden="true"></div>
+        <div class="assembly-motion" id="assembly">
+          <div class="assembly-layout" id="assembly-layout">
+            <svg
+              class="fi-svg"
+              id="fi-svg"
+              viewBox="0 0 200 360"
+              aria-hidden="true"
+            >
+              <defs>
+                <clipPath id="cap-clip">
+                  <circle cx="100" cy="100" r="56" />
+                </clipPath>
+                <clipPath id="body-reveal">
+                  <rect id="body-clip-rect" x="0" y="152" width="200" height="0" />
+                </clipPath>
+              </defs>
+
+              <image id="fi-photo-body" class="fi-photo" clip-path="url(#body-reveal)" />
+
+              <g id="cap-group">
+                <g id="inner-stars" clip-path="url(#cap-clip)"></g>
+                <image id="fi-photo-cap" class="fi-photo" clip-path="url(#cap-clip)" />
+                <!-- QR logo-steel.png 389×464; ring outer (194.5, 248.5) r 183.5
+                     → circle r 56 (k=56/183.5) so ring diameter = cap diameter. -->
+                <image
+                  id="chrome-mono"
+                  href="/assets/brand/ej-logo-steel.png"
+                  x="40.638"
+                  y="24.163"
+                  width="118.714"
+                  height="141.602"
+                  preserveAspectRatio="xMidYMid meet"
+                />
+              </g>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="line-bottles" id="line-bottles" aria-hidden="true">
+        <img class="line-bottle outer" data-line="outer" data-i="0" src="/assets/bottles/sunrise-to-sunset.png" alt="" />
+        <img class="line-bottle outer" data-line="outer" data-i="1" src="/assets/bottles/sunset-to-midnight.png" alt="" />
+        <img class="line-bottle outer" data-line="outer" data-i="2" src="/assets/bottles/midnight-to-sunrise.png" alt="" />
+        <img class="line-bottle inner" data-line="inner" data-i="0" src="/assets/bottles/h1-heart.png" alt="" />
+        <img class="line-bottle inner" data-line="inner" data-i="1" src="/assets/bottles/h2-harmony.png" alt="" />
+        <img class="line-bottle inner" data-line="inner" data-i="2" src="/assets/bottles/h3-happiness.png" alt="" />
+      </div>
+
+      <header class="copy" id="copy">
+        <p class="headline" id="headline">ARE YOU READY FOR THE JOURNEY?</p>
+        <p class="label label-outer" id="label-outer">Outer Journey</p>
+        <p class="label label-inner" id="label-inner">Inner Journey</p>
+      </header>
+
+      <div class="water" id="water" aria-hidden="true">
+        <div class="water-sheet"></div>
+        <span class="ripple ripple-a"></span>
+        <span class="ripple ripple-b"></span>
+        <span class="ripple ripple-c"></span>
+        <div class="caustic"></div>
+      </div>
+
+      <section class="film-act act4" id="act4">
+        <p class="eyebrow">Flow Infinite</p>
+        <h2 class="act-title">The fragrance that connects the two worlds.</h2>
+        <ul class="beat-rail">
+          <li id="beat-pause">The Pause</li>
+          <li id="beat-connection">The Connection</li>
+          <li id="beat-movement">The Movement</li>
+        </ul>
+        <a class="act-link" id="act4-link" href="/flow-infinite.html">Experience Flow Infinite</a>
+      </section>
+
+      <section class="film-act act5" id="act5">
+        <p class="eyebrow">Outer Journey</p>
+        <div class="act5-panels">
+          <div class="sku-panel" id="act5-sunrise">
+            <h2 class="act-title">Sunrise to Sunset</h2>
+            <p class="act-lede">Held light. The day worn as a garment.</p>
+          </div>
+          <div class="sku-panel" id="act5-sunset">
+            <h2 class="act-title">Sunset to Midnight</h2>
+            <p class="act-lede">The hour after the world has spoken.</p>
+          </div>
+          <div class="sku-panel" id="act5-midnight">
+            <h2 class="act-title">Midnight to Sunrise</h2>
+            <p class="act-lede">What returns before it is named.</p>
+          </div>
+        </div>
+        <a class="act-link" id="act5-link" href="/outer.html">Walk the Outer Journey</a>
+      </section>
+
+      <section class="film-act act6" id="act6">
+        <p class="eyebrow">Inner Journey</p>
+        <div class="act6-panels">
+          <div class="sku-panel" id="act6-heart">
+            <p class="sku-mark">H1</p>
+            <h2 class="act-title">Heart</h2>
+            <p class="act-lede">Gold at the centre. The pulse it keeps.</p>
+          </div>
+          <div class="sku-panel" id="act6-harmony">
+            <p class="sku-mark">H2</p>
+            <h2 class="act-title">Harmony</h2>
+            <p class="act-lede">Pearl quiet. Two notes, one breath.</p>
+          </div>
+          <div class="sku-panel" id="act6-happiness">
+            <p class="sku-mark">H3</p>
+            <h2 class="act-title">Happiness</h2>
+            <p class="act-lede">A green that does not ask permission.</p>
+          </div>
+        </div>
+        <a class="act-link" id="act6-link" href="/inner.html">Enter the Inner Journey</a>
+      </section>
+
+      <section class="film-act act7" id="act7">
+        <div class="unity-field" id="unity-field" aria-hidden="true">
+          <div class="unity-nebula"></div>
+          <div class="unity-stars" id="unity-stars"></div>
+        </div>
+
+        <div class="trinity" id="trinity">
+          <!-- Ring centres form a 74-unit equilateral triangle: Soul above,
+               Body and Heart below. -->
+          <svg class="venn" viewBox="0 0 200 200" aria-hidden="true">
+            <defs>
+              <linearGradient id="ring-silver" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#ffffff" />
+                <stop offset="0.12" stop-color="#e8eef4" />
+                <stop offset="0.28" stop-color="#7a828c" />
+                <stop offset="0.42" stop-color="#f7fafc" />
+                <stop offset="0.58" stop-color="#5c646e" />
+                <stop offset="0.74" stop-color="#d5dde6" />
+                <stop offset="1" stop-color="#f4f7fa" />
+              </linearGradient>
+              <linearGradient id="ring-gold" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#fff8e4" />
+                <stop offset="0.14" stop-color="#f0d59a" />
+                <stop offset="0.32" stop-color="#8a6a32" />
+                <stop offset="0.48" stop-color="#ffe9b4" />
+                <stop offset="0.64" stop-color="#6e5224" />
+                <stop offset="0.8" stop-color="#e2c07a" />
+                <stop offset="1" stop-color="#f7e6b8" />
+              </linearGradient>
+              <filter id="ring-bloom" x="-40%" y="-40%" width="180%" height="180%">
+                <feGaussianBlur stdDeviation="1.8" />
+              </filter>
+            </defs>
+
+            <!-- Each group is spun about its own centre so the drawing head —
+                 and the glint it leaves behind — lands where the deck puts it. -->
+            <g class="ring ring-silver" id="ring-body" transform="rotate(140 63 132)">
+              <circle class="ring-halo" cx="63" cy="132" r="56" />
+              <circle class="ring-core" cx="63" cy="132" r="56" />
+              <circle class="ring-inner" cx="63" cy="132" r="56" />
+              <circle class="ring-spec" cx="63" cy="132" r="56" filter="url(#ring-bloom)" />
+            </g>
+            <g class="ring ring-gold" id="ring-heart" transform="rotate(55 137 132)">
+              <circle class="ring-halo" cx="137" cy="132" r="56" />
+              <circle class="ring-core" cx="137" cy="132" r="56" />
+              <circle class="ring-inner" cx="137" cy="132" r="56" />
+              <circle class="ring-spec" cx="137" cy="132" r="56" filter="url(#ring-bloom)" />
+            </g>
+            <g class="ring ring-silver" id="ring-soul" transform="rotate(-50 100 68)">
+              <circle class="ring-halo" cx="100" cy="68" r="56" />
+              <circle class="ring-core" cx="100" cy="68" r="56" />
+              <circle class="ring-inner" cx="100" cy="68" r="56" />
+              <circle class="ring-spec" cx="100" cy="68" r="56" filter="url(#ring-bloom)" />
+            </g>
+
+            <g class="ring-icon icon-body" id="icon-body">
+              <path d="M44 107 L53.2 121 L50.4 131.2 L44 137.6 L37.6 131.2 L34.8 121 Z" />
+              <path d="M44 107 L44 137.6 M34.8 121 L53.2 121 M37.6 131.2 L50.4 131.2 M39.4 114.6 L48.6 114.6" />
+            </g>
+            <g class="ring-icon icon-heart" id="icon-heart">
+              <path d="M156 132.4 C141.2 122.2 142.2 110.6 156 116.4 C169.8 110.6 170.8 122.2 156 132.4 Z" />
+              <path d="M146.6 117 C149.9 114.4 151.9 119.4 155.3 116.8 C158.7 114.2 160.7 119.2 164 116.6" />
+              <path d="M147.4 121.8 C150.7 119.2 152.7 124.2 156.1 121.6 C159.5 119 161.5 124 164.8 121.4" />
+              <path d="M148.4 126.6 C151.7 124 153.7 129 157.1 126.4 C160.1 124.2 161.7 127.8 164.2 126.8" />
+            </g>
+            <g class="ring-icon icon-soul" id="icon-soul">
+              <path d="M100 33.2 L102.15 43.7 L112.4 46 L102.15 48.3 L100 58.8 L97.85 48.3 L87.6 46 L97.85 43.7 Z" />
+              <circle class="soul-dot" cx="100" cy="46" r="1.2" />
+              <path d="M106.7 39.3 L110.4 35.6 M106.7 52.7 L110.4 56.4 M93.3 52.7 L89.6 56.4 M93.3 39.3 L89.6 35.6" />
+            </g>
+          </svg>
+
+          <span class="venn-label venn-label-soul" id="label-soul">Soul</span>
+          <span class="venn-label venn-label-body" id="label-body">Body</span>
+          <span class="venn-label venn-label-heart" id="label-heart">Heart</span>
+          <p class="mind-bridge" id="mind-bridge">
+            <span class="bridge-gold">The bridge that unites </span><span class="bridge-silver">Body</span><span class="bridge-gold">, Heart</span><span class="bridge-silver"> and Soul</span>
+          </p>
+        </div>
+        <div class="unity-mono" id="unity-mono" aria-hidden="true">
+          <img
+            src="/assets/brand/ej-logo-steel.png"
+            alt=""
+            width="389"
+            height="464"
+          />
+        </div>
+        <p class="mantra" id="mantra">Life creates life, it's an Eternal Journey.</p>
+      </section>
+    </div>
+
+    <section id="ground">
+      <nav class="ground-lines" aria-label="Collections">
+        <a class="ground-line" href="/flow-infinite.html">
+          <h2>Flow Infinite</h2>
+          <p>The crossing</p>
+        </a>
+        <a class="ground-line" href="/outer.html">
+          <h2>Outer Journey</h2>
+          <p>Night, structure, movement</p>
+        </a>
+        <a class="ground-line" href="/inner.html">
+          <h2>Inner Journey</h2>
+          <p>Light, surrender, pulse</p>
+        </a>
+      </nav>
+
+      <section id="stores">
+        <div class="ground-section-head">
+          <h2>Store locator</h2>
+          <p>Ninety-two houses, one journey.</p>
+        </div>
+        <div id="store-locator">
+          <div id="store-list">
+            <div id="search-container">
+              <input type="search" id="search-bar" placeholder="Search for a store…" autocomplete="off" />
+              <button type="button" id="reset-button">Show all stores</button>
+            </div>
+            <ul id="store-items"></ul>
+          </div>
+          <div id="map" role="region" aria-label="Store map"></div>
+        </div>
+        <div id="store-modal" aria-hidden="true">
+          <div class="modal-content">
+            <span class="close-button" role="button" tabindex="0" aria-label="Close">&times;</span>
+            <div id="modal-body"></div>
+          </div>
+        </div>
+      </section>
+
+      <footer class="ground-close">
+        <img
+          class="ground-mono"
+          src="/assets/brand/ej-logo-steel.png"
+          alt="Eternal Journey"
+          width="389"
+          height="464"
+        />
+        <p>The circle closes.</p>
+        <button
+          type="button"
+          class="ground-join"
+          id="contact"
+          aria-haspopup="dialog"
+          aria-controls="contactModal"
+          aria-expanded="false"
+        >
+          To be a part of the journey click here!
+        </button>
+        <div class="ground-legal">
+          <a href="/privacy-policy.html">Privacy Policy</a>
+          <span>&copy; All copyrights reserved.</span>
+          <address>10 rue de Penthievre 75008 Paris - France</address>
+        </div>
+      </footer>
+    </section>
+
+    <div id="contactModal" aria-hidden="true">
+      <div
+        class="contact-modal-panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="contact-modal-title"
+        data-lenis-prevent
+      >
+        <button type="button" class="contact-modal-close" aria-label="Close">&times;</button>
+        <h2 id="contact-modal-title">Contact us</h2>
+        <form id="contactForm">
+          <div class="ground-types">
+            <label>
+              <input type="radio" name="contact-type" id="personal" value="Personal" checked />
+              Personal Use
+            </label>
+            <label>
+              <input type="radio" name="contact-type" id="distribution" value="Distribution" />
+              Distribution
+            </label>
+          </div>
+          <div class="ground-field">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" autocomplete="name" />
+            <div id="nameError" class="ground-error">Name required</div>
+          </div>
+          <div class="ground-field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" autocomplete="email" />
+            <div id="emailError" class="ground-error">Email required</div>
+          </div>
+          <div class="ground-field">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" autocomplete="tel" />
+          </div>
+          <div class="ground-field">
+            <label for="city">City</label>
+            <input type="text" id="city" name="city" autocomplete="address-level2" />
+          </div>
+          <button type="submit">Contact</button>
+        </form>
+        <div id="contact-status" class="ground-form-status" role="status"></div>
+      </div>
+    </div>
+
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
