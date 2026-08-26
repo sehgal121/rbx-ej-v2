@@ -1,4 +1,4 @@
-# Eternal Journey — Grey-box Animatic
+# Eternal Journey — v2 - Aug 2026
 
 Motion-choreography prototype for client review. **Not final design.** Acts 0–3 only: monogram → dissolve into Flow Infinite cap → infinity ribbon → triptych.
 
