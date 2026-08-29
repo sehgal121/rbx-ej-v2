@@ -83,12 +83,45 @@
 }
 
 .page-main h1 {
+  margin-top: 0.7rem;
   color: #f0f2f4;
   font-family: var(--font-display);
   font-size: clamp(22px, 4vw, 40px);
   font-weight: 400;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
+}
+
+.page-main h2 {
+  margin: 3.2rem 0 1rem;
+  color: #ead9b0;
+  font-family: var(--font-display);
+  font-size: clamp(16px, 2vw, 22px);
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.page-beats {
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 1.2rem;
+  color: #8a9096;
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+.page-still {
+  width: min(42vw, 220px);
+  margin: 2.4rem 0 0;
+}
+
+.page-still .sku-still {
+  width: 100%;
+  height: auto;
 }
 
 .page-main .page-eyebrow {

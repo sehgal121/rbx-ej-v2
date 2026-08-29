@@ -9,6 +9,12 @@
       content="ETERNAL JOURNEY introduces FLOW Infinite. Extrait de Parfum."
     />
     <link rel="icon" href="/assets/brand/ej-logo-steel.png" type="image/png" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
   </head>
   <body class="site-page">
     <header class="site-bar">
@@ -17,11 +23,12 @@
         <a href="/outer.html">Outer Journey</a>
         <a href="/inner.html">Inner Journey</a>
         <a href="/flow-infinite.html" aria-current="page">Flow Infinite</a>
-        <a href="/#stores">Store locator</a>
+        <a href="#stores">Store locator</a>
       </nav>
     </header>
 
-    <section class="fi-hero" aria-label="FLOW Infinite">
+    <!-- Cap / bottle assembly lives here, not on index. -->
+    <section class="page-hero fi-hero" aria-label="FLOW Infinite">
       <div class="fi-hero-sky" aria-hidden="true"></div>
       <div class="fi-anchor" id="anchor">
         <div class="stardust" id="stardust" aria-hidden="true"></div>
@@ -56,46 +63,69 @@
       </div>
     </section>
 
-    <article class="fi-article">
-      <header class="fi-hero-copy">
-        <h1>ETERNAL JOURNEY introduces FLOW Infinite.</h1>
-        <p>Extrait de Parfum.</p>
-      </header>
-      <div class="approved-slot fi-still-slot" data-file="FI-ETERNAL-LOVE.png">
-        <img class="fi-still" src="/assets/img/approved/FI-ETERNAL-LOVE.png" alt="" />
+    <main class="page-main">
+      <p class="page-eyebrow">NEW LAUNCH (Available in stores from end 2026)</p>
+      <h1>ETERNAL JOURNEY introduces FLOW Infinite.</h1>
+      <p class="page-kicker">Extrait de Parfum.</p>
+      <p class="page-kicker">THE FRAGRANCE THAT CONNECTS THE TWO WORLDS</p>
+
+      <div class="approved-slot page-still" data-file="FI-ETERNAL-LOVE.png">
+        <img class="sku-still" src="/assets/img/approved/FI-ETERNAL-LOVE.png" alt="" />
         <p class="approved-missing">FI-ETERNAL-LOVE.png</p>
       </div>
-      <h2>FLOW Infinite</h2>
-      <p class="fi-kicker">THE FRAGRANCE THAT CONNECTS THE TWO WORLDS</p>
-      <p class="fi-launch">NEW LAUNCH (Available in stores from end 2026)</p>
-      <p>
+
+      <p class="page-lede">
         Every ETERNAL JOURNEY fragrance is created to move beyond scent, into memory, emotion, and a deeper state of being. Our first collection manifested the Outer Journey, while our 3H Collection guided you towards the Inner Journey. Now, with FLOW Infinite, we invite you to experience the pause where presence and possibility meet through a fragrance that connects both worlds and flows endlessly between them.
       </p>
 
-      <h2>Creative journey</h2>
-      <p>
-        At the meeting point of the OUTER and INNER JOURNEY lies FLOW infinite — a bridge between worlds, a breath between moments, and a symbol of endless movement. It connects the grounded rhythm of the 24-Hour cycle with the elevated transcendence of HEART, HARMONY and HAPPINESS. It embodies the natural current that moves through all existence, without a beginning or an end. It simply flows, connecting the seen with the unseen, the external movement of life with the internal experience of being; capturing the essence of connection, transition and timeless presence.
-      </p>
-
-      <h2>AMBER WOODY VANILLA</h2>
-      <p>
-        The brightness of spices and citrus, delicately wrapped by saffron milk, florals and woody vanilla additions, forms the olfactive signature of FLOW infinite.
-      </p>
-      <p class="fi-notes">
-        Signature notes: Coffee Absolute, Orange Flower, Creamy Woods, Saffron Milk, Patchouli, Ambrox, Vanilla Bourbon · center ETERNAL LOVE
-      </p>
-      <p>Scent crafted with love by Hamid Merati, Ilias Ermenidis &amp; PIERRE RAVAN</p>
-
       <h2>The Pause / Connection / Movement</h2>
-      <ul>
+      <ul class="page-beats">
         <li>The Pause — It is the breath between two collections, the pause where presence and possibility meet.</li>
         <li>The Connection — It acts as the vital link connecting the grounded rhythm of the 24-Hour cycle (the Outer Journey) with the elevated transcendence of the 3H Collection—Heart, Harmony &amp; Happiness (the Inner Journey).</li>
         <li>The Movement — A scent that does not start or end; it simply flows endlessly between the seen and the unseen.</li>
       </ul>
 
+      <h2>Creative journey</h2>
+      <p class="page-lede">
+        At the meeting point of the OUTER and INNER JOURNEY lies FLOW infinite — a bridge between worlds, a breath between moments, and a symbol of endless movement. It connects the grounded rhythm of the 24-Hour cycle with the elevated transcendence of HEART, HARMONY and HAPPINESS. It embodies the natural current that moves through all existence, without a beginning or an end. It simply flows, connecting the seen with the unseen, the external movement of life with the internal experience of being; capturing the essence of connection, transition and timeless presence.
+      </p>
+
+      <h2>AMBER WOODY VANILLA</h2>
+      <p class="page-lede">
+        The brightness of spices and citrus, delicately wrapped by saffron milk, florals and woody vanilla additions, forms the olfactive signature of FLOW infinite.
+      </p>
+      <p class="page-lede">
+        Signature notes: Coffee Absolute, Orange Flower, Creamy Woods, Saffron Milk, Patchouli, Ambrox, Vanilla Bourbon · center ETERNAL LOVE
+      </p>
+      <p class="page-lede">Scent crafted with love by Hamid Merati, Ilias Ermenidis &amp; PIERRE RAVAN</p>
+
       <h2>Catalog</h2>
-      <p>FLOW Infinite, extrait de parfum, 100 ml / 3,3 oz, 260€. 10 ml / 0.3 oz, 35€.</p>
-    </article>
+      <p class="page-lede">FLOW Infinite, extrait de parfum, 100 ml / 3,3 oz, 260€. 10 ml / 0.3 oz, 35€.</p>
+
+      <a class="page-home" href="/">Return to Eternal Journey</a>
+    </main>
+
+    <section id="stores">
+      <div class="ground-section-head">
+        <h2>Store locator</h2>
+      </div>
+      <div id="store-locator">
+        <div id="store-list">
+          <div id="search-container">
+            <input type="search" id="search-bar" placeholder="Search for a store…" autocomplete="off" />
+            <button type="button" id="reset-button">Show all stores</button>
+          </div>
+          <ul id="store-items"></ul>
+        </div>
+        <div id="map" role="region" aria-label="Store map"></div>
+      </div>
+      <div id="store-modal" aria-hidden="true">
+        <div class="modal-content">
+          <span class="close-button" role="button" tabindex="0" aria-label="Close">&times;</span>
+          <div id="modal-body"></div>
+        </div>
+      </div>
+    </section>
 
     <footer class="ground-close">
       <p class="footer-closer">ARE YOU READY FOR THE JOURNEY?</p>
@@ -167,6 +197,11 @@
       </div>
     </div>
 
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
     <script type="module" src="/src/fi-page.ts"></script>
   </body>
 </html>

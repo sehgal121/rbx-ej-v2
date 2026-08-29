@@ -1,6 +1,7 @@
+.page-hero.fi-hero,
 .fi-hero {
   position: relative;
-  min-height: 100vh;
+  min-height: 72vh;
   overflow: hidden;
   background: #050506;
 }

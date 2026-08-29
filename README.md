@@ -76,7 +76,7 @@ One pinned stage, one GSAP timeline scrubbed by scroll (Lenis + ScrollTrigger). 
 Document flow **below** the pinned cinematic stage (not inside the pin). Store locator (Leaflet 1.9.4, 92 locations from `/assets/stores.json`), collection links, contact, short footer.
 
 - Deep links: `#ground`, `#stores`, `#contact`
-- Collection shells: `/flow-infinite.html`, `/outer.html`, `/inner.html`
+- Collection pages share one sequence: hero → story → creative journey / olfactive → catalog → locator → footer. `/flow-infinite.html` follows that format; cap-expansion is the FI hero only.
 - HUD is hidden unless `?debug=1`
 - Fonts: Vogue Sans (`--font-display`) and Century Gothic (`--font-body`) from `/fonts/`
 
