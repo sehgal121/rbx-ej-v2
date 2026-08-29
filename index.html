@@ -6,19 +6,18 @@
     <title>Eternal Journey</title>
     <meta
       name="description"
-      content="Eternal Journey — luxury fragrance by Pierre Ravan. Outer Journey, Inner Journey, and Flow Infinite. Are you ready for the journey?"
+      content="Eternal Journey — Outer Journey, Inner Journey, and FLOW Infinite."
     />
     <meta property="og:title" content="Eternal Journey" />
     <meta
       property="og:description"
-      content="Luxury fragrance by Pierre Ravan. Outer Journey, Inner Journey, and Flow Infinite."
+      content="Eternal Journey — Outer Journey, Inner Journey, and FLOW Infinite."
     />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="/assets/bottles/flow-infinite.png" />
+    <meta property="og:image" content="/assets/brand/ej-logo-steel.png" />
     <meta name="theme-color" content="#050506" />
     <link rel="icon" href="/assets/brand/ej-logo-steel.png" type="image/png" />
     <link rel="preload" as="image" href="/assets/brand/ej-logo-steel.png" />
-    <link rel="preload" as="image" href="/assets/bottles/flow-infinite.png" />
     <link rel="preload" as="image" href="/assets/brand/night-sky-deep.jpeg" />
     <link rel="stylesheet" href="/src/style.css" />
     <link
@@ -29,10 +28,17 @@
     />
   </head>
   <body>
-    <div class="review-bar" id="review-bar" aria-hidden="true">
-      <span class="review-label">for review</span>
-      <span id="review-pct">0.0%</span>
-    </div>
+    <a class="skip-link" href="#ground">Skip to collections</a>
+
+    <header class="site-bar">
+      <a class="site-bar-mark" href="/">Eternal Journey</a>
+      <nav class="site-bar-nav" aria-label="Primary">
+        <a href="/outer.html">Outer Journey</a>
+        <a href="/inner.html">Inner Journey</a>
+        <a href="/flow-infinite.html">Flow Infinite</a>
+        <a href="#stores">Store locator</a>
+      </nav>
+    </header>
 
     <aside class="hud" id="hud" aria-live="polite">
       <div class="hud-act">
@@ -45,7 +51,7 @@
         <div class="hud-bar"><i id="hud-bar"></i></div>
       </div>
       <div class="hud-keys">
-        <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd><kbd>5</kbd><kbd>6</kbd><kbd>7</kbd><kbd>8</kbd>
+        <kbd>1</kbd><kbd>2</kbd><kbd>3</kbd><kbd>4</kbd>
         <span>jump</span>
         <span class="hud-hint">scroll to play</span>
       </div>
@@ -64,51 +70,22 @@
         <div class="split-warm"></div>
       </div>
       <div class="vortex" id="vortex" aria-hidden="true"></div>
-
       <div class="flow-bg" id="flow-bg" aria-hidden="true"></div>
-      <div class="act4-sky" id="act4-sky" aria-hidden="true">
-        <div class="act4-sky-zoom" id="act4-sky-zoom"></div>
-      </div>
+      <div class="nebula" id="nebula" aria-hidden="true"></div>
 
-      <div class="anchor" id="anchor">
-        <div class="stardust" id="stardust" aria-hidden="true"></div>
-        <div class="assembly-motion" id="assembly">
-          <div class="assembly-layout" id="assembly-layout">
-            <svg
-              class="fi-svg"
-              id="fi-svg"
-              viewBox="0 0 200 360"
-              aria-hidden="true"
-            >
-              <defs>
-                <clipPath id="cap-clip">
-                  <circle cx="100" cy="100" r="56" />
-                </clipPath>
-                <clipPath id="body-reveal">
-                  <rect id="body-clip-rect" x="0" y="152" width="200" height="0" />
-                </clipPath>
-              </defs>
-
-              <image id="fi-photo-body" class="fi-photo" clip-path="url(#body-reveal)" />
-
-              <g id="cap-group">
-                <g id="inner-stars" clip-path="url(#cap-clip)"></g>
-                <image id="fi-photo-cap" class="fi-photo" clip-path="url(#cap-clip)" />
-                <!-- QR logo-steel.png 389×464; ring outer (194.5, 248.5) r 183.5
-                     → circle r 56 (k=56/183.5) so ring diameter = cap diameter. -->
-                <image
-                  id="chrome-mono"
-                  href="/assets/brand/ej-logo-steel.png"
-                  x="40.638"
-                  y="24.163"
-                  width="118.714"
-                  height="141.602"
-                  preserveAspectRatio="xMidYMid meet"
-                />
-              </g>
-            </svg>
-          </div>
-        </div>
+      <div class="brand-hero" id="brand-hero">
+        <img
+          id="brand-logo"
+          class="brand-logo"
+          src="/assets/img/approved/LOGO-CHROME.png"
+          alt="Eternal Journey"
+          width="389"
+          height="464"
+        />
+        <p class="brand-line" id="brand-line">
+          ETERNAL JOURNEY is more than a luxury Maison de Parfum. It is the essence of a way of life, the elixir of a philosophy. While inspired by principles of Luxury, Entertainment, Yoga and Meditation, ETERNAL JOURNEY embraces modernity and celebrates life with passion. Our fragrances are carefully crafted to let you experience the Outer and Inner Journeys and what connects them.
+        </p>
+        <p class="brand-mantra" id="brand-mantra">LIFE CREATES LIFE, IT’S AN ETERNAL JOURNEY</p>
       </div>
 
       <div class="line-bottles" id="line-bottles" aria-hidden="true">
@@ -120,184 +97,132 @@
         <img class="line-bottle inner" data-line="inner" data-i="2" src="/assets/bottles/h3-happiness.png" alt="" />
       </div>
 
+      <!-- Only approved FI bottle: FINAL-FI-BOTTLE-CUT-OUT.png.
+           Do not use assets/bottles/flow-infinite.png or live flow-infinite-banner.jpg. -->
+      <div
+        class="line-bottle fi approved-slot"
+        id="fi-bottle"
+        data-file="FINAL-FI-BOTTLE-CUT-OUT.png"
+      >
+        <img src="/assets/img/approved/FINAL-FI-BOTTLE-CUT-OUT.png" alt="FLOW Infinite" />
+        <p class="approved-missing">
+          <span>FINAL-FI-BOTTLE-CUT-OUT.png</span>
+          <span>Approved file not in this checkout</span>
+        </p>
+      </div>
+
       <header class="copy" id="copy">
         <p class="headline" id="headline">ARE YOU READY FOR THE JOURNEY?</p>
         <p class="label label-outer" id="label-outer">Outer Journey</p>
         <p class="label label-inner" id="label-inner">Inner Journey</p>
+        <p class="label label-fi" id="label-fi">FLOW Infinite</p>
       </header>
 
-      <div class="water" id="water" aria-hidden="true">
-        <div class="water-sheet"></div>
-        <span class="ripple ripple-a"></span>
-        <span class="ripple ripple-b"></span>
-        <span class="ripple ripple-c"></span>
-        <div class="caustic"></div>
-      </div>
-
-      <section class="film-act act4" id="act4">
-        <p class="eyebrow">Flow Infinite</p>
-        <h2 class="act-title">The fragrance that connects the two worlds.</h2>
-        <ul class="beat-rail">
-          <li id="beat-pause">The Pause</li>
-          <li id="beat-connection">The Connection</li>
-          <li id="beat-movement">The Movement</li>
-        </ul>
-        <a class="act-link" id="act4-link" href="/flow-infinite.html">Experience Flow Infinite</a>
-      </section>
-
-      <section class="film-act act5" id="act5">
-        <p class="eyebrow">Outer Journey</p>
-        <div class="act5-panels">
-          <div class="sku-panel" id="act5-sunrise">
+      <section class="film-act act-outer" id="act-outer">
+        <p class="eyebrow">24-HOUR COLLECTION</p>
+        <p class="collection-kicker">A CONTINUOUS SCENT</p>
+        <p class="act-lede collection-intro">
+          To guide you continuously throughout your ETERNAL JOURNEY we developed a gender-fluid collection with an evolving and renewing 24-hour scent, to provide balance and harmony appropriate to the time of the day. Discover and experience our three fragrances for each phase of your journey.
+        </p>
+        <div class="act-panels">
+          <div class="sku-panel" id="act-outer-sunrise">
+            <div class="approved-slot" data-file="SUNRISE-ETERNAL-LOVE.png">
+              <img class="sku-still" src="/assets/img/approved/SUNRISE-ETERNAL-LOVE.png" alt="" />
+              <p class="approved-missing">SUNRISE-ETERNAL-LOVE.png</p>
+            </div>
             <h2 class="act-title">Sunrise to Sunset</h2>
-            <p class="act-lede">Held light. The day worn as a garment.</p>
           </div>
-          <div class="sku-panel" id="act5-sunset">
+          <div class="sku-panel" id="act-outer-sunset">
+            <div class="approved-slot" data-file="SUNSET-ETERNAL-LOVE.png">
+              <img class="sku-still" src="/assets/img/approved/SUNSET-ETERNAL-LOVE.png" alt="" />
+              <p class="approved-missing">SUNSET-ETERNAL-LOVE.png</p>
+            </div>
             <h2 class="act-title">Sunset to Midnight</h2>
-            <p class="act-lede">The hour after the world has spoken.</p>
           </div>
-          <div class="sku-panel" id="act5-midnight">
+          <div class="sku-panel" id="act-outer-midnight">
+            <div class="approved-slot" data-file="MIDNIGHT-ETERNAL-LOVE.png">
+              <img class="sku-still" src="/assets/img/approved/MIDNIGHT-ETERNAL-LOVE.png" alt="" />
+              <p class="approved-missing">MIDNIGHT-ETERNAL-LOVE.png</p>
+            </div>
             <h2 class="act-title">Midnight to Sunrise</h2>
-            <p class="act-lede">What returns before it is named.</p>
           </div>
         </div>
-        <a class="act-link" id="act5-link" href="/outer.html">Walk the Outer Journey</a>
+        <a class="act-link" id="act-outer-link" href="/outer.html">Outer Journey</a>
       </section>
 
-      <section class="film-act act6" id="act6">
-        <p class="eyebrow">Inner Journey</p>
-        <div class="act6-panels">
-          <div class="sku-panel" id="act6-heart">
-            <p class="sku-mark">H1</p>
-            <h2 class="act-title">Heart</h2>
-            <p class="act-lede">Gold at the centre. The pulse it keeps.</p>
+      <section class="film-act act-inner" id="act-inner">
+        <p class="eyebrow">3H COLLECTION</p>
+        <p class="collection-kicker">A GUIDED ODYSSEY TO INNER BLISS</p>
+        <p class="act-lede collection-intro">
+          ETERNAL JOURNEY, a philosophy and a way of life, celebrates modernity with passion. Our first collection manifested the Outer Journey, mirroring daily existence. Now, with our new 3H Collection, we guide you towards the Inner Journey.
+        </p>
+        <p class="act-lede collection-intro collection-intro-sub">
+          A UNIQUE COLLECTION OF THREE POWERFUL FRAGRANCES CRAFTED AROUND THE ADDICTIVE AND BEWITCHING AMBROX®
+        </p>
+        <div class="act-panels">
+          <div class="sku-panel" id="act-inner-heart">
+            <div class="approved-slot" data-file="H1-ETERNAL-LOVE.png">
+              <img class="sku-still" src="/assets/img/approved/H1-ETERNAL-LOVE.png" alt="" />
+              <p class="approved-missing">H1-ETERNAL-LOVE.png</p>
+            </div>
+            <h2 class="act-title">H¹ HEART</h2>
           </div>
-          <div class="sku-panel" id="act6-harmony">
-            <p class="sku-mark">H2</p>
-            <h2 class="act-title">Harmony</h2>
-            <p class="act-lede">Pearl quiet. Two notes, one breath.</p>
+          <div class="sku-panel" id="act-inner-harmony">
+            <div class="approved-slot" data-file="H2-ETERNAL-LOVE.png">
+              <img class="sku-still" src="/assets/img/approved/H2-ETERNAL-LOVE.png" alt="" />
+              <p class="approved-missing">H2-ETERNAL-LOVE.png</p>
+            </div>
+            <h2 class="act-title">H² HARMONY</h2>
           </div>
-          <div class="sku-panel" id="act6-happiness">
-            <p class="sku-mark">H3</p>
-            <h2 class="act-title">Happiness</h2>
-            <p class="act-lede">A green that does not ask permission.</p>
+          <div class="sku-panel" id="act-inner-happiness">
+            <div class="approved-slot" data-file="H3-ETERNAL-LOVE.png">
+              <img class="sku-still" src="/assets/img/approved/H3-ETERNAL-LOVE.png" alt="" />
+              <p class="approved-missing">H3-ETERNAL-LOVE.png</p>
+            </div>
+            <h2 class="act-title">H³ HAPPINESS</h2>
           </div>
         </div>
-        <a class="act-link" id="act6-link" href="/inner.html">Enter the Inner Journey</a>
+        <a class="act-link" id="act-inner-link" href="/inner.html">Inner Journey</a>
       </section>
 
-      <section class="film-act act7" id="act7">
-        <div class="unity-field" id="unity-field" aria-hidden="true">
-          <div class="unity-nebula"></div>
-          <div class="unity-stars" id="unity-stars"></div>
+      <section class="film-act act-crossing" id="act-crossing">
+        <p class="eyebrow">FLOW Infinite</p>
+        <div class="approved-slot crossing-still" data-file="FI-ETERNAL-LOVE.png">
+          <img class="sku-still" src="/assets/img/approved/FI-ETERNAL-LOVE.png" alt="" />
+          <p class="approved-missing">FI-ETERNAL-LOVE.png</p>
         </div>
-
-        <div class="trinity" id="trinity">
-          <!-- Ring centres form a 74-unit equilateral triangle: Soul above,
-               Body and Heart below. -->
-          <svg class="venn" viewBox="0 0 200 200" aria-hidden="true">
-            <defs>
-              <linearGradient id="ring-silver" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stop-color="#ffffff" />
-                <stop offset="0.12" stop-color="#e8eef4" />
-                <stop offset="0.28" stop-color="#7a828c" />
-                <stop offset="0.42" stop-color="#f7fafc" />
-                <stop offset="0.58" stop-color="#5c646e" />
-                <stop offset="0.74" stop-color="#d5dde6" />
-                <stop offset="1" stop-color="#f4f7fa" />
-              </linearGradient>
-              <linearGradient id="ring-gold" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stop-color="#fff8e4" />
-                <stop offset="0.14" stop-color="#f0d59a" />
-                <stop offset="0.32" stop-color="#8a6a32" />
-                <stop offset="0.48" stop-color="#ffe9b4" />
-                <stop offset="0.64" stop-color="#6e5224" />
-                <stop offset="0.8" stop-color="#e2c07a" />
-                <stop offset="1" stop-color="#f7e6b8" />
-              </linearGradient>
-              <filter id="ring-bloom" x="-40%" y="-40%" width="180%" height="180%">
-                <feGaussianBlur stdDeviation="1.8" />
-              </filter>
-            </defs>
-
-            <!-- Each group is spun about its own centre so the drawing head —
-                 and the glint it leaves behind — lands where the deck puts it. -->
-            <g class="ring ring-silver" id="ring-body" transform="rotate(140 63 132)">
-              <circle class="ring-halo" cx="63" cy="132" r="56" />
-              <circle class="ring-core" cx="63" cy="132" r="56" />
-              <circle class="ring-inner" cx="63" cy="132" r="56" />
-              <circle class="ring-spec" cx="63" cy="132" r="56" filter="url(#ring-bloom)" />
-            </g>
-            <g class="ring ring-gold" id="ring-heart" transform="rotate(55 137 132)">
-              <circle class="ring-halo" cx="137" cy="132" r="56" />
-              <circle class="ring-core" cx="137" cy="132" r="56" />
-              <circle class="ring-inner" cx="137" cy="132" r="56" />
-              <circle class="ring-spec" cx="137" cy="132" r="56" filter="url(#ring-bloom)" />
-            </g>
-            <g class="ring ring-silver" id="ring-soul" transform="rotate(-50 100 68)">
-              <circle class="ring-halo" cx="100" cy="68" r="56" />
-              <circle class="ring-core" cx="100" cy="68" r="56" />
-              <circle class="ring-inner" cx="100" cy="68" r="56" />
-              <circle class="ring-spec" cx="100" cy="68" r="56" filter="url(#ring-bloom)" />
-            </g>
-
-            <g class="ring-icon icon-body" id="icon-body">
-              <path d="M44 107 L53.2 121 L50.4 131.2 L44 137.6 L37.6 131.2 L34.8 121 Z" />
-              <path d="M44 107 L44 137.6 M34.8 121 L53.2 121 M37.6 131.2 L50.4 131.2 M39.4 114.6 L48.6 114.6" />
-            </g>
-            <g class="ring-icon icon-heart" id="icon-heart">
-              <path d="M156 132.4 C141.2 122.2 142.2 110.6 156 116.4 C169.8 110.6 170.8 122.2 156 132.4 Z" />
-              <path d="M146.6 117 C149.9 114.4 151.9 119.4 155.3 116.8 C158.7 114.2 160.7 119.2 164 116.6" />
-              <path d="M147.4 121.8 C150.7 119.2 152.7 124.2 156.1 121.6 C159.5 119 161.5 124 164.8 121.4" />
-              <path d="M148.4 126.6 C151.7 124 153.7 129 157.1 126.4 C160.1 124.2 161.7 127.8 164.2 126.8" />
-            </g>
-            <g class="ring-icon icon-soul" id="icon-soul">
-              <path d="M100 33.2 L102.15 43.7 L112.4 46 L102.15 48.3 L100 58.8 L97.85 48.3 L87.6 46 L97.85 43.7 Z" />
-              <circle class="soul-dot" cx="100" cy="46" r="1.2" />
-              <path d="M106.7 39.3 L110.4 35.6 M106.7 52.7 L110.4 56.4 M93.3 52.7 L89.6 56.4 M93.3 39.3 L89.6 35.6" />
-            </g>
-          </svg>
-
-          <span class="venn-label venn-label-soul" id="label-soul">Soul</span>
-          <span class="venn-label venn-label-body" id="label-body">Body</span>
-          <span class="venn-label venn-label-heart" id="label-heart">Heart</span>
-          <p class="mind-bridge" id="mind-bridge">
-            <span class="bridge-gold">The bridge that unites </span><span class="bridge-silver">Body</span><span class="bridge-gold">, Heart</span><span class="bridge-silver"> and Soul</span>
-          </p>
-        </div>
-        <div class="unity-mono" id="unity-mono" aria-hidden="true">
-          <img
-            src="/assets/brand/ej-logo-steel.png"
-            alt=""
-            width="389"
-            height="464"
-          />
-        </div>
-        <p class="mantra" id="mantra">Life creates life, it's an Eternal Journey.</p>
+        <h2 class="act-title crossing-title">THE FRAGRANCE THAT CONNECTS THE TWO WORLDS</h2>
+        <p class="launch-line">NEW LAUNCH (Available in stores from end 2026)</p>
+        <a class="act-link" id="act-crossing-link" href="/flow-infinite.html">FLOW Infinite</a>
       </section>
     </div>
 
     <section id="ground">
       <nav class="ground-lines" aria-label="Collections">
-        <a class="ground-line" href="/flow-infinite.html">
-          <h2>Flow Infinite</h2>
-          <p>The crossing</p>
-        </a>
         <a class="ground-line" href="/outer.html">
           <h2>Outer Journey</h2>
-          <p>Night, structure, movement</p>
+          <p>24-HOUR COLLECTION</p>
         </a>
         <a class="ground-line" href="/inner.html">
           <h2>Inner Journey</h2>
-          <p>Light, surrender, pulse</p>
+          <p>3H COLLECTION</p>
+        </a>
+        <a class="ground-line" href="/flow-infinite.html">
+          <h2>Flow Infinite</h2>
+          <p>THE FRAGRANCE THAT CONNECTS THE TWO WORLDS</p>
         </a>
       </nav>
 
       <section id="stores">
+        <div id="mapSection"></div>
         <div class="ground-section-head">
           <h2>Store locator</h2>
-          <p>Ninety-two houses, one journey.</p>
         </div>
+        <nav class="store-collections" aria-label="Collection links">
+          <a href="/outer.html">Outer Journey</a>
+          <a href="/flow-infinite.html">Flow Infinite</a>
+          <a href="/inner.html">Inner Journey</a>
+        </nav>
         <div id="store-locator">
           <div id="store-list">
             <div id="search-container">
@@ -317,6 +242,12 @@
       </section>
 
       <footer class="ground-close">
+        <p class="footer-closer">ARE YOU READY FOR THE JOURNEY?</p>
+        <nav class="footer-collections" aria-label="Footer collections">
+          <a href="/outer.html">Outer Journey</a>
+          <a href="/inner.html">Inner Journey</a>
+          <a href="/flow-infinite.html">Flow Infinite</a>
+        </nav>
         <img
           class="ground-mono"
           src="/assets/brand/ej-logo-steel.png"
@@ -324,7 +255,6 @@
           width="389"
           height="464"
         />
-        <p>The circle closes.</p>
         <button
           type="button"
           class="ground-join"

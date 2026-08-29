@@ -13,6 +13,8 @@
   --warm-gold: #c9a36a;
   --display: 'Vogue Sans', 'Didot', 'Palatino Linotype', serif;
   --body: 'Century Gothic', Futura, sans-serif;
+  --font-display: 'Vogue Sans', serif;
+  --font-body: 'Century Gothic', sans-serif;
 }
 
 *,
@@ -47,35 +49,70 @@ img {
   -webkit-user-drag: none;
 }
 
-/* ---------- review chrome ---------- */
+.skip-link {
+  position: absolute;
+  left: 12px;
+  top: -48px;
+  z-index: 80;
+  padding: 8px 12px;
+  background: #f4f6f8;
+  color: #050506;
+  font-family: var(--font-body);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
 
-.review-bar {
+.skip-link:focus {
+  top: 12px;
+}
+
+/* ---------- site bar ---------- */
+
+.site-bar {
   position: fixed;
-  top: 10px;
-  left: 50%;
-  z-index: 40;
-  transform: translateX(-50%);
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 30;
   display: flex;
-  align-items: baseline;
-  gap: 0.55em;
-  padding: 3px 10px;
-  border-radius: 999px;
-  background: rgba(5, 5, 6, 0.52);
-  color: rgba(232, 228, 216, 0.78);
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 14px 22px;
+  background: linear-gradient(180deg, rgba(5, 5, 6, 0.78), rgba(5, 5, 6, 0));
   pointer-events: none;
 }
 
-.review-label {
-  color: rgba(232, 228, 216, 0.55);
+.site-bar a {
+  pointer-events: auto;
+  color: rgba(232, 228, 216, 0.78);
+  font-family: var(--font-body);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-decoration: none;
 }
 
-#review-pct {
-  font-variant-numeric: tabular-nums;
-  color: rgba(232, 228, 216, 0.88);
+.site-bar a:hover,
+.site-bar a:focus-visible {
+  color: #f0e6d0;
 }
+
+.site-bar-mark {
+  font-family: var(--font-display);
+  letter-spacing: 0.28em;
+}
+
+.site-bar-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.85rem 1.15rem;
+}
+
+/* ---------- HUD ---------- */
 
 .hud {
   position: fixed;
@@ -232,7 +269,6 @@ img {
   }
 }
 
-/* Act 2–3 film: one full-bleed JPEG (∞ + cyan/gold flow). Behind bottles. */
 .flow-bg {
   position: absolute;
   inset: 0;
@@ -245,91 +281,58 @@ img {
   background-repeat: no-repeat;
 }
 
-/* Act 4 only: night sky still. Ken Burns scale lives on the inner layer so
-   bottle, copy, CTA, and beat rail stay unscaled. Stays gone in Acts 2–3 / 5+. */
-.act4-sky {
+.nebula {
   position: absolute;
   inset: 0;
   z-index: 2;
-  overflow: hidden;
-  pointer-events: none;
   opacity: 0;
-}
-
-.act4-sky-zoom {
-  position: absolute;
-  inset: 0;
+  pointer-events: none;
   background-image: url('/assets/brand/night-sky-deep.jpeg');
   background-size: cover;
   background-position: 50% 70%;
   background-repeat: no-repeat;
-  transform-origin: 50% 70%;
-  will-change: transform;
 }
 
-/* ---------- monogram / FI assembly ---------- */
+/* ---------- brand hero ---------- */
 
-.anchor {
+.brand-hero {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 0;
-  height: 0;
-  z-index: 4;
-  overflow: visible;
-}
-
-.stardust {
-  position: absolute;
-  left: 0;
-  top: 0;
+  inset: 0;
+  z-index: 8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 12vh 8vw 10vh;
   pointer-events: none;
+  text-align: center;
 }
 
-.spark {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 3px;
-  height: 3px;
-  margin: -1.5px 0 0 -1.5px;
-  border-radius: 50%;
-  background: #d8dce0;
-  opacity: 0;
-}
-
-.assembly-motion {
-  position: absolute;
-  left: 0;
-  top: 0;
-  transform-origin: 0 0;
-}
-
-.assembly-layout {
-  /* Circle sits at (100,100) in a 200×360 viewBox — pin that point to the anchor. */
-  width: 38vmin;
-  height: calc(38vmin * 360 / 200);
-  transform: translate(-50%, calc(-100 / 360 * 100%));
-  overflow: visible;
-}
-
-.fi-svg {
-  display: block;
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-
-#chrome-mono {
-  opacity: 1;
-  overflow: visible;
-  /* Do not let the global img { max-width: 100% } shrink the SVG image. */
+.brand-logo {
+  width: min(38vmin, 220px);
+  height: auto;
+  aspect-ratio: 389 / 464;
   max-width: none;
+  transform: scale(0.22);
+  transform-origin: 50% 50%;
 }
 
-.star-dot {
-  fill: #e8eaed;
-  opacity: 0;
+.brand-line {
+  max-width: 42rem;
+  color: rgba(232, 228, 216, 0.78);
+  font-family: var(--font-body);
+  font-size: clamp(13px, 1.35vw, 16px);
+  letter-spacing: 0.04em;
+  line-height: 1.65;
+}
+
+.brand-mantra {
+  color: #e8e0d0;
+  font-family: var(--font-display);
+  font-size: clamp(13px, 1.4vw, 18px);
+  letter-spacing: 0.22em;
+  line-height: 1.45;
 }
 
 /* ---------- product-line cutouts ---------- */
@@ -353,7 +356,72 @@ img {
   filter: drop-shadow(0 14px 22px rgba(0, 0, 0, 0.5));
 }
 
-/* ---------- act 3 copy ---------- */
+.line-bottle.fi {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 26vmin;
+  width: auto;
+  z-index: 7;
+}
+
+.line-bottle.fi img {
+  height: 100%;
+  width: auto;
+  max-width: none;
+}
+
+.sku-still {
+  width: min(22vw, 180px);
+  height: auto;
+  margin-bottom: 0.8rem;
+  object-fit: contain;
+}
+
+.crossing-still {
+  position: absolute;
+  right: 8vw;
+  top: 22vh;
+}
+
+.approved-slot .approved-missing {
+  display: none;
+}
+
+.approved-slot.is-missing > img {
+  display: none;
+}
+
+.approved-slot.is-missing > .approved-missing {
+  display: flex;
+}
+
+.approved-missing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-width: 10rem;
+  min-height: 8rem;
+  padding: 1rem;
+  border: 1px dashed rgba(232, 228, 216, 0.35);
+  background: rgba(8, 10, 16, 0.28);
+  color: rgba(232, 228, 216, 0.55);
+  font-family: var(--font-body);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.line-bottle.fi .approved-missing {
+  height: 100%;
+  min-height: 0;
+  aspect-ratio: 1 / 2.2;
+}
+
+/* ---------- poster copy ---------- */
 
 .copy {
   position: absolute;
@@ -378,7 +446,6 @@ img {
   line-height: 1.25;
 }
 
-/* x/y come from metrics() so each label centres under its own set. */
 .label {
   position: absolute;
   left: 50%;
@@ -440,100 +507,10 @@ img {
     radial-gradient(1.2px 1.2px at 78% 38%, rgba(255, 255, 255, 0.6), transparent),
     radial-gradient(1px 1px at 86% 68%, rgba(255, 255, 255, 0.3), transparent),
     radial-gradient(1.5px 1.5px at 18% 48%, rgba(255, 255, 255, 0.45), transparent),
-    radial-gradient(1px 1px at 36% 88%, rgba(255, 255, 255, 0.28), transparent),
-    radial-gradient(1.1px 1.1px at 54% 62%, rgba(255, 255, 255, 0.5), transparent),
-    radial-gradient(1px 1px at 71% 82%, rgba(255, 255, 255, 0.38), transparent),
-    radial-gradient(1.3px 1.3px at 91% 22%, rgba(255, 255, 255, 0.42), transparent),
-    radial-gradient(1px 1px at 8% 82%, rgba(255, 255, 255, 0.32), transparent);
+    radial-gradient(1px 1px at 36% 88%, rgba(255, 255, 255, 0.28), transparent);
 }
 
-/* ---------- act 4 water (unused: night-sky still replaced this treatment) ---------- */
-
-.water {
-  position: absolute;
-  left: 50%;
-  bottom: -10%;
-  z-index: 2;
-  width: 150%;
-  height: 52%;
-  transform: translateX(-50%);
-  pointer-events: none;
-  opacity: 0;
-  --ripple: 1;
-}
-
-.water-sheet {
-  position: absolute;
-  inset: 0;
-  border-radius: 50% 50% 0 0;
-  background:
-    radial-gradient(ellipse at 50% 8%, rgba(90, 190, 200, 0.22), transparent 42%),
-    linear-gradient(180deg, transparent 0%, #07141f 26%, #02080e 100%);
-  mask-image: linear-gradient(180deg, transparent, #000 24%);
-  -webkit-mask-image: linear-gradient(180deg, transparent, #000 24%);
-}
-
-.caustic {
-  position: absolute;
-  inset: 8% 10% 0;
-  opacity: 0.28;
-  background:
-    repeating-radial-gradient(
-      ellipse at 50% 0%,
-      rgba(180, 230, 235, 0.16) 0 2px,
-      transparent 2px 18px
-    );
-  mix-blend-mode: screen;
-  animation: caustic-drift 14s linear infinite;
-}
-
-.ripple {
-  position: absolute;
-  left: 50%;
-  top: 10%;
-  width: 22vmin;
-  height: 9vmin;
-  border: 1px solid rgba(196, 224, 230, 0.28);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  animation: ripple-out calc(11s / var(--ripple, 1)) ease-out infinite;
-}
-
-.ripple-b {
-  animation-delay: -3.6s;
-  border-color: rgba(201, 163, 106, 0.22);
-}
-
-.ripple-c {
-  animation-delay: -7.2s;
-  width: 16vmin;
-  height: 6vmin;
-}
-
-@keyframes ripple-out {
-  0% {
-    transform: translate(-50%, -50%) scale(0.35);
-    opacity: 0.7;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(4.2);
-    opacity: 0;
-  }
-}
-
-@keyframes caustic-drift {
-  to {
-    background-position: 80px 40px;
-  }
-}
-
-.is-reduced .ripple,
-.is-reduced .caustic,
-.is-reduced .vortex {
-  animation: none;
-}
-
-/* ---------- acts 4–7 copy ---------- */
+/* ---------- collection acts ---------- */
 
 .film-act {
   position: absolute;
@@ -556,6 +533,33 @@ img {
   color: var(--warm-gold);
 }
 
+.collection-kicker {
+  position: absolute;
+  top: 12.4vh;
+  left: 8vw;
+  width: min(52vw, 640px);
+  font-family: var(--display);
+  font-size: clamp(18px, 2.2vw, 28px);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.collection-intro {
+  position: absolute;
+  top: 18vh;
+  left: 8vw;
+  width: min(46vw, 560px);
+}
+
+.collection-intro-sub {
+  top: auto;
+  bottom: 22vh;
+  width: min(42vw, 480px);
+  font-size: clamp(11px, 1.1vw, 14px);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
 .act-title {
   font-family: var(--display);
   font-weight: 400;
@@ -570,7 +574,7 @@ img {
   letter-spacing: 0.06em;
   line-height: 1.55;
   color: rgba(232, 228, 216, 0.72);
-  max-width: 28ch;
+  max-width: 46ch;
 }
 
 .act-link {
@@ -610,40 +614,10 @@ img {
   outline-offset: 4px;
 }
 
-.act4 .act-title {
+.act-panels {
   position: absolute;
   left: 8vw;
-  bottom: 28vh;
-  width: min(42vw, 520px);
-  font-style: italic;
-  font-size: clamp(28px, 3.6vw, 52px);
-}
-
-.beat-rail {
-  position: absolute;
-  right: 7vw;
-  top: 50%;
-  transform: translateY(-50%);
-  list-style: none;
-  display: grid;
-  gap: 1.4em;
-  font-family: var(--display);
-  font-size: clamp(18px, 2.2vw, 32px);
-  letter-spacing: 0.08em;
-  font-style: italic;
-}
-
-.beat-rail li {
-  opacity: 0;
-  visibility: hidden;
-  color: rgba(232, 228, 216, 0.22);
-}
-
-.act5-panels,
-.act6-panels {
-  position: absolute;
-  left: 8vw;
-  top: 22vh;
+  top: 42vh;
   width: min(52vw, 640px);
 }
 
@@ -655,329 +629,72 @@ img {
   opacity: 0;
 }
 
-.sku-panel .act-title {
-  margin-bottom: 0.45em;
-}
-
-.sku-mark {
-  font-family: var(--body);
-  font-size: 11px;
-  letter-spacing: 0.36em;
-  text-transform: uppercase;
-  color: var(--warm-gold);
-  margin-bottom: 0.6em;
-}
-
-.act6 {
+.act-inner {
   color: #2a2418;
 }
 
-.act6 .eyebrow {
+.act-inner .eyebrow,
+.act-inner .collection-kicker {
   color: #8a6a32;
 }
 
-.act6 .act-lede {
-  color: rgba(42, 36, 24, 0.62);
+.act-inner .act-lede {
+  color: rgba(42, 36, 24, 0.72);
 }
 
-.act6 .act-link {
+.act-inner .act-link {
   color: #7a5520;
   border-color: rgba(138, 106, 50, 0.55);
   background: rgba(255, 250, 242, 0.45);
 }
 
-.act6 .act-link:hover,
-.act6 .act-link:focus-visible {
+.act-inner .act-link:hover,
+.act-inner .act-link:focus-visible {
   color: #3d2a0c;
   border-color: #8a6a32;
   background: rgba(201, 163, 106, 0.22);
 }
 
-.act6 .sku-mark {
-  color: #8a6a32;
-}
-
-.act6-heart .act-title {
-  color: #9a7428;
-}
-
-.act6-harmony .act-title {
-  color: #6d6560;
-}
-
-.act6-happiness .act-title {
-  color: #3d6a42;
-}
-
-/* ---------- act 7 · balance and unity ---------- */
-
-.unity-field {
+.crossing-title {
   position: absolute;
-  inset: 0;
-  overflow: hidden;
-  opacity: 0;
-}
-
-.unity-nebula {
-  position: absolute;
-  left: 50%;
-  top: 44%;
-  width: min(160vmin, 1180px);
-  height: min(160vmin, 1180px);
-  translate: -50% -50%;
-  background:
-    radial-gradient(closest-side at 50% 46%, rgba(201, 163, 106, 0.18), transparent 52%),
-    radial-gradient(closest-side at 62% 58%, rgba(232, 224, 200, 0.08), transparent 46%),
-    radial-gradient(closest-side at 36% 64%, rgba(180, 168, 148, 0.07), transparent 50%),
-    radial-gradient(closest-side, rgba(10, 9, 8, 0.92), rgba(6, 5, 5, 0.5) 56%, transparent 78%);
-}
-
-.unity-stars {
-  position: absolute;
-  inset: 0;
-}
-
-.unity-star {
-  position: absolute;
-  border-radius: 50%;
-  background: #f4f1ea;
-  box-shadow: 0 0 5px rgba(232, 224, 200, 0.7);
-}
-
-.trinity {
-  position: absolute;
-  left: 50%;
-  top: 46%;
-  width: min(68vmin, 470px);
-  height: min(68vmin, 470px);
-  translate: -50% -52%;
-  transform-origin: 50% 50%;
-  overflow: visible;
-}
-
-.venn {
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-
-.ring circle {
-  fill: none;
-}
-
-/* Wide low-opacity companion stroke: bloom without a per-frame blur filter. */
-.ring-halo {
-  stroke-width: 8;
-  opacity: 0.16;
-}
-
-.ring-halo,
-.ring-core,
-.ring-inner {
-  stroke-linecap: round;
-}
-
-.ring-core {
-  stroke-width: 2.9;
-}
-
-.ring-inner {
-  stroke-width: 0.85;
-  opacity: 0.55;
-}
-
-.ring-spec {
-  stroke-width: 4.2;
-  stroke-linecap: round;
-}
-
-.ring-silver .ring-halo,
-.ring-silver .ring-core {
-  stroke: url(#ring-silver);
-}
-
-.ring-silver .ring-inner,
-.ring-silver .ring-spec {
-  stroke: #ffffff;
-}
-
-.ring-gold .ring-halo,
-.ring-gold .ring-core {
-  stroke: url(#ring-gold);
-}
-
-.ring-gold .ring-inner,
-.ring-gold .ring-spec {
-  stroke: #fff6dc;
-}
-
-.ring-icon {
-  fill: none;
-  stroke-width: 1.3;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  opacity: 0;
-  visibility: hidden;
-}
-
-.icon-soul,
-.icon-body {
-  stroke: url(#ring-silver);
-}
-
-.icon-heart {
-  stroke: url(#ring-gold);
-}
-
-.icon-soul .soul-dot {
-  fill: url(#ring-silver);
-  stroke: none;
-}
-
-.venn-label,
-.mind-bridge,
-.bridge-gold,
-.bridge-silver,
-.mantra {
-  font-family: var(--display);
-}
-
-/* Labels are gradient-filled text, so they carry the same metal as the rings. */
-.venn-label {
-  position: absolute;
-  translate: -50% -50%;
-  font-size: clamp(17px, 5.2vmin, 36px);
-  letter-spacing: 0.01em;
-  line-height: 1;
-  white-space: nowrap;
-  opacity: 0;
-  visibility: hidden;
-  background: linear-gradient(
-    158deg,
-    #ffffff 0%,
-    #e2e9f1 24%,
-    #98a1ab 52%,
-    #f6f9fc 74%,
-    #bcc4ce 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-}
-
-.venn-label-soul {
-  left: 50%;
-  top: 32%;
-}
-
-.venn-label-body {
-  left: 23%;
-  top: 73%;
-}
-
-.venn-label-heart {
-  left: 77%;
-  top: 73%;
-}
-
-/* Heart metal — same stop set as ring-gold. */
-.bridge-gold {
-  background: linear-gradient(150deg, #fff6df 0%, #edcf92 34%, #c9a36a 62%, #f8e7c0 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-}
-
-/* Soul / Body metal — same stop set as .venn-label. */
-.bridge-silver {
-  background: linear-gradient(
-    158deg,
-    #ffffff 0%,
-    #e2e9f1 24%,
-    #98a1ab 52%,
-    #f6f9fc 74%,
-    #bcc4ce 100%
-  );
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  color: transparent;
-}
-
-/*
- * Under the three rings. Body/Heart labels sit at 73%; ring floors at ~94%.
- * `top: 100%` of .trinity is the viewBox bottom (already below the metal),
- * plus a 0.9em gap so the line never kisses a label.
- */
-.mind-bridge {
-  position: absolute;
-  left: 50%;
-  top: 100%;
-  translate: -50% 0;
-  margin-top: 0.9em;
-  width: max-content;
-  max-width: min(92vw, 36em);
-  font-size: clamp(11px, 2.15vmin, 16px);
-  letter-spacing: 0.08em;
-  margin-right: -0.08em;
-  line-height: 1.45;
-  text-align: center;
-  text-transform: uppercase;
-  pointer-events: none;
-  opacity: 0;
-  visibility: hidden;
-}
-
-.unity-mono {
-  position: absolute;
-  left: 50%;
-  top: 46%;
-  /* Same on-screen width as Act 0 #chrome-mono (38vmin × 118.714/200). */
-  width: min(calc(38vmin * 118.714 / 200), 154px);
-  height: auto;
-  aspect-ratio: 389 / 464;
-  translate: -50% -54%;
-  transform-origin: 50% 50%;
-  opacity: 0;
-  visibility: hidden;
-}
-
-.unity-mono img {
-  display: block;
-  width: 100%;
-  height: auto;
-  max-width: none;
-}
-
-.mantra {
-  position: absolute;
-  left: 50%;
-  bottom: 12vh;
-  width: min(86vw, 720px);
-  transform: translateX(-50%);
+  left: 8vw;
+  bottom: 28vh;
+  width: min(48vw, 560px);
   font-style: italic;
-  font-size: clamp(18px, 2.6vw, 34px);
-  letter-spacing: 0.04em;
-  text-align: center;
-  color: #e8e0d0;
-  opacity: 0;
-  visibility: hidden;
+  font-size: clamp(22px, 3.2vw, 44px);
 }
 
-/* Keep in step with TIMING.layout.narrowMaxPx. */
-@media (max-width: 720px) {
-  .review-bar {
-    font-size: 10px;
-    padding: 2px 8px;
-  }
+.launch-line {
+  position: absolute;
+  left: 8vw;
+  bottom: 20vh;
+  width: min(48vw, 560px);
+  font-family: var(--body);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--warm-gold);
+}
 
+@media (max-width: 720px) {
   .hud {
     left: 10px;
     bottom: 10px;
     min-width: 0;
     padding: 10px 12px;
+  }
+
+  .site-bar {
+    padding: 10px 12px;
+  }
+
+  .site-bar-nav {
+    gap: 0.45rem 0.7rem;
+  }
+
+  .site-bar a {
+    font-size: 8px;
+    letter-spacing: 0.14em;
   }
 
   .headline {
@@ -991,41 +708,37 @@ img {
     letter-spacing: 0.18em;
   }
 
-  .assembly-layout {
-    width: 56vmin;
-    height: calc(56vmin * 360 / 200);
-    overflow: visible;
+  .brand-line {
+    font-size: 13px;
   }
 
-  .eyebrow {
+  .eyebrow,
+  .collection-kicker {
     left: 6vw;
-    top: 8vh;
-    letter-spacing: 0.28em;
   }
 
-  .act4 .act-title {
-    left: 6vw;
-    bottom: auto;
-    top: 14vh;
-    width: min(88vw, 520px);
-    font-size: 26px;
-  }
-
-  .beat-rail {
-    right: auto;
-    left: 6vw;
-    top: auto;
-    bottom: 22vh;
-    transform: none;
-    font-size: 18px;
-    gap: 0.7em;
-  }
-
-  .act5-panels,
-  .act6-panels {
-    left: 6vw;
-    top: 16vh;
+  .collection-kicker {
+    top: 12vh;
     width: min(88vw, 640px);
+    font-size: 16px;
+  }
+
+  .collection-intro,
+  .act-panels {
+    left: 6vw;
+    width: min(88vw, 640px);
+  }
+
+  .collection-intro {
+    top: 20vh;
+  }
+
+  .collection-intro-sub {
+    bottom: 20vh;
+  }
+
+  .act-panels {
+    top: 48vh;
   }
 
   .act-link {
@@ -1036,25 +749,20 @@ img {
     padding: 9px 14px 8px;
   }
 
-  .trinity {
-    top: 44%;
-    width: min(88vmin, 470px);
-    height: min(88vmin, 470px);
+  .crossing-title,
+  .launch-line {
+    left: 6vw;
+    width: min(88vw, 560px);
   }
 
-  .venn-label {
-    font-size: clamp(15px, 6.7vmin, 30px);
+  .crossing-title {
+    bottom: auto;
+    top: 16vh;
+    font-size: 22px;
   }
 
-  .mind-bridge {
-    font-size: clamp(10px, 2.6vmin, 14px);
-    margin-top: 1.05em;
-    max-width: min(92vw, 28em);
-  }
-
-  .mantra {
-    bottom: 10vh;
-    font-size: 18px;
+  .launch-line {
+    bottom: 20vh;
   }
 }
 
@@ -1104,9 +812,4 @@ img {
   font-weight: 700;
   font-style: normal;
   font-display: swap;
-}
-
-:root {
-  --font-display: 'Vogue Sans', serif;
-  --font-body: 'Century Gothic', sans-serif;
 }

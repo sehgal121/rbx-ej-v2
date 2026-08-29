@@ -1,3 +1,4 @@
+import { mountContact, openContact } from './contact'
 import './ground.css'
 
 type Store = {
@@ -127,6 +128,7 @@ function mountLocator(): void {
   const modalBody = document.querySelector('#modal-body')
   const closeBtn = document.querySelector('#store-modal .close-button')
   if (!list || !search || !reset) return
+  const storeList = list
 
   let stores: Store[] = []
   let countryMap: Record<string, Store[]> = {}
@@ -153,7 +155,7 @@ function mountLocator(): void {
       .addTo(map)
       .bindPopup(popupHtml(store), { maxWidth: 280, minWidth: 220, className: 'ground-store-popup' })
     marker.on('click', () => {
-      map.flyTo([store.lat, store.lng], 12)
+      map?.flyTo([store.lat, store.lng], 12)
     })
     markerByName.set(store.name, marker)
     markers.push(marker)
@@ -189,7 +191,7 @@ function mountLocator(): void {
   }
 
   function renderCountries(): void {
-    list.innerHTML = ''
+    storeList.innerHTML = ''
     Object.keys(countryMap)
       .sort((a, b) => {
         if (a === 'Online Stores') return 1
@@ -201,19 +203,19 @@ function mountLocator(): void {
         li.className = 'country-card'
         li.innerHTML = `<div class="country">${escapeHtml(country)}</div>`
         li.addEventListener('click', () => showCountry(country))
-        list.appendChild(li)
+        storeList.appendChild(li)
       })
   }
 
   function showCountry(country: string): void {
     clearMarkers()
-    list.innerHTML = ''
+    storeList.innerHTML = ''
     countryMap[country]?.forEach((store) => {
       const li = document.createElement('li')
       li.className = 'store-card'
       li.innerHTML = storeRowHtml(store)
       li.addEventListener('click', () => onStoreClick(store))
-      list.appendChild(li)
+      storeList.appendChild(li)
       addMarker(store)
     })
     fit()
@@ -240,13 +242,13 @@ function mountLocator(): void {
         s.country.toLowerCase().includes(q),
     )
     clearMarkers()
-    list.innerHTML = ''
+    storeList.innerHTML = ''
     filtered.forEach((store) => {
       const li = document.createElement('li')
       li.className = 'store-card'
       li.innerHTML = storeRowHtml(store)
       li.addEventListener('click', () => onStoreClick(store))
-      list.appendChild(li)
+      storeList.appendChild(li)
       addMarker(store)
     })
     fit()
@@ -280,7 +282,7 @@ function mountLocator(): void {
       map?.invalidateSize()
     })
     .catch(() => {
-      list.innerHTML = '<li><p>Store list is unavailable.</p></li>'
+      storeList.innerHTML = '<li><p>Store list is unavailable.</p></li>'
     })
 
   search.addEventListener('input', () => searchStores(search.value))
@@ -291,7 +293,8 @@ function mountLocator(): void {
   })
   closeBtn?.addEventListener('click', closeModal)
   closeBtn?.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
+    const key = (e as KeyboardEvent).key
+    if (key === 'Enter' || key === ' ') {
       e.preventDefault()
       closeModal()
     }
@@ -315,167 +318,18 @@ function mountLocator(): void {
   }
 }
 
-type LenisControl = { stop: () => void; start: () => void }
 
-function ejLenis(): LenisControl | undefined {
-  return (window as Window & { __ejLenis?: LenisControl }).__ejLenis
-}
-
-const CONTACT_FOCUSABLE =
-  'a[href], button:not([disabled]), input:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
-
-let openContactModal: (() => void) | undefined
-
-function mountContact(): void {
-  const form = document.querySelector<HTMLFormElement>('#contactForm')
-  const modal = document.querySelector<HTMLElement>('#contactModal')
-  const panel = modal?.querySelector<HTMLElement>('.contact-modal-panel')
-  const trigger = document.querySelector<HTMLButtonElement>('#contact')
-  const closeBtn = modal?.querySelector<HTMLButtonElement>('.contact-modal-close')
-  if (!form || !modal || !panel || !trigger || !closeBtn) return
-  const name = form.querySelector<HTMLInputElement>('#name')
-  const email = form.querySelector<HTMLInputElement>('#email')
-  const phone = form.querySelector<HTMLInputElement>('#phone')
-  const city = form.querySelector<HTMLInputElement>('#city')
-  const nameError = form.querySelector('#nameError')
-  const emailError = form.querySelector('#emailError')
-  const submit = form.querySelector<HTMLButtonElement>('button[type="submit"]')
-  const status = document.querySelector('#contact-status')
-  if (!name || !email || !phone || !city || !nameError || !emailError || !submit || !status) return
-
-  let lastFocus: HTMLElement | null = null
-
-  function isOpen(): boolean {
-    return modal.classList.contains('is-open')
-  }
-
-  function lockScroll(): void {
-    document.documentElement.style.overflow = 'hidden'
-    document.body.style.overflow = 'hidden'
-    ejLenis()?.stop()
-  }
-
-  function unlockScroll(): void {
-    document.documentElement.style.overflow = ''
-    document.body.style.overflow = ''
-    ejLenis()?.start()
-  }
-
-  function resetForm(): void {
-    form.hidden = false
-    form.reset()
-    nameError.classList.remove('is-on')
-    emailError.classList.remove('is-on')
-    status.classList.remove('is-on')
-    status.innerHTML = ''
-    submit.disabled = false
-  }
-
-  function openModal(): void {
-    if (isOpen()) return
-    lastFocus = (document.activeElement as HTMLElement | null) ?? trigger
-    modal.classList.add('is-open')
-    modal.setAttribute('aria-hidden', 'false')
-    trigger.setAttribute('aria-expanded', 'true')
-    lockScroll()
-    window.setTimeout(() => {
-      name.focus()
-    }, 0)
-  }
-
-  function closeModal(): void {
-    if (!isOpen()) return
-    modal.classList.remove('is-open')
-    modal.setAttribute('aria-hidden', 'true')
-    trigger.setAttribute('aria-expanded', 'false')
-    unlockScroll()
-    resetForm()
-    lastFocus?.focus()
-  }
-
-  trigger.setAttribute('aria-expanded', 'false')
-  trigger.addEventListener('click', openModal)
-  closeBtn.addEventListener('click', closeModal)
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) closeModal()
-  })
-  document.addEventListener('keydown', (e) => {
-    if (!isOpen()) return
-    if (e.key === 'Escape') {
-      e.preventDefault()
-      closeModal()
-      return
-    }
-    if (e.key !== 'Tab') return
-    const nodes = [...panel.querySelectorAll<HTMLElement>(CONTACT_FOCUSABLE)].filter(
-      (el) => !el.hasAttribute('hidden') && el.offsetParent !== null,
-    )
-    if (nodes.length === 0) return
-    const first = nodes[0]
-    const last = nodes[nodes.length - 1]
-    if (e.shiftKey && document.activeElement === first) {
-      e.preventDefault()
-      last.focus()
-    } else if (!e.shiftKey && document.activeElement === last) {
-      e.preventDefault()
-      first.focus()
-    }
-  })
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault()
-    const type =
-      form.querySelector<HTMLInputElement>('input[name="contact-type"]:checked')?.value ?? 'Personal'
-    nameError.classList.toggle('is-on', !name.value.trim())
-    emailError.classList.toggle('is-on', !email.value.trim())
-    if (!name.value.trim() || !email.value.trim()) return
-
-    submit.disabled = true
-    const payload = {
-      buisnessType: type,
-      name: name.value.trim(),
-      email: email.value.trim(),
-      phone: phone.value.trim(),
-      city: city.value.trim(),
-    }
-
-    let delivered = false
-    try {
-      const res = await fetch('/backend/contact-us.php', {
-        method: 'POST',
-        headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      })
-      const data = (await res.json()) as { status?: string; delivered?: boolean }
-      delivered = data.status === 'success' && data.delivered !== false
-    } catch {
-      delivered = false
-    }
-
-    form.hidden = true
-    status.classList.add('is-on')
-    status.innerHTML = delivered
-      ? `<strong>Received</strong>Thank you for reaching out. We will connect with you at the earliest.`
-      : `<strong>Received</strong>Thank you for reaching out. We will connect with you at the earliest.
-         <p class="ground-form-note">This environment is not sending mail. The live form posts to /backend/contact-us.php with SMTP from environment variables.</p>`
-    submit.disabled = false
-    closeBtn.focus()
-  })
-
-  openContactModal = openModal
-}
-
-const GROUND_HASH = new Set(['ground', 'stores', 'contact'])
+const GROUND_HASH = new Set(['ground', 'stores', 'contact', 'mapSection', 'storeSection'])
 
 function scrollToHash(): void {
   const id = decodeURIComponent(window.location.hash.replace(/^#/, ''))
   if (!GROUND_HASH.has(id)) return
   if (id === 'contact') {
     document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-    openContactModal?.()
+    openContact()
     return
   }
-  const el = document.getElementById(id)
+  const el = document.getElementById(id === 'mapSection' ? 'stores' : id)
   if (!el) return
   window.setTimeout(() => {
     el.scrollIntoView({ behavior: 'smooth', block: 'start' })

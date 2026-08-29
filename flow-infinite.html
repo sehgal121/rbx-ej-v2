@@ -3,35 +3,268 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Flow Infinite — Eternal Journey</title>
+    <title>FLOW Infinite — Eternal Journey</title>
     <meta
       name="description"
-      content="Eternal Journey introduces Flow Infinite. Extrait de Parfum. The fragrance that connects the two worlds."
+      content="ETERNAL JOURNEY introduces FLOW Infinite. Extrait de Parfum."
     />
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='12' fill='none' stroke='%23c8cdd4' stroke-width='1.2'/%3E%3Crect x='15.2' y='2' width='1.6' height='8' fill='%23c8cdd4'/%3E%3Crect x='4' y='15.2' width='12' height='1.6' fill='%23c8cdd4'/%3E%3Ccircle cx='24.5' cy='24.5' r='1.6' fill='%23c8cdd4'/%3E%3C/svg%3E" />
-    <style>
-      @font-face { font-family: 'Vogue Sans'; src: url('/fonts/vogue-sans-regular.ttf') format('truetype'); font-weight: 400; font-display: swap; }
-      * { box-sizing: border-box; margin: 0; padding: 0; }
-      html, body { min-height: 100%; background: #050506; color: #c8cdd4; }
-      body { display: grid; place-items: center; min-height: 100vh; padding: 8vh 6vw; font-family: 'Century Gothic', sans-serif; text-align: center; }
-      svg { width: min(18vmin, 110px); height: min(18vmin, 110px); margin-bottom: 2.4rem; }
-      h1 { font-family: 'Vogue Sans', serif; font-size: clamp(22px, 4vw, 40px); font-weight: 400; letter-spacing: 0.28em; text-transform: uppercase; color: #f0f2f4; }
-      p { margin: 1.2rem auto 0; max-width: 28rem; color: #8a9096; font-size: 15px; line-height: 1.6; letter-spacing: 0.04em; }
-      a { display: inline-block; margin-top: 2.4rem; color: #c8cdd4; font-family: 'Vogue Sans', serif; font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase; text-decoration: none; border-bottom: 1px solid #3a3d42; padding-bottom: 4px; }
-      a:hover { color: #e0b45c; border-color: #e0b45c; }
-    </style>
+    <link rel="icon" href="/assets/brand/ej-logo-steel.png" type="image/png" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""
+    />
   </head>
-  <body>
-    <main>
-      <svg viewBox="0 0 32 32" aria-hidden="true">
-        <circle cx="16" cy="16" r="12" fill="none" stroke="#c8cdd4" stroke-width="1.2" />
-        <rect x="15.2" y="2" width="1.6" height="8" fill="#c8cdd4" />
-        <rect x="4" y="15.2" width="12" height="1.6" fill="#c8cdd4" />
-        <circle cx="24.5" cy="24.5" r="1.6" fill="#c8cdd4" />
-      </svg>
-      <h1>Flow Infinite</h1>
-      <p>Extrait de Parfum. The fragrance that connects the two worlds. The full journey page follows.</p>
-      <a href="/">Return to Eternal Journey</a>
-    </main>
+  <body class="site-page">
+    <header class="site-bar">
+      <a class="site-bar-mark" href="/">Eternal Journey</a>
+      <nav class="site-bar-nav" aria-label="Primary">
+        <a href="/outer.html">Outer Journey</a>
+        <a href="/inner.html">Inner Journey</a>
+        <a href="/flow-infinite.html" aria-current="page">Flow Infinite</a>
+        <a href="#storeSection">Store locator</a>
+      </nav>
+    </header>
+
+    <!-- V1 hero-section. Cap assembly lives here, not on index. -->
+    <section id="hero-section" class="page-hero fi-hero" aria-label="FLOW Infinite">
+      <div class="fi-hero-sky" aria-hidden="true"></div>
+      <div class="fi-anchor" id="anchor">
+        <div class="stardust" id="stardust" aria-hidden="true"></div>
+        <div class="assembly-motion" id="assembly">
+          <div class="assembly-layout" id="assembly-layout">
+            <svg class="fi-svg" id="fi-svg" viewBox="0 0 200 360" aria-hidden="true">
+              <defs>
+                <clipPath id="cap-clip">
+                  <circle cx="100" cy="100" r="56" />
+                </clipPath>
+                <clipPath id="body-reveal">
+                  <rect id="body-clip-rect" x="0" y="152" width="200" height="0" />
+                </clipPath>
+              </defs>
+              <image id="fi-photo-body" class="fi-photo" clip-path="url(#body-reveal)" />
+              <g id="cap-group">
+                <g id="inner-stars" clip-path="url(#cap-clip)"></g>
+                <image id="fi-photo-cap" class="fi-photo" clip-path="url(#cap-clip)" />
+                <image
+                  id="chrome-mono"
+                  href="/assets/img/approved/LOGO-CHROME.png"
+                  x="40.638"
+                  y="24.163"
+                  width="118.714"
+                  height="141.602"
+                  preserveAspectRatio="xMidYMid meet"
+                />
+              </g>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="collectionSection" class="page-band">
+      <div class="page-main">
+        <p class="page-eyebrow">NEW LAUNCH (Available in stores from end 2026)</p>
+        <h1>ETERNAL JOURNEY introduces FLOW Infinite.</h1>
+        <p class="page-kicker">Extrait de Parfum.</p>
+        <p class="page-kicker">THE FRAGRANCE THAT CONNECTS THE TWO WORLDS</p>
+        <div class="approved-slot page-still" data-file="FI-ETERNAL-LOVE.png">
+          <img class="sku-still" src="/assets/img/approved/FI-ETERNAL-LOVE.png" alt="" />
+          <p class="approved-missing">FI-ETERNAL-LOVE.png</p>
+        </div>
+        <p class="page-lede">
+          Every ETERNAL JOURNEY fragrance is created to move beyond scent, into memory, emotion, and a deeper state of being. Our first collection manifested the Outer Journey, while our 3H Collection guided you towards the Inner Journey. Now, with FLOW Infinite, we invite you to experience the pause where presence and possibility meet through a fragrance that connects both worlds and flows endlessly between them.
+        </p>
+      </div>
+    </section>
+
+    <section id="journeySection" class="page-band page-band-alt">
+      <div class="page-main">
+        <h2>The Pause / Connection / Movement</h2>
+        <ul class="page-beats page-beats-cols">
+          <li>
+            <h3>The Pause</h3>
+            <p>It is the breath between two collections, the pause where presence and possibility meet.</p>
+          </li>
+          <li>
+            <h3>The Connection</h3>
+            <p>It acts as the vital link connecting the grounded rhythm of the 24-Hour cycle (the Outer Journey) with the elevated transcendence of the 3H Collection—Heart, Harmony &amp; Happiness (the Inner Journey).</p>
+          </li>
+          <li>
+            <h3>The Movement</h3>
+            <p>A scent that does not start or end; it simply flows endlessly between the seen and the unseen.</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="perfumeSection" class="page-band perfume-section">
+      <div class="page-main page-main-wide">
+        <header class="perfume-section-title">
+          <h2>FLOW Infinite</h2>
+          <p class="perfume-time">creative journey</p>
+        </header>
+        <div class="perfume-grid">
+          <div class="perfume-section-content">
+            <p class="page-lede">
+              At the meeting point of the OUTER and INNER JOURNEY lies FLOW infinite — a bridge between worlds, a breath between moments, and a symbol of endless movement. It connects the grounded rhythm of the 24-Hour cycle with the elevated transcendence of HEART, HARMONY and HAPPINESS. It embodies the natural current that moves through all existence, without a beginning or an end. It simply flows, connecting the seen with the unseen, the external movement of life with the internal experience of being; capturing the essence of connection, transition and timeless presence.
+            </p>
+          </div>
+          <div class="perfume-section-img approved-slot" data-file="FINAL-FI-BOTTLE-CUT-OUT.png">
+            <img src="/assets/img/approved/FINAL-FI-BOTTLE-CUT-OUT.png" alt="FLOW Infinite" />
+            <p class="approved-missing">
+              <span>FINAL-FI-BOTTLE-CUT-OUT.png</span>
+              <span>Approved FI bottle not in this checkout</span>
+            </p>
+          </div>
+          <div class="perfume-section-ingredient">
+            <h3>AMBER WOODY VANILLA</h3>
+            <p class="page-lede">
+              The brightness of spices and citrus, delicately wrapped by saffron milk, florals and woody vanilla additions, forms the olfactive signature of FLOW infinite.
+            </p>
+            <p class="page-lede">
+              Signature notes: Coffee Absolute, Orange Flower, Creamy Woods, Saffron Milk, Patchouli, Ambrox, Vanilla Bourbon · center ETERNAL LOVE
+            </p>
+            <div class="approved-slot notes-wheel is-missing" data-file="FI notes-wheel">
+              <p class="approved-missing">
+                <span>Notes-wheel art</span>
+                <span>Approved file not provided — placeholder only</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="perfume-footer">
+          <p>Scent crafted with love by Hamid Merati, Ilias Ermenidis &amp; PIERRE RAVAN</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="catalogSection" class="page-band page-band-alt">
+      <div class="page-main">
+        <h2>Catalog</h2>
+        <div class="catalog-grid">
+          <article class="catalog-product">
+            <h3>FLOW Infinite</h3>
+            <div class="approved-slot" data-file="FINAL-FI-BOTTLE-CUT-OUT.png">
+              <img class="sku-still" src="/assets/img/approved/FINAL-FI-BOTTLE-CUT-OUT.png" alt="" />
+              <p class="approved-missing">FINAL-FI-BOTTLE-CUT-OUT.png</p>
+            </div>
+            <p>extrait de parfum</p>
+            <p>100 ml / 3,3 oz, 260€.</p>
+          </article>
+          <article class="catalog-product">
+            <h3>FLOW Infinite</h3>
+            <div class="approved-slot" data-file="FINAL-FI-BOTTLE-CUT-OUT.png">
+              <img class="sku-still" src="/assets/img/approved/FINAL-FI-BOTTLE-CUT-OUT.png" alt="" />
+              <p class="approved-missing">FINAL-FI-BOTTLE-CUT-OUT.png</p>
+            </div>
+            <p>extrait de parfum</p>
+            <p>10 ml / 0.3 oz, 35€.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="storeSection" class="store-section">
+      <div id="stores">
+        <div class="ground-section-head">
+          <h2>store locator</h2>
+        </div>
+        <div id="store-locator">
+          <div id="store-list">
+            <div id="search-container">
+              <input type="search" id="search-bar" placeholder="Search for a store…" autocomplete="off" />
+              <button type="button" id="reset-button">Show all stores</button>
+            </div>
+            <ul id="store-items"></ul>
+          </div>
+          <div id="map" role="region" aria-label="Store map"></div>
+        </div>
+        <div id="store-modal" aria-hidden="true">
+          <div class="modal-content">
+            <span class="close-button" role="button" tabindex="0" aria-label="Close">&times;</span>
+            <div id="modal-body"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="ground-close" id="contactSection">
+      <p class="footer-closer">ARE YOU READY FOR THE JOURNEY?</p>
+      <nav class="footer-collections" aria-label="Footer collections">
+        <a href="/outer.html">Outer Journey</a>
+        <a href="/inner.html">Inner Journey</a>
+        <a href="/flow-infinite.html">Flow Infinite</a>
+      </nav>
+      <img
+        class="ground-mono"
+        src="/assets/brand/ej-logo-steel.png"
+        alt="Eternal Journey"
+        width="389"
+        height="464"
+      />
+      <button
+        type="button"
+        class="ground-join"
+        id="contact"
+        aria-haspopup="dialog"
+        aria-controls="contactModal"
+        aria-expanded="false"
+      >
+        To be a part of the journey click here!
+      </button>
+      <div class="ground-legal">
+        <a href="/privacy-policy.html">Privacy Policy</a>
+        <span>&copy; All copyrights reserved.</span>
+        <address>10 rue de Penthievre 75008 Paris - France</address>
+      </div>
+    </footer>
+
+    <div id="contactModal" aria-hidden="true">
+      <div class="contact-modal-panel" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title">
+        <button type="button" class="contact-modal-close" aria-label="Close">&times;</button>
+        <h2 id="contact-modal-title">Contact us</h2>
+        <form id="contactForm">
+          <div class="ground-types">
+            <label>
+              <input type="radio" name="contact-type" id="personal" value="Personal" checked />
+              Personal Use
+            </label>
+            <label>
+              <input type="radio" name="contact-type" id="distribution" value="Distribution" />
+              Distribution
+            </label>
+          </div>
+          <div class="ground-field">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" autocomplete="name" />
+            <div id="nameError" class="ground-error">Name required</div>
+          </div>
+          <div class="ground-field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" autocomplete="email" />
+            <div id="emailError" class="ground-error">Email required</div>
+          </div>
+          <div class="ground-field">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" name="phone" autocomplete="tel" />
+          </div>
+          <div class="ground-field">
+            <label for="city">City</label>
+            <input type="text" id="city" name="city" autocomplete="address-level2" />
+          </div>
+          <button type="submit">Contact</button>
+        </form>
+        <div id="contact-status" class="ground-form-status" role="status"></div>
+      </div>
+    </div>
+
+    <script
+      src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+      integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+      crossorigin=""
+    ></script>
+    <script type="module" src="/src/fi-page.ts"></script>
   </body>
 </html>

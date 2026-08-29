@@ -1,6 +1,6 @@
 # Eternal Journey — v2 - Aug 2026
 
-Motion-choreography prototype for client review. **Not final design.** Acts 0–3 only: monogram → dissolve into Flow Infinite cap → infinity ribbon → triptych.
+Motion-choreography prototype for client review. **Not final design.** Homepage reel: brand logo expand → Outer Journey → Inner Journey → FLOW Infinite poster lock. Cap-expansion lives on `/flow-infinite.html` only.
 
 ## Run
 
@@ -36,25 +36,27 @@ All timing lives in **one object**: `src/config.ts` → `TIMING`.
 - `TIMING.scrollLengthVh` — total pinned scroll (default `800`).
 - `TIMING.scrub` — ScrollTrigger catch-up in seconds.
 
-Keyboard: `1` `2` `3` `4` jump to the start of each act. HUD shows act name and overall progress.
+Keyboard: `1` `2` `3` `4` jump to the start of each act. HUD shows act name and overall progress (same walk chrome as the github.io review film).
+
+## Approved stills
+
+Commit founder T9 files into `public/assets/img/approved/` using these names
+only — do not regenerate or swap in `flow-infinite-banner.jpg` /
+`assets/bottles/flow-infinite.png`:
+
+- `FINAL-FI-BOTTLE-CUT-OUT.png` — only FI bottle allowed
+- `FI-ETERNAL-LOVE.png`
+- `LOGO-CHROME.png`
+- `SUNRISE-ETERNAL-LOVE.png` / `SUNSET-ETERNAL-LOVE.png` / `MIDNIGHT-ETERNAL-LOVE.png`
+- `H1-ETERNAL-LOVE.png` / `H2-ETERNAL-LOVE.png` / `H3-ETERNAL-LOVE.png`
+
+If a file is missing, the page shows an HTML placeholder named to that file.
 
 ## How to relayout the triptych
 
-`TIMING.layout` in the same file. Nothing about the seven-bottle composition is
-hard-coded in CSS positions — `scene.ts` → `metrics()` derives every slot from
-the live box sizes, so one set of numbers covers desktop, tablet and phone.
-
-- `ribbon.vwFactor` / `vhFactor` — side of the square ∞ box, `min(vw·a, vh·b)`.
-  The box stays square and the SVG uses `preserveAspectRatio="xMidYMid meet"`,
-  so the lemniscate can never stretch.
-- `group.*` — triptych spacing, expressed in bottle widths. `minStep` is the
-  floor that keeps neighbours from touching on narrow viewports.
-- `fiScale` — Act 3 size of Flow Infinite, per breakpoint.
-- `travel.*` — how the bottles ride the lobe in: entry angle, arrival stagger,
-  and where the arc starts easing onto the settled row.
-- `photo.cap` — the measured cap circle in `flow-infinite.png`, which is what
-  registers the photo to the Act 1 dissolve circle. Re-measure if the cutout
-  is ever re-exported.
+`TIMING.layout` in the same file. Poster-lock slots come from `scene.ts` →
+`metrics()`. Centre is the approved FI cutout when present. Cap-expansion
+photo fit lives on the Flow Infinite page (`src/fi-page.ts`), not the homepage.
 
 ## Architecture
 
@@ -62,19 +64,19 @@ One pinned stage, one GSAP timeline scrubbed by scroll (Lenis + ScrollTrigger). 
 
 | Act | Name | Range |
 | --- | --- | --- |
-| 0 | THE MONOGRAM | 0.00–0.18 |
-| 1 | THE DISSOLVE | 0.18–0.45 |
-| 2 | THE INFINITY | 0.45–0.68 |
-| 3 | THE TRIPTYCH | 0.68–1.00 |
+| 0 | THE MONOGRAM | brand logo expand |
+| 1 | OUTER JOURNEY | first collection |
+| 2 | INNER JOURNEY | 3H collection |
+| 3 | FLOW INFINITE | poster lock (Outer \| FI slot \| Inner) |
 
 `prefers-reduced-motion: reduce` skips the reel and shows the final triptych frame.
 
 ## Act 8 — Ground
 
-Document flow **below** the pinned cinematic stage (not inside the pin). Pierre Ravan, store locator (Leaflet 1.9.4, 92 locations from `/assets/stores.json`), contact, closing monogram.
+Document flow **below** the pinned cinematic stage (not inside the pin). Store locator (Leaflet 1.9.4, 92 locations from `/assets/stores.json`), collection links, contact, short footer.
 
 - Deep links: `#ground`, `#stores`, `#contact`
-- Collection shells: `/flow-infinite.html`, `/outer.html`, `/inner.html`
+- Collection pages share one sequence: hero → story → creative journey / olfactive → catalog → locator → footer. `/flow-infinite.html` follows that format; cap-expansion is the FI hero only.
 - HUD is hidden unless `?debug=1`
 - Fonts: Vogue Sans (`--font-display`) and Century Gothic (`--font-body`) from `/fonts/`
 
