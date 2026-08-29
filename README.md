@@ -36,7 +36,7 @@ All timing lives in **one object**: `src/config.ts` → `TIMING`.
 - `TIMING.scrollLengthVh` — total pinned scroll (default `800`).
 - `TIMING.scrub` — ScrollTrigger catch-up in seconds.
 
-Keyboard: `1` `2` `3` `4` jump to the start of each act. HUD shows act name and overall progress (`?debug=1`).
+Keyboard: `1` `2` `3` `4` jump to the start of each act. HUD shows act name and overall progress (same walk chrome as the github.io review film).
 
 ## Approved stills
 

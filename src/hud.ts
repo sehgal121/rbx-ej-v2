@@ -1,16 +1,12 @@
 import { actAt } from './config'
 
-const hudDebug = new URLSearchParams(window.location.search).get('debug') === '1'
-const hudRoot = document.querySelector<HTMLElement>('#hud')
-if (hudRoot && !hudDebug) hudRoot.style.display = 'none'
-
 const num = document.querySelector<HTMLElement>('#hud-num')
 const name = document.querySelector<HTMLElement>('#hud-name')
 const pct = document.querySelector<HTMLElement>('#hud-pct')
 const bar = document.querySelector<HTMLElement>('#hud-bar')
 
 export function updateHud(progress: number): void {
-  if (!hudDebug || !num || !name || !pct || !bar) return
+  if (!num || !name || !pct || !bar) return
   const act = actAt(progress)
   num.textContent = String(act.id)
   name.textContent = act.name
