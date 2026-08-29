@@ -319,7 +319,7 @@ function mountLocator(): void {
 }
 
 
-const GROUND_HASH = new Set(['ground', 'stores', 'contact', 'mapSection'])
+const GROUND_HASH = new Set(['ground', 'stores', 'contact', 'mapSection', 'storeSection'])
 
 function scrollToHash(): void {
   const id = decodeURIComponent(window.location.hash.replace(/^#/, ''))
