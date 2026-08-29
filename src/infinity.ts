@@ -1,7 +1,6 @@
 /**
- * Hard-off after Act 3. Timeline `set`s this at `TIMING.acts[3].end` so
- * later acts cannot interpolate opacity back up; reverse scrub past that
- * playhead restores the Act 2–3 still.
+ * Hard-off for the infinity still. Timeline `set`s this so later acts cannot
+ * interpolate opacity back up; reverse scrub restores the crossing.
  */
 export const INFINITY_GONE = {
   opacity: 0,

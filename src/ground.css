@@ -179,6 +179,33 @@
   letter-spacing: 0.08em;
 }
 
+.store-collections {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  width: min(92vw, 1200px);
+  margin: 0 auto 2rem;
+}
+
+.store-collections a {
+  display: inline-block;
+  padding: 12px 18px;
+  border: 1px solid #c8cdd4;
+  color: #f0f2f4;
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.store-collections a:hover,
+.store-collections a:focus-visible {
+  border-color: var(--ground-gold);
+  color: var(--ground-gold);
+}
+
 #store-locator {
   display: flex;
   flex-wrap: wrap;
@@ -461,8 +488,8 @@
 /* ---------- join CTA + contact modal ---------- */
 
 .ground-join {
-  margin-top: auto;
-  margin-bottom: 7vh;
+  margin-top: 0;
+  margin-bottom: 2rem;
   padding: 14px 28px;
   border: 0;
   background: #f4f6f8;
@@ -667,23 +694,52 @@
   flex-direction: column;
   align-items: center;
   box-sizing: border-box;
-  min-height: 100vh;
-  min-height: 100dvh;
-  padding: 6vh 6vw 3.5vh;
+  min-height: 0;
+  padding: 4.5rem 6vw 2.4rem;
   background: #050506;
   text-align: center;
 }
 
+.footer-closer {
+  margin: 0 0 1.4rem;
+  color: #e4e0d4;
+  font-family: var(--font-display);
+  font-size: clamp(14px, 2vw, 22px);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.footer-collections {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.7rem 1.4rem;
+  margin-bottom: 1.8rem;
+}
+
+.footer-collections a {
+  color: #c8cdd4;
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.footer-collections a:hover {
+  color: var(--ground-gold);
+}
+
 .ground-mono {
-  width: min(22vmin, 140px);
+  width: min(16vmin, 96px);
   height: auto;
   aspect-ratio: 389 / 464;
   max-width: none;
-  margin-top: auto;
+  margin: 0 0 1.4rem;
 }
 
 .ground-close p {
-  margin-top: 1.8rem;
+  margin-top: 0;
   color: #6a717a;
   font-family: var(--font-display);
   font-size: 12px;

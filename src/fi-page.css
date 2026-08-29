@@ -1,0 +1,164 @@
+.fi-hero {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background: #050506;
+}
+
+.fi-hero-sky {
+  position: absolute;
+  inset: 0;
+  background-image: url('/assets/brand/night-sky-deep.jpeg');
+  background-size: cover;
+  background-position: 50% 70%;
+  opacity: 0.55;
+}
+
+.fi-anchor {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  width: 0;
+  height: 0;
+}
+
+.stardust {
+  position: absolute;
+  left: 0;
+  top: 0;
+  pointer-events: none;
+}
+
+.spark {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 3px;
+  height: 3px;
+  margin: -1.5px 0 0 -1.5px;
+  border-radius: 50%;
+  background: #d8dce0;
+  opacity: 0;
+}
+
+.assembly-motion {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform-origin: 0 0;
+}
+
+.assembly-layout {
+  width: 38vmin;
+  height: calc(38vmin * 360 / 200);
+  transform: translate(-50%, calc(-100 / 360 * 100%));
+  overflow: visible;
+}
+
+.fi-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+#chrome-mono {
+  opacity: 1;
+  max-width: none;
+}
+
+.star-dot {
+  fill: #e8eaed;
+  opacity: 1;
+}
+
+.fi-hero-copy {
+  position: absolute;
+  left: 50%;
+  bottom: 8vh;
+  width: min(92vw, 640px);
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 4;
+}
+
+.fi-hero-copy h1 {
+  color: #f0f2f4;
+  font-family: var(--font-display);
+  font-size: clamp(22px, 4vw, 40px);
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.fi-hero-copy p {
+  margin-top: 0.7rem;
+  color: #c8cdd4;
+  font-family: var(--font-body);
+  font-size: 14px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.fi-article {
+  width: min(92vw, 720px);
+  margin: 0 auto;
+  padding: 8vh 0 6vh;
+}
+
+.fi-article h2 {
+  margin: 3.2rem 0 1rem;
+  color: #ead9b0;
+  font-family: var(--font-display);
+  font-size: clamp(16px, 2vw, 22px);
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.fi-article h2:first-child {
+  margin-top: 0;
+}
+
+.fi-article p,
+.fi-article li {
+  color: rgba(232, 228, 216, 0.78);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.7;
+  letter-spacing: 0.03em;
+}
+
+.fi-kicker {
+  color: #ead9b0;
+  font-family: var(--font-display);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.fi-launch {
+  margin: 1rem 0 1.4rem;
+  color: #e0b45c;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.fi-article ul {
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 1.2rem;
+}
+
+.fi-notes {
+  margin-top: 1rem;
+}
+
+@media (max-width: 720px) {
+  .assembly-layout {
+    width: 56vmin;
+    height: calc(56vmin * 360 / 200);
+  }
+}
