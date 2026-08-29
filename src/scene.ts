@@ -1,5 +1,6 @@
-/** Homepage scene. No Flow Infinite bottle photo — that render stays off this page. */
+/** Homepage scene. FI bottle is only FINAL-FI-BOTTLE-CUT-OUT.png (approved). */
 
+import { bindApprovedSlot, logoWithSteelFallback } from './approved'
 import { TIMING, isNarrow } from './config'
 
 export interface Scene {
@@ -22,7 +23,7 @@ export interface Scene {
   labelFi: HTMLElement
   outerBottles: HTMLImageElement[]
   innerBottles: HTMLImageElement[]
-  fiSlot: HTMLElement
+  fiBottle: HTMLElement
   actOuter: HTMLElement
   actOuterSunrise: HTMLElement
   actOuterSunset: HTMLElement
@@ -54,7 +55,7 @@ export function buildScene(): Scene {
     return el
   }
 
-  return {
+  const scene: Scene = {
     stage: pick('#stage'),
     brandHero: pick('#brand-hero'),
     brandLogo: pick('#brand-logo'),
@@ -74,7 +75,7 @@ export function buildScene(): Scene {
     labelFi: pick('#label-fi'),
     outerBottles: [...document.querySelectorAll<HTMLImageElement>('.line-bottle.outer')],
     innerBottles: [...document.querySelectorAll<HTMLImageElement>('.line-bottle.inner')],
-    fiSlot: pick('#fi-slot'),
+    fiBottle: pick('#fi-bottle'),
     actOuter: pick('#act-outer'),
     actOuterSunrise: pick('#act-outer-sunrise'),
     actOuterSunset: pick('#act-outer-sunset'),
@@ -88,13 +89,16 @@ export function buildScene(): Scene {
     actCrossing: pick('#act-crossing'),
     actCrossingLink: pick('#act-crossing-link'),
   }
+
+  logoWithSteelFallback(scene.brandLogo as HTMLImageElement)
+  document.querySelectorAll<HTMLElement>('.approved-slot').forEach(bindApprovedSlot)
+  return scene
 }
 
 let memo: { w: number; h: number; value: Metrics } | null = null
 
 /**
- * Poster lock slots. Centre width is a reserved FLOW Infinite gap — not a
- * measured bottle, because the approved cutout is not in the repo.
+ * Poster lock slots. Centre is FINAL-FI-BOTTLE-CUT-OUT.png when present.
  */
 export function metrics(scene: Scene): Metrics {
   const w = window.innerWidth

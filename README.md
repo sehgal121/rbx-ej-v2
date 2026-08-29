@@ -38,12 +38,25 @@ All timing lives in **one object**: `src/config.ts` → `TIMING`.
 
 Keyboard: `1` `2` `3` `4` jump to the start of each act. HUD shows act name and overall progress (`?debug=1`).
 
+## Approved stills
+
+Commit founder T9 files into `public/assets/img/approved/` using these names
+only — do not regenerate or swap in `flow-infinite-banner.jpg` /
+`assets/bottles/flow-infinite.png`:
+
+- `FINAL-FI-BOTTLE-CUT-OUT.png` — only FI bottle allowed
+- `FI-ETERNAL-LOVE.png`
+- `LOGO-CHROME.png`
+- `SUNRISE-ETERNAL-LOVE.png` / `SUNSET-ETERNAL-LOVE.png` / `MIDNIGHT-ETERNAL-LOVE.png`
+- `H1-ETERNAL-LOVE.png` / `H2-ETERNAL-LOVE.png` / `H3-ETERNAL-LOVE.png`
+
+If a file is missing, the page shows an HTML placeholder named to that file.
+
 ## How to relayout the triptych
 
 `TIMING.layout` in the same file. Poster-lock slots come from `scene.ts` →
-`metrics()`. The centre FLOW Infinite slot is a marked placeholder until the
-approved cutout is in the repo. Cap-expansion photo fit lives on the Flow
-Infinite page (`src/fi-page.ts`), not the homepage.
+`metrics()`. Centre is the approved FI cutout when present. Cap-expansion
+photo fit lives on the Flow Infinite page (`src/fi-page.ts`), not the homepage.
 
 ## Architecture
 

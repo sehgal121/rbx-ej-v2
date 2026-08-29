@@ -1,8 +1,9 @@
 import gsap from 'gsap'
+import { APPROVED_SRC, bindApprovedSlot, filenameOf, probeImage } from './approved'
 import './fi-page.css'
 import './site'
 
-const PHOTO_SRC = '/assets/bottles/flow-infinite.png'
+const PHOTO_SRC = APPROVED_SRC.fiBottle
 const PHOTO = {
   size: { w: 533, h: 1134 },
   cap: { cx: 261.44, cy: 218.59, r: 202.68 },
@@ -139,4 +140,33 @@ function playCap(): void {
   tl.to(assembly, { scale: 0.72, duration: 1.6, ease: 'power1.inOut' }, 4.4)
 }
 
-playCap()
+function steelLogoFallback(el: SVGImageElement): void {
+  const href = el.getAttribute('href') ?? ''
+  void probeImage(href).then((ok) => {
+    if (!ok) el.setAttribute('href', '/assets/brand/ej-logo-steel.png')
+  })
+}
+
+function showFiHeroPlaceholder(): void {
+  const assembly = document.querySelector<HTMLElement>('#assembly')
+  if (!assembly) return
+  const mark = document.createElement('div')
+  mark.className = 'fi-hero-placeholder approved-missing'
+  mark.setAttribute('data-file', filenameOf(PHOTO_SRC))
+  mark.innerHTML = `<span>${filenameOf(PHOTO_SRC)}</span><span>Approved file not in this checkout — cap expansion waits for this cutout</span>`
+  assembly.replaceWith(mark)
+}
+
+async function bootFiHero(): Promise<void> {
+  document.querySelectorAll<HTMLElement>('.approved-slot').forEach(bindApprovedSlot)
+  const chrome = document.querySelector<SVGImageElement>('#chrome-mono')
+  if (chrome) steelLogoFallback(chrome)
+  const ok = await probeImage(PHOTO_SRC)
+  if (!ok) {
+    showFiHeroPlaceholder()
+    return
+  }
+  playCap()
+}
+
+void bootFiHero()

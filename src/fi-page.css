@@ -112,8 +112,40 @@
   text-transform: uppercase;
 }
 
-.fi-article h2:first-child {
+.fi-article h2:first-of-type {
   margin-top: 0;
+}
+
+.fi-still-slot {
+  width: min(42vw, 280px);
+  margin: 0 auto 2rem;
+}
+
+.fi-still {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.fi-hero-placeholder {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  translate: -50% -50%;
+  width: min(42vw, 320px);
+  min-height: 12rem;
+}
+
+.approved-slot .approved-missing {
+  display: none;
+}
+
+.approved-slot.is-missing > img {
+  display: none;
+}
+
+.approved-slot.is-missing > .approved-missing {
+  display: flex;
 }
 
 .fi-article p,

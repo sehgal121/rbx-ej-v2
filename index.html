@@ -77,7 +77,7 @@
         <img
           id="brand-logo"
           class="brand-logo"
-          src="/assets/brand/ej-logo-steel.png"
+          src="/assets/img/approved/LOGO-CHROME.png"
           alt="Eternal Journey"
           width="389"
           height="464"
@@ -97,14 +97,18 @@
         <img class="line-bottle inner" data-line="inner" data-i="2" src="/assets/bottles/h3-happiness.png" alt="" />
       </div>
 
-      <!-- Poster lock needs the approved FLOW Infinite cutout. In-repo
-           assets/bottles/flow-infinite.png is the unapproved pre-shoot render
-           and is not used on the homepage. Video 1060 is not in the repo. -->
-      <div class="fi-slot" id="fi-slot" aria-hidden="true">
-        <div class="fi-slot-mark">
-          <span class="fi-slot-name">FLOW Infinite</span>
-          <span class="fi-slot-note">Approved cutout pending</span>
-        </div>
+      <!-- Only approved FI bottle: FINAL-FI-BOTTLE-CUT-OUT.png.
+           Do not use assets/bottles/flow-infinite.png or live flow-infinite-banner.jpg. -->
+      <div
+        class="line-bottle fi approved-slot"
+        id="fi-bottle"
+        data-file="FINAL-FI-BOTTLE-CUT-OUT.png"
+      >
+        <img src="/assets/img/approved/FINAL-FI-BOTTLE-CUT-OUT.png" alt="FLOW Infinite" />
+        <p class="approved-missing">
+          <span>FINAL-FI-BOTTLE-CUT-OUT.png</span>
+          <span>Approved file not in this checkout</span>
+        </p>
       </div>
 
       <header class="copy" id="copy">
@@ -122,12 +126,24 @@
         </p>
         <div class="act-panels">
           <div class="sku-panel" id="act-outer-sunrise">
+            <div class="approved-slot" data-file="SUNRISE-ETERNAL-LOVE.png">
+              <img class="sku-still" src="/assets/img/approved/SUNRISE-ETERNAL-LOVE.png" alt="" />
+              <p class="approved-missing">SUNRISE-ETERNAL-LOVE.png</p>
+            </div>
             <h2 class="act-title">Sunrise to Sunset</h2>
           </div>
           <div class="sku-panel" id="act-outer-sunset">
+            <div class="approved-slot" data-file="SUNSET-ETERNAL-LOVE.png">
+              <img class="sku-still" src="/assets/img/approved/SUNSET-ETERNAL-LOVE.png" alt="" />
+              <p class="approved-missing">SUNSET-ETERNAL-LOVE.png</p>
+            </div>
             <h2 class="act-title">Sunset to Midnight</h2>
           </div>
           <div class="sku-panel" id="act-outer-midnight">
+            <div class="approved-slot" data-file="MIDNIGHT-ETERNAL-LOVE.png">
+              <img class="sku-still" src="/assets/img/approved/MIDNIGHT-ETERNAL-LOVE.png" alt="" />
+              <p class="approved-missing">MIDNIGHT-ETERNAL-LOVE.png</p>
+            </div>
             <h2 class="act-title">Midnight to Sunrise</h2>
           </div>
         </div>
@@ -145,12 +161,24 @@
         </p>
         <div class="act-panels">
           <div class="sku-panel" id="act-inner-heart">
+            <div class="approved-slot" data-file="H1-ETERNAL-LOVE.png">
+              <img class="sku-still" src="/assets/img/approved/H1-ETERNAL-LOVE.png" alt="" />
+              <p class="approved-missing">H1-ETERNAL-LOVE.png</p>
+            </div>
             <h2 class="act-title">H¹ HEART</h2>
           </div>
           <div class="sku-panel" id="act-inner-harmony">
+            <div class="approved-slot" data-file="H2-ETERNAL-LOVE.png">
+              <img class="sku-still" src="/assets/img/approved/H2-ETERNAL-LOVE.png" alt="" />
+              <p class="approved-missing">H2-ETERNAL-LOVE.png</p>
+            </div>
             <h2 class="act-title">H² HARMONY</h2>
           </div>
           <div class="sku-panel" id="act-inner-happiness">
+            <div class="approved-slot" data-file="H3-ETERNAL-LOVE.png">
+              <img class="sku-still" src="/assets/img/approved/H3-ETERNAL-LOVE.png" alt="" />
+              <p class="approved-missing">H3-ETERNAL-LOVE.png</p>
+            </div>
             <h2 class="act-title">H³ HAPPINESS</h2>
           </div>
         </div>
@@ -159,6 +187,10 @@
 
       <section class="film-act act-crossing" id="act-crossing">
         <p class="eyebrow">FLOW Infinite</p>
+        <div class="approved-slot crossing-still" data-file="FI-ETERNAL-LOVE.png">
+          <img class="sku-still" src="/assets/img/approved/FI-ETERNAL-LOVE.png" alt="" />
+          <p class="approved-missing">FI-ETERNAL-LOVE.png</p>
+        </div>
         <h2 class="act-title crossing-title">THE FRAGRANCE THAT CONNECTS THE TWO WORLDS</h2>
         <p class="launch-line">NEW LAUNCH (Available in stores from end 2026)</p>
         <a class="act-link" id="act-crossing-link" href="/flow-infinite.html">FLOW Infinite</a>
@@ -182,6 +214,7 @@
       </nav>
 
       <section id="stores">
+        <div id="mapSection"></div>
         <div class="ground-section-head">
           <h2>Store locator</h2>
         </div>

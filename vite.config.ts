@@ -15,6 +15,7 @@ export default defineConfig({
       input: {
         main: 'index.html',
         flowInfinite: 'flow-infinite.html',
+        flow: 'flow.html',
         outer: 'outer.html',
         inner: 'inner.html',
       },

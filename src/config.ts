@@ -2,8 +2,8 @@
  * MASTER TIMING — homepage reel after the 26 Aug 2026 notes.
  *
  * Act 0 is brand-first (logo expand). Collections walk Outer → Inner →
- * FLOW Infinite. The reel ends on the campaign-poster lock (Outer left,
- * FLOW Infinite centre, Inner right). Cap-expansion does not play here.
+ * FLOW Infinite. The reel ends on the poster lock (Outer left, approved
+ * FI cutout centre, Inner right). Cap-expansion does not play here.
  */
 
 export const FILM_END = 1
@@ -61,9 +61,8 @@ export const TIMING = {
     bottleAspect: 0.41,
 
     /**
-     * Poster lock: Outer trio | FLOW Infinite slot | Inner trio.
-     * Multiples of one trio-bottle width. Centre slot is a marked
-     * placeholder — the approved FI cutout is not in this repo.
+     * Poster lock: Outer trio | FLOW Infinite | Inner trio.
+     * Centre is FINAL-FI-BOTTLE-CUT-OUT.png when that file is present.
      */
     group: { innerPad: 1.15, setStep: 0.96, minStep: 0.82, edgePad: 0.18 },
 

@@ -319,7 +319,7 @@ function mountLocator(): void {
 }
 
 
-const GROUND_HASH = new Set(['ground', 'stores', 'contact'])
+const GROUND_HASH = new Set(['ground', 'stores', 'contact', 'mapSection'])
 
 function scrollToHash(): void {
   const id = decodeURIComponent(window.location.hash.replace(/^#/, ''))
@@ -329,7 +329,7 @@ function scrollToHash(): void {
     openContact()
     return
   }
-  const el = document.getElementById(id)
+  const el = document.getElementById(id === 'mapSection' ? 'stores' : id)
   if (!el) return
   window.setTimeout(() => {
     el.scrollIntoView({ behavior: 'smooth', block: 'start' })

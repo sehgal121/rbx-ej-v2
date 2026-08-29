@@ -26,7 +26,13 @@ export function buildMasterTimeline(scene: Scene): gsap.core.Timeline {
     xPercent: -50,
     yPercent: -50,
   })
-  gsap.set(scene.fiSlot, { autoAlpha: 0, x: 0, y: 0, xPercent: -50, yPercent: -50 })
+  gsap.set(scene.fiBottle, {
+    opacity: 0,
+    x: 0,
+    y: 0,
+    xPercent: -50,
+    yPercent: -50,
+  })
   gsap.set(scene.grade, { opacity: 0, backgroundColor: '#06101f' })
   gsap.set([scene.tempTeal, scene.tempEmber, scene.night], { opacity: 0 })
   gsap.set(
@@ -310,7 +316,7 @@ function act3(tl: gsap.core.Timeline, scene: Scene): void {
   tl.to(scene.split, { opacity: 0.35, duration: enter.duration }, enter.start)
   tl.to(scene.vortex, { opacity: 0.4, duration: enter.duration }, enter.start)
   tl.to(scene.actCrossing, { autoAlpha: 1, duration: enter.duration * 0.6, ease: SKU_COPY_EASE }, enter.start + enter.duration * 0.2)
-  tl.to(scene.fiSlot, { autoAlpha: 1, duration: enter.duration * 0.7, ease: SKU_COPY_EASE }, enter.start + enter.duration * 0.35)
+  tl.to(scene.fiBottle, { opacity: 1, duration: enter.duration * 0.7, ease: SKU_COPY_EASE }, enter.start + enter.duration * 0.35)
 
   paintPoster(tl, scene)
 
@@ -362,7 +368,7 @@ function paintPoster(tl: gsap.core.Timeline, scene: Scene): void {
       })
     }
 
-    gsap.set(scene.fiSlot, { x: 0, y: m.baseY })
+    gsap.set(scene.fiBottle, { x: 0, y: m.baseY, scale: 1.12 })
     gsap.set(scene.labelOuter, { x: -m.groupCentre, y: m.labelY })
     gsap.set(scene.labelInner, { x: m.groupCentre, y: m.labelY })
     gsap.set(scene.labelFi, { x: 0, y: m.labelY })
