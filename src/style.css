@@ -314,6 +314,8 @@ img {
   height: auto;
   aspect-ratio: 389 / 464;
   max-width: none;
+  transform: scale(0.22);
+  transform-origin: 50% 50%;
 }
 
 .brand-line {

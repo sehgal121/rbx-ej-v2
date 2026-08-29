@@ -73,13 +73,9 @@
 }
 
 .fi-hero-copy {
-  position: absolute;
-  left: 50%;
-  bottom: 8vh;
-  width: min(92vw, 640px);
-  transform: translateX(-50%);
+  width: min(92vw, 720px);
+  margin: 0 auto 3.2rem;
   text-align: center;
-  z-index: 4;
 }
 
 .fi-hero-copy h1 {
