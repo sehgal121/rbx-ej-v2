@@ -5,16 +5,28 @@ import 'lenis/dist/lenis.css'
 import { HASH_ACT, actAt, type ActId } from './config'
 import './ground'
 import { updateHud } from './hud'
+import { lockViewport, shouldRefreshOnResize } from './mobile-scroll'
 import { buildScene } from './scene'
 import { actScrollY, attachScroll, buildMasterTimeline } from './timeline'
 
 gsap.registerPlugin(ScrollTrigger)
+ScrollTrigger.config({ ignoreMobileResize: true })
+
+type EjWindow = Window & {
+  __ejLenis?: Lenis
+  __ejST?: ScrollTrigger
+  __ejCleanup?: () => void
+}
 
 function prefersReducedMotion(): boolean {
   return window.matchMedia('(prefers-reduced-motion: reduce)').matches
 }
 
 function boot(): void {
+  const ej = window as EjWindow
+  ej.__ejCleanup?.()
+
+  lockViewport()
   const scene = buildScene()
   const master = buildMasterTimeline(scene)
 
@@ -40,15 +52,17 @@ function boot(): void {
     return
   }
 
-  const lenis = new Lenis({ autoRaf: false })
-  ;(window as Window & { __ejLenis?: Lenis }).__ejLenis = lenis
+  const lenis = new Lenis({ autoRaf: false, overscroll: false })
+  ej.__ejLenis = lenis
   lenis.on('scroll', ScrollTrigger.update)
-  gsap.ticker.add((time) => {
+  const onTick = (time: number): void => {
     lenis.raf(time * 1000)
-  })
+  }
+  gsap.ticker.add(onTick)
   gsap.ticker.lagSmoothing(0)
 
   const st = attachScroll(master)
+  if (import.meta.env.DEV) ej.__ejST = st
   updateHud(0)
 
   const hashAct = HASH_ACT[decodeURIComponent(location.hash.replace(/^#/, ''))]
@@ -56,7 +70,7 @@ function boot(): void {
     lenis.scrollTo(actScrollY(hashAct, st), { immediate: true })
   }
 
-  window.addEventListener('keydown', (e) => {
+  const onKey = (e: KeyboardEvent): void => {
     if (document.querySelector('#contactModal.is-open')) return
     const map: Record<string, ActId> = {
       '1': 0,
@@ -72,11 +86,42 @@ function boot(): void {
     if (act === undefined) return
     e.preventDefault()
     lenis.scrollTo(actScrollY(act, st), { duration: 1.1 })
-  })
+  }
+  window.addEventListener('keydown', onKey)
 
-  window.addEventListener('resize', () => {
+  let lastW = window.innerWidth
+  const onLayoutChange = (): void => {
+    const w = window.innerWidth
+    if (!shouldRefreshOnResize(lastW, w)) return
+    lastW = w
+    lockViewport()
     ScrollTrigger.refresh()
-  })
+  }
+  window.addEventListener('resize', onLayoutChange)
+  const onOrient = (): void => {
+    window.setTimeout(() => {
+      lastW = -1
+      onLayoutChange()
+    }, 120)
+  }
+  window.addEventListener('orientationchange', onOrient)
+
+  ej.__ejCleanup = () => {
+    window.removeEventListener('keydown', onKey)
+    window.removeEventListener('resize', onLayoutChange)
+    window.removeEventListener('orientationchange', onOrient)
+    gsap.ticker.remove(onTick)
+    st.kill()
+    ScrollTrigger.getAll().forEach((t) => t.kill())
+    lenis.destroy()
+    master.kill()
+    ej.__ejLenis = undefined
+    ej.__ejST = undefined
+    ej.__ejCleanup = undefined
+  }
 }
 
 boot()
+if (import.meta.hot) {
+  import.meta.hot.dispose(() => (window as EjWindow).__ejCleanup?.())
+}

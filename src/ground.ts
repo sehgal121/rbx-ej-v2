@@ -254,14 +254,26 @@ function mountLocator(): void {
 
   if (L) {
     map = L.map('map', { scrollWheelZoom: false, dragging: true }).setView([25.2, 20], 2)
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; OpenStreetMap &copy; CARTO',
-      subdomains: 'abcd',
-      maxZoom: 19,
-    }).addTo(map)
+    const cartoKey = import.meta.env.VITE_CARTO_KEY
+    if (cartoKey) {
+      L.tileLayer(`https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png?key=${encodeURIComponent(cartoKey)}`, {
+        attribution: '&copy; OpenStreetMap &copy; CARTO',
+        subdomains: 'abcd',
+        maxZoom: 19,
+      }).addTo(map)
+    } else {
+      // Carto raster tiles now watermark "API key required" without a key.
+      L.tileLayer(
+        'https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}',
+        {
+          attribution: 'Tiles &copy; Esri — Esri, HERE, Garmin',
+          maxZoom: 16,
+        },
+      ).addTo(map)
+    }
   }
 
-  fetch('/assets/stores.json')
+  fetch(`${import.meta.env.BASE_URL}assets/stores.json`)
     .then((res) => {
       if (!res.ok) throw new Error('stores')
       return res.json() as Promise<Store[]>

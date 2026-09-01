@@ -12,6 +12,8 @@ npm run dev
 
 Dev server: [http://localhost:5173](http://localhost:5173)
 
+Live review: [https://sehgal121.github.io/rbx-ej-v2/](https://sehgal121.github.io/rbx-ej-v2/)
+
 ```bash
 npm run build          # typecheck + production bundle
 npm run preview        # serve dist/

@@ -111,8 +111,8 @@
   align-items: center;
   justify-content: center;
   gap: 0.55rem;
-  min-height: 28vh;
-  padding: 2.4rem 1.5rem;
+  min-height: 16vh;
+  padding: 2.2rem 1.5rem;
   text-decoration: none;
   border-bottom: 1px solid #1c222c;
   transition: background 0.35s ease;
@@ -323,6 +323,7 @@
   width: 66%;
   height: 100%;
   background: #0c1528;
+  touch-action: auto;
 }
 
 .ground-pin {
@@ -669,13 +670,13 @@
   box-sizing: border-box;
   min-height: 100vh;
   min-height: 100dvh;
-  padding: 6vh 6vw 3.5vh;
+  padding: 6vh 6vw max(3.5vh, env(safe-area-inset-bottom, 0px));
   background: #050506;
   text-align: center;
 }
 
 .ground-mono {
-  width: min(22vmin, 140px);
+  width: min(36vmin, 240px);
   height: auto;
   aspect-ratio: 389 / 464;
   max-width: none;

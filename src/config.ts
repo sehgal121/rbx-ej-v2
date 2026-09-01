@@ -7,8 +7,7 @@
  * `beats` are fractions WITHIN their parent act (0 = act start, 1 = act end).
  * For acts 4–7, local 1 is the start of `ctaHold` — the extra tail after the
  * last copy beat, so a collection link (or the Unity caption) sits at full
- * opacity before the next wipe. Pin-scroll of one ctaHold unit is ~1.12 vh
- * (a few wheel ticks). Act 7's tail is inserted before converge/monogram.
+ * opacity before the next wipe. Act 7's tail is inserted before converge/monogram.
  *
  * Act 3's hold is *after* `acts[3].end` (still 1.0): `ctaHold[3]` of empty
  * master time before Act 4 enter. Content 0–1 and `buildSets` stay put.
@@ -22,15 +21,15 @@
 export const SHOW_UNITY = false
 
 /** Act 6 Inner ends here. Act 7 starts here when `SHOW_UNITY` is true. */
-const ACT6_END = 3.26
-/** Act 7 span on the master clock when shown (content + `ctaHold[7]`): 3.26–3.72. */
-const UNITY_SPAN = 0.46
+const ACT6_END = 1.84
+/** Act 7 span on the master clock when shown (content + `ctaHold[7]`). */
+const UNITY_SPAN = 0.28
 
 /** Master clock length. Acts 0–3 occupy 0–1 exactly as signed off.
- *  Acts 5–6 are longer so each SKU dwells across more scroll.
- *  +0.18 Act 3 triptych hold after 1.0 (before Act 4 enter),
- *  +0.16 × 3 ctaHold tails on acts 4–6, +0.18 on act 7 after the caption
- *  (no shortening of 0–3). Collapses to `ACT6_END` when `SHOW_UNITY` is false. */
+ *  Acts 4–6 are short (~1–2 viewport scrolls each) so SKUs do not dwell.
+ *  +0.05 Act 3 triptych hold after 1.0 (before Act 4 enter),
+ *  +0.05 × 3 ctaHold tails on acts 4–6.
+ *  Collapses to `ACT6_END` when `SHOW_UNITY` is false. */
 export const FILM_END = SHOW_UNITY ? ACT6_END + UNITY_SPAN : ACT6_END
 
 export const TIMING = {
@@ -48,12 +47,12 @@ export const TIMING = {
    */
   ctaHold: {
     /** After bottles settle and copy is in, before Flow Infinite transfers. */
-    3: 0.18,
-    4: 0.16,
-    5: 0.16,
-    6: 0.16,
+    3: 0.05,
+    4: 0.05,
+    5: 0.05,
+    6: 0.05,
     /** After the Unity caption lands, before the rings converge. */
-    7: 0.18,
+    7: 0.06,
   },
 
   acts: {
@@ -61,9 +60,9 @@ export const TIMING = {
     1: { id: 1, key: '2', name: 'THE DISSOLVE', start: 0.02, end: 0.45 },
     2: { id: 2, key: '3', name: 'THE INFINITY', start: 0.45, end: 0.68 },
     3: { id: 3, key: '4', name: 'THE TRIPTYCH', start: 0.68, end: 1.0 },
-    4: { id: 4, key: '5', name: 'FLOW INFINITE', start: 1.18, end: 1.94, hash: 'flow-infinite' },
-    5: { id: 5, key: '6', name: 'OUTER JOURNEY', start: 1.94, end: 2.60, hash: 'outer' },
-    6: { id: 6, key: '7', name: 'INNER JOURNEY', start: 2.60, end: ACT6_END, hash: 'inner' },
+    4: { id: 4, key: '5', name: 'FLOW INFINITE', start: 1.05, end: 1.32, hash: 'flow-infinite' },
+    5: { id: 5, key: '6', name: 'OUTER JOURNEY', start: 1.32, end: 1.58, hash: 'outer' },
+    6: { id: 6, key: '7', name: 'INNER JOURNEY', start: 1.58, end: ACT6_END, hash: 'inner' },
     7: { id: 7, key: '8', name: 'BALANCE AND UNITY', start: ACT6_END, end: FILM_END, hash: 'unity' },
   },
 
@@ -98,27 +97,36 @@ export const TIMING = {
       pause: { from: 0.2, to: 0.42 },
       connection: { from: 0.4, to: 0.66 },
       movement: { from: 0.64, to: 0.88 },
-      /** Fade `#act4-link` with the FI title; ctaHold keeps it through 1.78–1.94. */
+      /** Fade `#act4-link` with the FI title; ctaHold is the short tail. */
       cta: { from: 0.1, to: 0.28 },
       hold: { from: 0.8, to: 1.0 },
     },
     act5: {
       enter: { from: 0.0, to: 0.14 },
+      /** Flow Infinite leaves first; Outer bottles wait until it is gone. */
+      fiOut: { from: 0.0, to: 0.26 },
+      bottlesIn: { from: 0.26, to: 0.44 },
       orbit: { from: 0.08, to: 0.98 },
-      /** Long exclusive dwell, ~26% overlap on handoff — pause via scroll distance. */
-      sunrise: { from: 0.1, to: 0.46 },
-      sunset: { from: 0.36, to: 0.72 },
-      midnight: { from: 0.62, to: 0.96 },
+      /** SKU beats; overlap on handoff so one flick advances the set. */
+      sunrise: { from: 0.3, to: 0.5 },
+      sunset: { from: 0.42, to: 0.62 },
+      midnight: { from: 0.54, to: 0.74 },
+      /** Three Outer bottles settle as a set after Midnight. */
+      collection: { from: 0.74, to: 1.0 },
       /** `#act5-link` when Outer first shows, held through the SKUs and ctaHold. */
-      ctaShow: { from: 0.13, to: 0.27 },
+      ctaShow: { from: 0.3, to: 0.44 },
       hold: { from: 0.82, to: 1.0 },
     },
     act6: {
-      invert: { from: 0.0, to: 0.16 },
-      heart: { from: 0.1, to: 0.46 },
-      harmony: { from: 0.36, to: 0.72 },
-      happiness: { from: 0.62, to: 0.96 },
-      /** `#act6-link` when Inner copy lands; ctaHold keeps it through 3.10–3.26. */
+      invert: { from: 0.0, to: 0.14 },
+      heart: { from: 0.1, to: 0.34 },
+      harmony: { from: 0.26, to: 0.5 },
+      happiness: { from: 0.42, to: 0.66 },
+      /** Three Inner bottles settle as a set after Happiness. */
+      collection: { from: 0.66, to: 0.80 },
+      /** Then they slide right as the Act 3 seven-bottle row returns. */
+      reunion: { from: 0.86, to: 1.0 },
+      /** `#act6-link` when Inner copy lands; short ctaHold tail. */
       cta: { from: 0.13, to: 0.27 },
       hold: { from: 0.82, to: 1.0 },
     },
@@ -167,6 +175,18 @@ export const TIMING = {
 
     /** Act 3 scale of the Flow Infinite assembly. */
     fiScale: { wide: 0.48, narrow: 0.34 },
+
+    /**
+     * Act 4 hero pose. Cap is pinned to the stage centre, so the glass hangs
+     * into the lower half — on narrow, a negative `y` lifts the whole bottle
+     * into the middle of the viewport. Keep `scale` near 1 so Safari does not
+     * rasterise the SVG photo at a tiny 3D layer.
+     */
+    act4Hero: {
+      wide: { scale: 0.9, y: '7vh' },
+      narrow: { scale: 0.8, y: '-6vh' },
+    },
+    act4MoveY: { wide: '5vh', narrow: '-7vh' },
 
     /**
      * Act 3 reads as three sets — Outer trio | Flow Infinite | Inner trio.

@@ -1,11 +1,13 @@
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { TIMING, span, FILM_END, SHOW_UNITY, isNarrow, type ActId } from './config'
+import { scrubAmount, isCoarsePointer, viewport } from './mobile-scroll'
 import { INFINITY_GONE } from './infinity'
 import {
   bodyReveal,
   fiScale,
   metrics,
+  reunionFiScale,
   type Scene,
 } from './scene'
 
@@ -17,11 +19,11 @@ export function buildMasterTimeline(scene: Scene): gsap.core.Timeline {
   const tl = gsap.timeline({ paused: true, defaults: { ease: 'none' } })
 
   gsap.set(scene.capGroup, { opacity: 1 })
-  gsap.set(scene.assembly, { scale: 1, y: 0, transformOrigin: '0px 0px' })
+  gsap.set(scene.assembly, { scale: 1, y: 0, transformOrigin: '0px 0px', force3D: false })
   gsap.set(scene.marks, { opacity: 1 })
   gsap.set(scene.photoCap, { opacity: 0 })
   gsap.set(scene.bodyClip, { attr: { height: 0 } })
-  gsap.set(scene.infinity, { opacity: 0 })
+  gsap.set(scene.infinity, { opacity: 0, visibility: 'hidden' })
   gsap.set(scene.act4Sky, { opacity: 0 })
   gsap.set(scene.act4SkyZoom, {
     scale: TIMING.layout.act4Sky.scaleFrom,
@@ -37,6 +39,7 @@ export function buildMasterTimeline(scene: Scene): gsap.core.Timeline {
     y: 0,
     xPercent: -50,
     yPercent: -50,
+    force3D: false,
   })
   gsap.set(scene.grade, { opacity: 0, backgroundColor: '#06101f' })
   gsap.set([scene.water, scene.tempTeal, scene.tempEmber, scene.night], { opacity: 0 })
@@ -49,15 +52,12 @@ export function buildMasterTimeline(scene: Scene): gsap.core.Timeline {
       scene.beatPause,
       scene.beatConn,
       scene.beatMove,
-      scene.act4Link,
       scene.act5Sunrise,
       scene.act5Sunset,
       scene.act5Midnight,
-      scene.act5Link,
       scene.act6Heart,
       scene.act6Harmony,
       scene.act6Happiness,
-      scene.act6Link,
       ...scene.rings.map((r) => r.label),
       ...scene.rings.map((r) => r.icon),
       scene.mindBridge,
@@ -66,7 +66,6 @@ export function buildMasterTimeline(scene: Scene): gsap.core.Timeline {
     ],
     { autoAlpha: 0, y: 0, pointerEvents: 'none' },
   )
-  gsap.set([scene.act4Link, scene.act5Link, scene.act6Link], { pointerEvents: 'none' })
   gsap.set(scene.unityField, { opacity: 0 })
   gsap.set(scene.unityStars, { opacity: 0 })
   gsap.set(scene.trinity, { scale: 1, transformOrigin: '50% 50%' })
@@ -140,7 +139,7 @@ function act1(tl: gsap.core.Timeline, scene: Scene): void {
 
   tl.to(
     scene.assembly,
-    { scale: 0.72, duration: pull.duration, ease: 'power1.inOut' },
+    { scale: 0.72, duration: pull.duration, ease: 'power1.inOut', force3D: false },
     pull.start,
   )
 }
@@ -152,12 +151,13 @@ function act2(tl: gsap.core.Timeline, scene: Scene): void {
 
   tl.to(
     scene.assembly,
-    { scale: () => fiScale(), y: '0vh', duration: pull.duration, ease: 'power1.inOut' },
+    { scale: () => fiScale(), y: '0vh', duration: pull.duration, ease: 'power1.inOut', force3D: false },
     pull.start,
   )
 
-  tl.to(
+  tl.fromTo(
     scene.infinity,
+    { opacity: 0, visibility: 'hidden' },
     { opacity: 1, visibility: 'visible', duration: ribbon.duration, ease: 'power1.inOut' },
     ribbon.start,
   )
@@ -175,7 +175,7 @@ function act3(tl: gsap.core.Timeline, scene: Scene): void {
 
   tl.to(
     scene.assembly,
-    { scale: () => fiScale(), duration: rise.duration, ease: 'power2.out' },
+    { scale: () => fiScale(), duration: rise.duration, ease: 'power2.out', force3D: false },
     rise.start,
   )
 
@@ -200,7 +200,6 @@ function act4(tl: gsap.core.Timeline, scene: Scene): void {
   const pause = span(4, TIMING.beats.act4.pause)
   const conn = span(4, TIMING.beats.act4.connection)
   const move = span(4, TIMING.beats.act4.movement)
-  const cta = span(4, TIMING.beats.act4.cta)
   const act = TIMING.acts[4]
   const { scaleFrom, scaleTo } = TIMING.layout.act4Sky
 
@@ -211,7 +210,7 @@ function act4(tl: gsap.core.Timeline, scene: Scene): void {
   )
   tl.to(
     [...scene.outerBottles, ...scene.innerBottles],
-    { opacity: 0, duration: enter.duration * 0.65, stagger: 0.015 },
+    { opacity: 0, duration: enter.duration * 0.7 },
     enter.start,
   )
   tl.to(
@@ -229,9 +228,16 @@ function act4(tl: gsap.core.Timeline, scene: Scene): void {
     { scale: scaleTo, duration: act.end - act.start, ease: 'none' },
     act.start,
   )
+  const hero = () => (isNarrow() ? TIMING.layout.act4Hero.narrow : TIMING.layout.act4Hero.wide)
   tl.to(
     scene.assembly,
-    { scale: 0.9, y: '7vh', duration: enter.duration, ease: 'power2.inOut' },
+    {
+      scale: () => hero().scale,
+      y: () => hero().y,
+      duration: enter.duration,
+      ease: 'power2.inOut',
+      force3D: false,
+    },
     enter.start,
   )
   tl.to(scene.act4, { autoAlpha: 1, duration: enter.duration * 0.55 }, enter.start + enter.duration * 0.28)
@@ -253,33 +259,19 @@ function act4(tl: gsap.core.Timeline, scene: Scene): void {
   tl.to(scene.beatMove, { autoAlpha: 1, color: '#f0ead8', duration: move.duration * 0.22 }, move.start)
   tl.to(
     scene.assembly,
-    { y: '5vh', duration: move.duration, ease: 'sine.inOut' },
+    {
+      y: () => (isNarrow() ? TIMING.layout.act4MoveY.narrow : TIMING.layout.act4MoveY.wide),
+      duration: move.duration,
+      ease: 'sine.inOut',
+      force3D: false,
+    },
     move.start,
   )
-  revealCta(tl, scene.act4Link, cta)
-  dwellCta(tl, scene.act4Link, 4)
 }
 
 type SkuBeat = { start: number; duration: number }
 
 const SKU_COPY_EASE = 'power2.inOut'
-
-function revealCta(tl: gsap.core.Timeline, el: HTMLElement, fade: SkuBeat): void {
-  tl.to(
-    el,
-    { autoAlpha: 1, pointerEvents: 'auto', duration: fade.duration, ease: SKU_COPY_EASE },
-    fade.start,
-  )
-}
-
-function dwellCta(tl: gsap.core.Timeline, el: HTMLElement, act: 4 | 5 | 6): void {
-  const duration = TIMING.ctaHold[act]
-  tl.to(
-    el,
-    { autoAlpha: 1, pointerEvents: 'auto', duration, ease: 'none' },
-    TIMING.acts[act].end - duration,
-  )
-}
 
 /** Hold the settled triptych after `acts[3].end` (1.0) until Act 4 enter. */
 function dwellTriptych(tl: gsap.core.Timeline, scene: Scene): void {
@@ -292,11 +284,24 @@ function dwellTriptych(tl: gsap.core.Timeline, scene: Scene): void {
 }
 
 const SKU_POSE_EASE = 'power3.inOut'
-const SKU_HERO_SCALE = 1.28
+const SKU_HERO_SCALE = 2.16
 const SKU_REST_SCALE = 0.86
 const SKU_HERO_BRIGHT = 1
 const SKU_REST_BRIGHT = 0.92
 const INNER_GLOW = ['154,116,40', '180,176,170', '61,106,66'] as const
+/** CSS height for Act 5/6 on phones. Keep under the copy block. */
+const SKU_NARROW_H = '42vmin'
+const SKU_NARROW_HERO = 1.12
+const SKU_NARROW_MID = 0.56
+const SKU_NARROW_REST = 0.5
+
+function collectionLine(narrow: boolean, w: number): { step: number; scale: number; y: number } {
+  return {
+    step: narrow ? Math.min(w * 0.29, 128) : Math.min(w * 0.155, 186),
+    scale: narrow ? 1.16 : 1.42,
+    y: narrow ? 40 : 46,
+  }
+}
 
 function mix(a: number, b: number, t: number): number {
   return a + (b - a) * t
@@ -349,31 +354,48 @@ function crossfadePanels(
  * supports to its right. `focus` is a float 0–2 so Heart → Harmony → Happiness
  * lerps pose instead of snapping integer slots.
  */
-function placeInner(scene: Scene, focus: number): void {
-  const w = window.innerWidth
+function placeInner(scene: Scene, focus: number, gather = 0): void {
+  const w = viewport().w
   const narrow = isNarrow()
-  const heroX = narrow ? Math.min(w * 0.08, 48) : Math.min(w * 0.17, 210)
-  const gap = narrow ? Math.min(w * 0.1, 72) : Math.min(w * 0.125, 148)
-  const slots = [
-    { x: heroX, y: 40, scale: SKU_HERO_SCALE, z: 12, bright: SKU_HERO_BRIGHT, glow: 0.32 },
-    { x: heroX + gap, y: 56, scale: 0.88, z: 5, bright: 0.94, glow: 0.14 },
-    { x: heroX + gap * 1.55, y: 72, scale: SKU_REST_SCALE, z: 2, bright: SKU_REST_BRIGHT, glow: 0.08 },
-  ]
+  const heroX = narrow ? 0 : Math.min(w * 0.12, 160)
+  const gap = narrow ? Math.min(w * 0.18, 72) : Math.min(w * 0.16, 190)
+  const slots = narrow
+    ? [
+        { x: heroX, y: 36, scale: SKU_NARROW_HERO, z: 12, bright: SKU_HERO_BRIGHT, glow: 0.32 },
+        { x: heroX + gap, y: 52, scale: SKU_NARROW_MID, z: 5, bright: 0.94, glow: 0.14 },
+        { x: heroX - gap, y: 58, scale: SKU_NARROW_REST, z: 2, bright: SKU_REST_BRIGHT, glow: 0.08 },
+      ]
+    : [
+        { x: heroX, y: 48, scale: SKU_HERO_SCALE, z: 12, bright: SKU_HERO_BRIGHT, glow: 0.32 },
+        { x: heroX + gap, y: 64, scale: 1.02, z: 5, bright: 0.94, glow: 0.14 },
+        { x: heroX + gap * 1.45, y: 78, scale: SKU_REST_SCALE, z: 2, bright: SKU_REST_BRIGHT, glow: 0.08 },
+      ]
+  const line = collectionLine(narrow, w)
   const f = Math.min(2, Math.max(0, focus))
   const fromInt = Math.floor(f)
   const toInt = Math.ceil(f)
   const u = f - fromInt
+  const g = Math.min(1, Math.max(0, gather))
 
   scene.innerBottles.forEach((el, i) => {
     const fromSlot = slots[((i - fromInt) % 3 + 3) % 3]
     const toSlot = slots[((i - toInt) % 3 + 3) % 3]
-    const glow = mix(fromSlot.glow, toSlot.glow, u)
+    const glow = mix(mix(fromSlot.glow, toSlot.glow, u), 0.16, g)
+    const x = mix(mix(fromSlot.x, toSlot.x, u), (i - 1) * line.step, g)
+    const y = mix(mix(fromSlot.y, toSlot.y, u), line.y, g)
+    const scale = mix(mix(fromSlot.scale, toSlot.scale, u), line.scale, g)
     gsap.set(el, {
-      x: mix(fromSlot.x, toSlot.x, u),
-      y: mix(fromSlot.y, toSlot.y, u),
-      scale: mix(fromSlot.scale, toSlot.scale, u),
-      zIndex: Math.round(mix(fromSlot.z, toSlot.z, u)),
-      filter: `brightness(${mix(fromSlot.bright, toSlot.bright, u)}) drop-shadow(0 18px 36px rgba(${INNER_GLOW[i]},${glow}))`,
+      xPercent: -50,
+      yPercent: -50,
+      x,
+      y,
+      scale,
+      zIndex: Math.round(mix(mix(fromSlot.z, toSlot.z, u), 8, g)),
+      height: narrow ? SKU_NARROW_H : '',
+      force3D: false,
+      filter: narrow
+        ? 'none'
+        : `brightness(${mix(mix(fromSlot.bright, toSlot.bright, u), 1, g)}) drop-shadow(0 18px 36px rgba(${INNER_GLOW[i]},${glow}))`,
     })
   })
 }
@@ -384,19 +406,33 @@ function focusWeight(i: number, focus: number): number {
 }
 
 /** Outer trio on a shallow ellipse; hero is the bottle at the front of the loop. */
-function placeOuter(scene: Scene, focus: number): void {
-  const rx = Math.min(window.innerWidth, 1400) * 0.22
-  const ry = Math.min(window.innerHeight, 900) * 0.13
+function placeOuter(scene: Scene, focus: number, gather = 0): void {
+  const narrow = isNarrow()
+  const { w, h } = viewport()
+  const rx = Math.min(w, 1400) * (narrow ? 0.15 : 0.22)
+  const ry = Math.min(h, 900) * (narrow ? 0.07 : 0.13)
+  const lift = narrow ? 24 : 36
   const angle = Math.PI - focus * ((Math.PI * 2) / 3)
+  const line = collectionLine(narrow, w)
+  const g = Math.min(1, Math.max(0, gather))
   scene.outerBottles.forEach((el, i) => {
     const a = angle + (i * Math.PI * 2) / 3 - Math.PI / 2
     const weight = focusWeight(i, focus)
+    const x = mix(Math.cos(a) * rx, (i - 1) * line.step, g)
+    const y = mix(Math.sin(a) * ry + lift, line.y, g)
+    const scale = mix(mix(SKU_REST_SCALE, narrow ? SKU_NARROW_HERO : SKU_HERO_SCALE, weight), line.scale, g)
     gsap.set(el, {
-      x: Math.cos(a) * rx,
-      y: Math.sin(a) * ry + 36,
-      scale: mix(SKU_REST_SCALE, SKU_HERO_SCALE, weight),
-      zIndex: Math.round(2 + weight * 10),
-      filter: `brightness(${mix(SKU_REST_BRIGHT, SKU_HERO_BRIGHT, weight)}) drop-shadow(0 16px 28px rgba(0,0,0,0.32))`,
+      xPercent: -50,
+      yPercent: -50,
+      x,
+      y,
+      scale,
+      zIndex: Math.round(mix(2 + weight * 10, 8, g)),
+      height: narrow ? SKU_NARROW_H : '',
+      force3D: false,
+      filter: narrow
+        ? 'none'
+        : `brightness(${mix(mix(SKU_REST_BRIGHT, SKU_HERO_BRIGHT, weight), 1, g)}) drop-shadow(0 16px 28px rgba(0,0,0,0.32))`,
     })
   })
 }
@@ -430,35 +466,72 @@ function driveSkuFocus(
 
 function act5(tl: gsap.core.Timeline, scene: Scene): void {
   const enter = span(5, TIMING.beats.act5.enter)
+  const fiOut = span(5, TIMING.beats.act5.fiOut)
+  const bottlesIn = span(5, TIMING.beats.act5.bottlesIn)
   const sunrise = span(5, TIMING.beats.act5.sunrise)
   const sunset = span(5, TIMING.beats.act5.sunset)
   const midnight = span(5, TIMING.beats.act5.midnight)
-  const ctaShow = span(5, TIMING.beats.act5.ctaShow)
-  const actEnd = TIMING.acts[5].end
+  const midnightEnd = midnight.start + midnight.duration
+  const collection = span(5, TIMING.beats.act5.collection)
 
   tl.to(scene.act4, { autoAlpha: 0, duration: enter.duration * 0.45 }, enter.start)
   tl.to(scene.act4Sky, { opacity: 0, duration: enter.duration }, enter.start)
   tl.to(
     scene.assembly,
-    { opacity: 0, scale: 0.38, duration: enter.duration, ease: 'power2.in' },
-    enter.start,
+    { opacity: 0, scale: 0.38, duration: fiOut.duration, ease: 'power2.in', force3D: false },
+    fiOut.start,
   )
   tl.to(scene.grade, { backgroundColor: '#030303', duration: enter.duration, ease: 'power2.inOut' }, enter.start)
   tl.to(scene.act5, { autoAlpha: 1, duration: enter.duration * 0.5, ease: 'power2.inOut' }, enter.start + enter.duration * 0.22)
   tl.to(scene.tempTeal, { opacity: 0.42, duration: enter.duration, ease: 'power2.inOut' }, enter.start)
 
-  driveSkuFocus(tl, enter.start, actEnd, sunrise, sunset, midnight, (f) => placeOuter(scene, f))
+  driveSkuFocus(tl, bottlesIn.start, midnightEnd, sunrise, sunset, midnight, (f) => placeOuter(scene, f, 0))
+  const gather = { t: 0 }
+  tl.to(
+    gather,
+    {
+      t: 1,
+      duration: collection.duration,
+      ease: SKU_POSE_EASE,
+      lazy: false,
+      onStart: () => placeOuter(scene, 2, 0),
+      onUpdate: () => placeOuter(scene, 2, gather.t),
+    },
+    collection.start,
+  )
+  const collectionHold = TIMING.acts[5].end - (collection.start + collection.duration)
+  if (collectionHold > 0) {
+    tl.to(
+      gather,
+      {
+        t: 1,
+        duration: collectionHold,
+        ease: 'none',
+        lazy: false,
+        onStart: () => placeOuter(scene, 2, 1),
+        onUpdate: () => placeOuter(scene, 2, 1),
+      },
+      collection.start + collection.duration,
+    )
+  }
   scene.outerBottles.forEach((el, i) => {
-    tl.to(el, { opacity: 1, duration: enter.duration * 0.5, ease: 'power2.inOut' }, enter.start + i * 0.03)
+    tl.to(
+      el,
+      { opacity: 1, duration: bottlesIn.duration * 0.55, ease: 'power2.inOut' },
+      bottlesIn.start + i * 0.012,
+    )
   })
 
   crossfadePanels(tl, [scene.act5Sunrise, scene.act5Sunset, scene.act5Midnight], [sunrise, sunset, midnight])
+  tl.to(
+    scene.act5Midnight,
+    { autoAlpha: 0, y: -8, duration: collection.duration * 0.35, ease: SKU_COPY_EASE },
+    collection.start,
+  )
   tl.to(scene.tempTeal, { opacity: 0.12, duration: sunset.duration * 0.72, ease: 'power2.inOut' }, sunset.start)
   tl.to(scene.tempEmber, { opacity: 0.38, duration: sunset.duration * 0.72, ease: 'power2.inOut' }, sunset.start)
   tl.to(scene.tempEmber, { opacity: 0.08, duration: midnight.duration * 0.7, ease: 'power2.inOut' }, midnight.start)
   tl.to(scene.night, { opacity: 0.7, duration: midnight.duration * 0.7, ease: 'power2.inOut' }, midnight.start)
-  revealCta(tl, scene.act5Link, ctaShow)
-  dwellCta(tl, scene.act5Link, 5)
 }
 
 function act6(tl: gsap.core.Timeline, scene: Scene): void {
@@ -466,8 +539,6 @@ function act6(tl: gsap.core.Timeline, scene: Scene): void {
   const heart = span(6, TIMING.beats.act6.heart)
   const harmony = span(6, TIMING.beats.act6.harmony)
   const happiness = span(6, TIMING.beats.act6.happiness)
-  const cta = span(6, TIMING.beats.act6.cta)
-  const actEnd = TIMING.acts[6].end
 
   tl.to(scene.act5, { autoAlpha: 0, duration: invert.duration * 0.45, ease: 'power2.inOut' }, invert.start)
   tl.to(scene.outerBottles, { opacity: 0, duration: invert.duration * 0.5, ease: 'power2.inOut' }, invert.start)
@@ -483,16 +554,76 @@ function act6(tl: gsap.core.Timeline, scene: Scene): void {
   )
   tl.to(scene.act6, { autoAlpha: 1, duration: invert.duration * 0.5, ease: 'power2.inOut' }, invert.start + invert.duration * 0.25)
 
-  driveSkuFocus(tl, invert.start, actEnd, heart, harmony, happiness, (f) => placeInner(scene, f))
+  const happyEnd = happiness.start + happiness.duration
+  const collection = span(6, TIMING.beats.act6.collection)
+  const reunion = span(6, TIMING.beats.act6.reunion)
+  driveSkuFocus(tl, invert.start, happyEnd, heart, harmony, happiness, (f) => placeInner(scene, f, 0))
+  const gather = { t: 0 }
+  tl.to(
+    gather,
+    {
+      t: 1,
+      duration: collection.duration,
+      ease: SKU_POSE_EASE,
+      lazy: false,
+      onStart: () => placeInner(scene, 2, 0),
+      onUpdate: () => placeInner(scene, 2, gather.t),
+    },
+    collection.start,
+  )
+  const arrive = { p: 0 }
+  tl.fromTo(
+    arrive,
+    { p: 0 },
+    {
+      p: 1,
+      duration: reunion.duration,
+      ease: 'none',
+      lazy: false,
+      onStart: () => paintTriptych(scene, 0),
+      onUpdate: () => paintTriptych(scene, arrive.p),
+      onComplete: () => paintTriptych(scene, 1),
+    },
+    reunion.start,
+  )
   tl.to(
     scene.innerBottles,
-    { opacity: 1, duration: invert.duration * 0.55, stagger: 0.04, ease: 'power2.inOut' },
-    invert.start + invert.duration * 0.22,
+    { opacity: 1, duration: invert.duration * 0.7, ease: 'power2.inOut' },
+    invert.start + invert.duration * 0.18,
   )
 
   crossfadePanels(tl, [scene.act6Heart, scene.act6Harmony, scene.act6Happiness], [heart, harmony, happiness])
-  revealCta(tl, scene.act6Link, cta)
-  dwellCta(tl, scene.act6Link, 6)
+  tl.to(
+    scene.act6Happiness,
+    { autoAlpha: 0, y: -8, duration: collection.duration * 0.4, ease: SKU_COPY_EASE },
+    collection.start,
+  )
+  tl.to(scene.act6, { autoAlpha: 0, duration: reunion.duration * 0.32, ease: SKU_COPY_EASE }, reunion.start)
+  tl.to(
+    scene.grade,
+    { backgroundColor: '#06101f', duration: reunion.duration * 0.45, ease: SKU_COPY_EASE },
+    reunion.start,
+  )
+  tl.to(
+    scene.assembly,
+    {
+      opacity: 1,
+      scale: () => reunionFiScale(scene),
+      y: 0,
+      duration: reunion.duration * 0.72,
+      ease: SKU_POSE_EASE,
+      force3D: false,
+    },
+    reunion.start,
+  )
+  tl.to(scene.split, { opacity: 0.45, duration: reunion.duration * 0.5 }, reunion.start)
+  tl.to(scene.vortex, { opacity: 0.85, duration: reunion.duration * 0.5 }, reunion.start)
+  tl.to(scene.headline, { opacity: 1, duration: reunion.duration * 0.45 }, reunion.start + reunion.duration * 0.32)
+  tl.to(
+    [scene.labelOuter, scene.labelInner],
+    { opacity: 1, duration: reunion.duration * 0.4 },
+    reunion.start + reunion.duration * 0.42,
+  )
 }
 
 /**
@@ -640,6 +771,52 @@ const BOTTLE_SHADOW = 'drop-shadow(0 14px 22px rgba(0, 0, 0, 0.5))'
 
 const clamp01 = (v: number): number => (v < 0 ? 0 : v > 1 ? 1 : v)
 
+/** Same settled row as Act 3: Outer trio | Flow Infinite | Inner trio.
+ *  Inner starts from the centred collection line and slides to the right. */
+function paintTriptych(scene: Scene, p: number): void {
+  const { startSpread } = TIMING.layout.travel
+  const m = metrics(scene, reunionFiScale(scene))
+  const narrow = isNarrow()
+  const line = collectionLine(narrow, viewport().w)
+  const u = clamp01(p)
+  const glide = 1 - (1 - u) ** 2
+
+  scene.innerBottles.forEach((el, i) => {
+    gsap.set(el, {
+      xPercent: -50,
+      yPercent: -50,
+      x: mix((i - 1) * line.step, m.slots[i], glide),
+      y: mix(line.y, m.baseY, glide),
+      scale: mix(line.scale, 1, glide),
+      opacity: 1,
+      zIndex: 10 - i,
+      height: narrow ? (u < 0.55 ? SKU_NARROW_H : '20vmin') : '',
+      force3D: false,
+      filter: narrow ? 'none' : BOTTLE_SHADOW,
+    })
+  })
+
+  ;[...scene.outerBottles].reverse().forEach((el, i) => {
+    const rest = m.slots[i]
+    const from = Math.min(rest * startSpread, m.maxX)
+    gsap.set(el, {
+      xPercent: -50,
+      yPercent: -50,
+      x: -(from + (rest - from) * glide),
+      y: m.baseY,
+      scale: 1,
+      opacity: clamp01(u / 0.38),
+      zIndex: 10 - i,
+      height: narrow ? '20vmin' : '',
+      force3D: false,
+      filter: narrow ? 'none' : BOTTLE_SHADOW,
+    })
+  })
+
+  gsap.set(scene.labelOuter, { x: -m.groupCentre, y: m.labelY })
+  gsap.set(scene.labelInner, { x: m.groupCentre, y: m.labelY })
+}
+
 /**
  * Act 3 is three sets: Outer trio | Flow Infinite | Inner trio.
  *
@@ -677,12 +854,16 @@ function buildSets(tl: gsap.core.Timeline, scene: Scene): void {
         const from = Math.min(rest * startSpread, m.maxX)
         const glide = 1 - (1 - u) ** 2
         gsap.set(el, {
+          xPercent: -50,
+          yPercent: -50,
           x: side * (from + (rest - from) * glide),
           y: m.baseY,
           scale: 1,
           opacity: clamp01(u / 0.34),
           zIndex: 10 - i,
-          filter: BOTTLE_SHADOW,
+          height: isNarrow() ? '20vmin' : '',
+          force3D: false,
+          filter: isNarrow() ? 'none' : BOTTLE_SHADOW,
         })
       })
     }
@@ -706,20 +887,55 @@ function buildSets(tl: gsap.core.Timeline, scene: Scene): void {
     },
     act.start,
   )
+  const hold = TIMING.ctaHold[3]
+  if (hold > 0) {
+    tl.to(
+      drive,
+      {
+        p: 1,
+        duration: hold,
+        ease: 'none',
+        lazy: false,
+        onStart: paint,
+        onUpdate: paint,
+      },
+      act.end,
+    )
+  }
 }
 
 export function attachScroll(master: gsap.core.Timeline): ScrollTrigger {
-  const extraVh = TIMING.scrollLengthVh - 100
+  const filmPx = (): number => ((TIMING.scrollLengthVh - 100) / 100) * viewport().h
+
+  // GSAP sizes pin-spacing off a 100vh probe. On mobile that probe is taller
+  // than innerHeight (URL bar / Playwright DPR), so the spacer overruns the
+  // film range and the stage is translated off-screen. Snap spacer + pin to
+  // the locked viewport and the ScrollTrigger start/end we actually scrub.
+  const fitSpacer = (self: ScrollTrigger): void => {
+    const trigger = self.trigger
+    if (!(trigger instanceof HTMLElement)) return
+    const spacer = trigger.parentElement
+    if (!spacer?.classList.contains('pin-spacer')) return
+    const extra = Math.max(0, self.end - self.start)
+    const h = viewport().h
+    spacer.style.boxSizing = 'border-box'
+    spacer.style.height = `${h + extra}px`
+    spacer.style.paddingBottom = `${extra}px`
+    trigger.style.transform = 'none'
+    trigger.style.top = '0px'
+  }
 
   return ScrollTrigger.create({
     trigger: '#stage',
     start: 'top top',
-    end: `+=${extraVh}%`,
+    end: (self) => self.start + filmPx(),
     pin: true,
     pinSpacing: true,
-    scrub: TIMING.scrub,
+    pinType: 'fixed',
+    scrub: scrubAmount(isCoarsePointer(), TIMING.scrub),
     invalidateOnRefresh: true,
     animation: master,
+    onRefresh: fitSpacer,
   })
 }
 

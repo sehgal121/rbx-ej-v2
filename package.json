@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:mobile": "node --test tests/mobile-film.test.mjs"
   },
   "dependencies": {
     "gsap": "^3.13.0",

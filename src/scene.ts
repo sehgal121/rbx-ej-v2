@@ -1,10 +1,11 @@
 /** Build dynamic scene bits: inner starfield, stardust burst, infinity still. */
 
 import { TIMING, isNarrow } from './config'
+import { viewport } from './mobile-scroll'
 
 const INNER_STAR_COUNT = 28
 const STARDUST_COUNT = 80
-const PHOTO_SRC = '/assets/bottles/flow-infinite.png' // QR bottle-hero.png
+const PHOTO_SRC = `${import.meta.env.BASE_URL}assets/bottles/flow-infinite.png` // QR bottle-hero.png
 
 function rng(seed: number): () => number {
   let s = seed
@@ -43,12 +44,26 @@ export function lobeAngle(units: number): number {
 /** Side of the square ∞ box, so 100 viewBox units map to it uniformly. */
 export function ribbonSide(): number {
   const { vwFactor, vhFactor } = TIMING.layout.ribbon
-  return Math.min(window.innerWidth * vwFactor, window.innerHeight * vhFactor)
+  const { w, h } = viewport()
+  return Math.min(w * vwFactor, h * vhFactor)
 }
 
 export function fiScale(): number {
   const { wide, narrow } = TIMING.layout.fiScale
   return isNarrow() ? narrow : wide
+}
+
+/** Scale that makes the Flow Infinite glass the same height as a trio cutout. */
+export function reunionFiScale(scene: Scene): number {
+  const fit = photoFit()
+  const { size, glassY } = TIMING.layout.photo
+  const vmin = Math.min(viewport().w, viewport().h)
+  const bottleH = vmin * (isNarrow() ? 0.2 : 0.22)
+  const vb = scene.layoutBox.offsetWidth / 200
+  const glass = fit.y + fit.h * (glassY / size.h)
+  const fiH = Math.max(0, glass - fit.y) * vb
+  if (bottleH < 1 || fiH < 1) return fiScale()
+  return bottleH / fiH
 }
 
 function photoFit(): { k: number; x: number; y: number; w: number; h: number } {
@@ -110,17 +125,14 @@ export interface Scene {
   beatPause: HTMLElement
   beatConn: HTMLElement
   beatMove: HTMLElement
-  act4Link: HTMLElement
   act5: HTMLElement
   act5Sunrise: HTMLElement
   act5Sunset: HTMLElement
   act5Midnight: HTMLElement
-  act5Link: HTMLElement
   act6: HTMLElement
   act6Heart: HTMLElement
   act6Harmony: HTMLElement
   act6Happiness: HTMLElement
-  act6Link: HTMLElement
   act7: HTMLElement
   unityField: HTMLElement
   unityStars: HTMLElement[]
@@ -257,17 +269,14 @@ export function buildScene(): Scene {
     beatPause: pick('#beat-pause'),
     beatConn: pick('#beat-connection'),
     beatMove: pick('#beat-movement'),
-    act4Link: pick('#act4-link'),
     act5: pick('#act5'),
     act5Sunrise: pick('#act5-sunrise'),
     act5Sunset: pick('#act5-sunset'),
     act5Midnight: pick('#act5-midnight'),
-    act5Link: pick('#act5-link'),
     act6: pick('#act6'),
     act6Heart: pick('#act6-heart'),
     act6Harmony: pick('#act6-harmony'),
     act6Happiness: pick('#act6-happiness'),
-    act6Link: pick('#act6-link'),
     act7: pick('#act7'),
     unityField: pick('#unity-field'),
     unityStars,
@@ -306,7 +315,7 @@ function registerPhoto(
   clip.setAttribute('y', String(reveal.y))
 }
 
-let memo: { w: number; h: number; value: Metrics } | null = null
+let memo: { w: number; h: number; scale: number; value: Metrics } | null = null
 
 /**
  * Single source of truth for where the seven bottles sit once settled.
@@ -317,17 +326,15 @@ let memo: { w: number; h: number; value: Metrics } | null = null
  * of the Flow Infinite silhouette, so the gap either side of the centre bottle
  * is guaranteed no matter how the ∞ box or the breakpoint scales.
  */
-export function metrics(scene: Scene): Metrics {
-  const w = window.innerWidth
-  const h = window.innerHeight
-  if (memo && memo.w === w && memo.h === h) return memo.value
+export function metrics(scene: Scene, scale = fiScale()): Metrics {
+  const { w, h } = viewport()
+  if (memo && memo.w === w && memo.h === h && memo.scale === scale) return memo.value
 
   const l = TIMING.layout
   const g = l.group
   const fit = photoFit()
   const bottleH = scene.outerBottles[0].offsetHeight
   const bottleW = bottleH * l.bottleAspect
-  const scale = fiScale()
   const vb = scene.layoutBox.offsetWidth / 200
   const fiHalf = (fit.w * vb * scale) / 2
   // The trios are cropped tight, the hero photo is not: measure to its glass
@@ -354,6 +361,6 @@ export function metrics(scene: Scene): Metrics {
     baseY: fiBase - bottleH * 0.5,
     labelY: fiBase + Math.max(bottleH * 0.16, 16),
   }
-  if (bottleH > 0 && vb > 0) memo = { w, h, value }
+  if (bottleH > 0 && vb > 0) memo = { w, h, scale, value }
   return value
 }
