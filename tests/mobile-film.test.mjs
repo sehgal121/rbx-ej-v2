@@ -599,7 +599,7 @@ test('after Inner Journey the seven bottles gather like the Act 3 triptych', asy
   await page.waitForSelector('.line-bottle.inner', { state: 'attached' })
   await page.waitForTimeout(250)
 
-  await scrollFilm(page, 97)
+  await scrollFilm(page, 98)
   await page.waitForTimeout(200)
 
   const m = await filmCast(page)
@@ -621,6 +621,10 @@ test('after Inner Journey the seven bottles gather like the Act 3 triptych', asy
   const outerXs = outers.map((b) => b.midX)
   assert.ok(Math.max(...outerXs) < Math.min(...innerXs), 'trios are not on opposite sides of Flow Infinite')
   const lineH = [...inners, ...outers].reduce((s, b) => s + b.height, 0) / 6
+  assert.ok(
+    lineH > 270,
+    `reunion bottles not enlarged at ${m.pct}%: line ${lineH.toFixed(0)}`,
+  )
   assert.ok(
     Math.abs(m.assemblyHeight - lineH) / lineH < 0.16,
     `seven bottles not the same height at ${m.pct}%: FI ${m.assemblyHeight.toFixed(0)} line ${lineH.toFixed(0)}`,

@@ -245,7 +245,7 @@ img {
   pointer-events: none;
   background-image: url('/assets/brand/ej-journey-still.jpeg');
   background-size: cover;
-  background-position: center;
+  background-position: center 40%;
   background-repeat: no-repeat;
 }
 

@@ -199,6 +199,12 @@ export const TIMING = {
      */
     group: { innerPad: 1.22, setStep: 0.78, minStep: 0.7, edgePad: 0.16 },
 
+    /**
+     * Settled seven-bottle row from Inner reunion (≈98%) through the pin
+     * end. Larger than the Act 3 22vmin / 20vmin cutouts.
+     */
+    reunionBottleVmin: { wide: 34, narrow: 30 },
+
     travel: { stagger: 0.06, sweep: 0.62, startSpread: 1.34 },
 
     /**

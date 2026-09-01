@@ -53,12 +53,17 @@ export function fiScale(): number {
   return isNarrow() ? narrow : wide
 }
 
+export function reunionBottleVmin(): number {
+  const n = TIMING.layout.reunionBottleVmin
+  return isNarrow() ? n.narrow : n.wide
+}
+
 /** Scale that makes the Flow Infinite glass the same height as a trio cutout. */
 export function reunionFiScale(scene: Scene): number {
   const fit = photoFit()
   const { size, glassY } = TIMING.layout.photo
   const vmin = Math.min(viewport().w, viewport().h)
-  const bottleH = vmin * (isNarrow() ? 0.2 : 0.22)
+  const bottleH = vmin * (reunionBottleVmin() / 100)
   const vb = scene.layoutBox.offsetWidth / 200
   const glass = fit.y + fit.h * (glassY / size.h)
   const fiH = Math.max(0, glass - fit.y) * vb

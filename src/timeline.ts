@@ -7,6 +7,7 @@ import {
   bodyReveal,
   fiScale,
   metrics,
+  reunionBottleVmin,
   reunionFiScale,
   type Scene,
 } from './scene'
@@ -782,6 +783,7 @@ function paintTriptych(scene: Scene, p: number): void {
   const line = collectionLine(narrow, viewport().w)
   const u = clamp01(p)
   const glide = 1 - (1 - u) ** 2
+  const reunionH = `${reunionBottleVmin()}vmin`
 
   scene.innerBottles.forEach((el, i) => {
     gsap.set(el, {
@@ -792,7 +794,7 @@ function paintTriptych(scene: Scene, p: number): void {
       scale: mix(line.scale, 1, glide),
       opacity: 1,
       zIndex: 10 - i,
-      height: narrow ? (u < 0.55 ? SKU_NARROW_H : '20vmin') : '',
+      height: narrow ? (u < 0.55 ? SKU_NARROW_H : reunionH) : reunionH,
       force3D: false,
       filter: narrow ? 'none' : BOTTLE_SHADOW,
     })
@@ -809,7 +811,7 @@ function paintTriptych(scene: Scene, p: number): void {
       scale: 1,
       opacity: clamp01(u / 0.38),
       zIndex: 10 - i,
-      height: narrow ? '20vmin' : '',
+      height: reunionH,
       force3D: false,
       filter: narrow ? 'none' : BOTTLE_SHADOW,
     })
