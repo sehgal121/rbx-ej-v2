@@ -236,6 +236,19 @@ img {
   }
 }
 
+/* Act 3 settled frame + Inner reunion: campaign nebula behind the seven bottles. */
+.journey-still {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  opacity: 0;
+  pointer-events: none;
+  background-image: url('/assets/brand/ej-journey-still.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 /* Act 2–3 film: one full-bleed JPEG (∞ + cyan/gold flow). Behind bottles. */
 .flow-bg {
   position: absolute;

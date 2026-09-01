@@ -109,6 +109,7 @@ export interface Scene {
   act4SkyZoom: HTMLElement
   split: HTMLElement
   vortex: HTMLElement
+  journeyStill: HTMLElement
   headline: HTMLElement
   labelOuter: HTMLElement
   labelInner: HTMLElement
@@ -253,6 +254,7 @@ export function buildScene(): Scene {
     act4SkyZoom: pick('#act4-sky-zoom'),
     split: pick('#split'),
     vortex: pick('#vortex'),
+    journeyStill: pick('#journey-still'),
     headline: pick('#headline'),
     labelOuter: pick('#label-outer'),
     labelInner: pick('#label-inner'),

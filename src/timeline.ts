@@ -31,6 +31,7 @@ export function buildMasterTimeline(scene: Scene): gsap.core.Timeline {
   })
   gsap.set(scene.split, { opacity: 0 })
   gsap.set(scene.vortex, { opacity: 0 })
+  gsap.set(scene.journeyStill, { opacity: 0 })
   gsap.set(scene.headline, { opacity: 0 })
   gsap.set([scene.labelOuter, scene.labelInner], { opacity: 0, xPercent: -50 })
   gsap.set([...scene.outerBottles, ...scene.innerBottles], {
@@ -181,7 +182,9 @@ function act3(tl: gsap.core.Timeline, scene: Scene): void {
 
   tl.to(scene.infinity, { opacity: 0, duration: settle.duration }, settle.start)
   tl.set(scene.infinity, INFINITY_GONE, TIMING.acts[3].end)
-  tl.to(scene.split, { opacity: 0.45, duration: vortex.duration }, vortex.start)
+  tl.to(scene.split, { opacity: 0, duration: vortex.duration }, vortex.start)
+  tl.to(scene.vortex, { opacity: 0, duration: vortex.duration }, vortex.start)
+  tl.to(scene.journeyStill, { opacity: 1, duration: vortex.duration, ease: 'power2.inOut' }, vortex.start)
 
   tl.to(scene.headline, { opacity: 1, duration: copy.duration * 0.7 }, copy.start)
   tl.to(
@@ -189,8 +192,6 @@ function act3(tl: gsap.core.Timeline, scene: Scene): void {
     { opacity: 1, duration: copy.duration * 0.5 },
     copy.start + copy.duration * 0.35,
   )
-
-  tl.to(scene.vortex, { opacity: 0.85, duration: vortex.duration }, vortex.start)
 
   dwellTriptych(tl, scene)
 }
@@ -214,7 +215,7 @@ function act4(tl: gsap.core.Timeline, scene: Scene): void {
     enter.start,
   )
   tl.to(
-    [scene.split, scene.vortex],
+    [scene.split, scene.vortex, scene.journeyStill],
     { opacity: 0, duration: enter.duration },
     enter.start,
   )
@@ -616,8 +617,9 @@ function act6(tl: gsap.core.Timeline, scene: Scene): void {
     },
     reunion.start,
   )
-  tl.to(scene.split, { opacity: 0.45, duration: reunion.duration * 0.5 }, reunion.start)
-  tl.to(scene.vortex, { opacity: 0.85, duration: reunion.duration * 0.5 }, reunion.start)
+  tl.to(scene.split, { opacity: 0, duration: reunion.duration * 0.35 }, reunion.start)
+  tl.to(scene.vortex, { opacity: 0, duration: reunion.duration * 0.35 }, reunion.start)
+  tl.to(scene.journeyStill, { opacity: 1, duration: reunion.duration * 0.5, ease: 'power2.inOut' }, reunion.start)
   tl.to(scene.headline, { opacity: 1, duration: reunion.duration * 0.45 }, reunion.start + reunion.duration * 0.32)
   tl.to(
     [scene.labelOuter, scene.labelInner],

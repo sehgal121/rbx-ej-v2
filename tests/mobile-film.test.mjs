@@ -288,10 +288,12 @@ async function filmCast(page) {
     }
     const assembly = document.querySelector('#assembly')
     const photo = document.querySelector('#fi-photo-body')
+    const still = document.querySelector('#journey-still')
     return {
       pct: parseFloat(document.querySelector('#review-pct')?.textContent ?? 'NaN'),
       assemblyOpacity: assembly ? Number(getComputedStyle(assembly).opacity) : 0,
       assemblyHeight: photo?.getBoundingClientRect().height ?? 0,
+      stillOpacity: still ? Number(getComputedStyle(still).opacity) : 0,
       outers: [...document.querySelectorAll('.line-bottle.outer')].map(card),
       inners: [...document.querySelectorAll('.line-bottle.inner')].map(card),
     }
@@ -339,6 +341,10 @@ test('triptych bottles stay in two rows after reversing from the reunion', async
   const m = await filmCast(page)
   await context.close()
 
+  assert.ok(
+    m.stillOpacity > 0.8,
+    `campaign nebula missing at ${m.pct}% after reverse: ${m.stillOpacity}`,
+  )
   const outers = m.outers.filter((b) => b.opacity > 0.5)
   const inners = m.inners.filter((b) => b.opacity > 0.5)
   assert.equal(outers.length, 3, `outer trio missing at ${m.pct}% after reverse`)

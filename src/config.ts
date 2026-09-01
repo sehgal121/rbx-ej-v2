@@ -194,10 +194,10 @@ export const TIMING = {
      *
      * `innerPad` is the clear gap between the Flow Infinite silhouette and the
      * nearest trio bottle, so the sets never merge into one pile. `setStep` is
-     * the spacing inside a trio (just under 1 = the shoulders kiss, which is
-     * what makes three bottles read as a set rather than a row of strangers).
+     * the spacing inside a trio (under 1 = overlapping shoulders, matching
+     * the campaign still).
      */
-    group: { innerPad: 1.15, setStep: 0.96, minStep: 0.82, edgePad: 0.18 },
+    group: { innerPad: 1.22, setStep: 0.78, minStep: 0.7, edgePad: 0.16 },
 
     travel: { stagger: 0.06, sweep: 0.62, startSpread: 1.34 },
 
