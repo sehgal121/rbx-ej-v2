@@ -16,21 +16,30 @@
 /**
  * Restore Act 7 (rings + caption + converge) by flipping this on.
  * When false, markup/CSS/tweens stay in the repo but the act occupies
- * zero master time — Inner Journey unpins straight into Ground.
+ * zero master time.
  */
 export const SHOW_UNITY = false
 
+/**
+ * V2.5: the reel ends on the Act 3 triptych (Are you ready / seven bottles).
+ * Acts 4–6 markup stays in the tree but is not scheduled, so Ground
+ * (collection links, then store locator) follows the pin.
+ */
+export const SHOW_SKU_ACTS = false
+
 /** Act 6 Inner ends here. Act 7 starts here when `SHOW_UNITY` is true. */
 const ACT6_END = 1.84
+/** Act 3 end (1.0) + `ctaHold[3]` (0.05). */
+const TRIPTYCH_END = 1.05
 /** Act 7 span on the master clock when shown (content + `ctaHold[7]`). */
 const UNITY_SPAN = 0.28
 
-/** Master clock length. Acts 0–3 occupy 0–1 exactly as signed off.
- *  Acts 4–6 are short (~1–2 viewport scrolls each) so SKUs do not dwell.
- *  +0.05 Act 3 triptych hold after 1.0 (before Act 4 enter),
- *  +0.05 × 3 ctaHold tails on acts 4–6.
- *  Collapses to `ACT6_END` when `SHOW_UNITY` is false. */
-export const FILM_END = SHOW_UNITY ? ACT6_END + UNITY_SPAN : ACT6_END
+/** Master clock length. Acts 0–3 occupy 0–1; the 0.05 hold is the pin tail. */
+export const FILM_END = SHOW_SKU_ACTS
+  ? SHOW_UNITY
+    ? ACT6_END + UNITY_SPAN
+    : ACT6_END
+  : TRIPTYCH_END
 
 export const TIMING = {
   /** Total document scroll while the stage is pinned. 700vh remains acts 0–3. */
@@ -57,7 +66,7 @@ export const TIMING = {
 
   acts: {
     0: { id: 0, key: '1', name: 'THE MONOGRAM', start: 0.0, end: 0.02 },
-    1: { id: 1, key: '2', name: 'THE DISSOLVE', start: 0.02, end: 0.45 },
+    1: { id: 1, key: '2', name: 'THE LANDING', start: 0.02, end: 0.45 },
     2: { id: 2, key: '3', name: 'THE INFINITY', start: 0.45, end: 0.68 },
     3: { id: 3, key: '4', name: 'THE TRIPTYCH', start: 0.68, end: 1.0 },
     4: { id: 4, key: '5', name: 'FLOW INFINITE', start: 1.05, end: 1.32, hash: 'flow-infinite' },
@@ -72,12 +81,12 @@ export const TIMING = {
       chrome: { from: 0.0, to: 1.0 },
     },
     act1: {
-      marksOut: { from: 0.04, to: 0.22 },
-      ringToSphere: { from: 0.0, to: 0.18 },
-      capHandoff: { from: 0.0, to: 0.14 },
-      stardust: { from: 0.06, to: 0.32 },
-      bodyReveal: { from: 0.12, to: 0.68 },
-      pullBack: { from: 0.76, to: 1.0 },
+      /** Shrink onto the printed glass mark by ~31%. */
+      logoShrink: { from: 0.0, to: 0.71 },
+      /** Bottle starts under the still-opaque overlay (~31%). */
+      bottleIn: { from: 0.71, to: 0.88 },
+      /** Overlay holds, then fades so the print is the one logo. */
+      logoDissolve: { from: 0.78, to: 0.88 },
     },
     act2: {
       pullBack: { from: 0.0, to: 0.5 },
@@ -199,8 +208,12 @@ export const TIMING = {
      */
     group: { innerPad: 1.22, setStep: 0.78, minStep: 0.7, edgePad: 0.16 },
 
-    /** Act 3 settled cutouts (the six bottles beside Flow Infinite). */
-    act3BottleVmin: { wide: 30, narrow: 26 },
+    /** Act 3 settled cutouts (the six bottles beside Flow Infinite).
+     *  Sized to the campaign still: ~40% of the shorter viewport edge. */
+    act3BottleVmin: { wide: 42, narrow: 34 },
+
+    /** Extra lift after the logo pin; 0 = the printed mark sits on the stage centre. */
+    act3LiftVh: { wide: 0, narrow: 0 },
 
     /**
      * Settled seven-bottle row from Inner reunion (≈98%) through the pin
@@ -219,7 +232,7 @@ export const TIMING = {
     /**
      * QR bottle-hero.png (copied to bottles/flow-infinite.png) is 533×1134 with
      * alpha. Least-squares fit of the chrome sphere: centre (261.44, 218.59)
-     * r 202.68 px. `circle` is the Act 1 dissolve target in fi-svg viewBox units.
+     * r 202.68 px. `circle` is the cap clip in fi-svg viewBox units.
      * Do not retune `cap` / `circle` / `size` — `photoFit()` feeds Act 3 metrics.
      */
     photo: {
@@ -229,36 +242,50 @@ export const TIMING = {
       glassY: 1101,
       circle: { cx: 100, cy: 100, r: 56 },
       neckY: 152,
+      /**
+       * `logoY` is the pin (printed emblem ring). `logoFlyY` is the overlay
+       * origin, 3 vb lower so ETERNAL JOURNEY sits on the print, not above it.
+       */
+      logoCx: 98.8,
+      logoY: 225,
+      logoFlyY: 229,
+      logoR: 13.95,
     },
 
     /**
-     * QR logo-steel.png 389×464. Ring outer diameter from the horizontal
-     * equator (x 11–378 at y 235–264): centre (194.5, 248.5) r 183.5.
-     * Scale k = circle.r / ring.r = 56 / 183.5 so the chrome ring’s outer
-     * edge coincides with the cap clip (and the photo-fitted sphere).
-     * Placement lives on `#chrome-mono` in index.html:
-     *   x = 100 − 194.5k = 40.638, y = 100 − 248.5k = 24.163,
-     *   w = 389k = 118.714, h = 464k = 141.602.
+     * Opening lockup: emblem + ETERNAL JOURNEY (`ej-logo-lockup.png` 1024×743).
+     * Ring equator y 315, span 307 → centre (509, 315) r 153.5.
+     * Scale k = photo.logoR / ring.r so scale 1 matches the printed emblem.
+     * `#logo-fly` is translated to (logoCx, logoY).
      */
     logo: {
-      size: { w: 389, h: 464 },
-      ring: { cx: 194.5, cy: 248.5, r: 183.5 },
+      size: { w: 1024, h: 743 },
+      ring: { cx: 509, cy: 315, r: 153.5 },
+      /** Content bbox of emblem + wordmark, for the opening fill. */
+      content: { w: 874, h: 525 },
+      /** Opening lockup height as a fraction of the shorter viewport edge.
+       *  0.39 ≈ the size previously reached at 25% (not full-screen). */
+      startFill: 0.39,
     },
   },
 } as const
 
 export type ActId = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7
 
-export const HASH_ACT: Record<string, ActId> = SHOW_UNITY
-  ? { 'flow-infinite': 4, outer: 5, inner: 6, unity: 7 }
-  : { 'flow-infinite': 4, outer: 5, inner: 6 }
+export const HASH_ACT: Record<string, ActId> = SHOW_SKU_ACTS
+  ? SHOW_UNITY
+    ? { 'flow-infinite': 4, outer: 5, inner: 6, unity: 7 }
+    : { 'flow-infinite': 4, outer: 5, inner: 6 }
+  : {}
 
 export function actAt(progress: number): (typeof TIMING.acts)[ActId] {
   const time = progress * FILM_END
-  if (SHOW_UNITY && time >= TIMING.acts[7].start) return TIMING.acts[7]
-  if (time >= TIMING.acts[6].start) return TIMING.acts[6]
-  if (time >= TIMING.acts[5].start) return TIMING.acts[5]
-  if (time >= TIMING.acts[4].start) return TIMING.acts[4]
+  if (SHOW_SKU_ACTS) {
+    if (SHOW_UNITY && time >= TIMING.acts[7].start) return TIMING.acts[7]
+    if (time >= TIMING.acts[6].start) return TIMING.acts[6]
+    if (time >= TIMING.acts[5].start) return TIMING.acts[5]
+    if (time >= TIMING.acts[4].start) return TIMING.acts[4]
+  }
   if (time >= TIMING.acts[3].start) return TIMING.acts[3]
   if (time >= TIMING.acts[2].start) return TIMING.acts[2]
   if (time >= TIMING.acts[1].start) return TIMING.acts[1]

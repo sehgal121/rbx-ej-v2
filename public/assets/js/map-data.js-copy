@@ -1,0 +1,112 @@
+// data of all stores is stored in a array
+const storeData = [
+  {
+    id: 0,
+    name: 'Le Parfum',
+    country: 'Albania',
+    city: 'Tirana',
+    img: './assets/img/map/tirana-albania.jpeg',
+    lat: '41.3302539',
+    lng: '19.809551',
+    contactNum: '+355-699-777-770',
+    address: 'Rruga Fortuzi, Tiranë 1001, Albania',
+    googleMapLink:
+      'https://www.google.com/maps/place/The+Parfum+Collection/@41.3302539,19.809551,16.72z/data=!4m14!1m7!3m6!1s0x1350311e36345999:0x722140523b3f8a62!2sThe+Parfum+Collection!8m2!3d41.3304538!4d19.81227!16s%2Fg%2F11tn9r33v6!3m5!1s0x1350311e36345999:0x722140523b3f8a62!8m2!3d41.3304538!4d19.81227!16s%2Fg%2F11tn9r33v6?entry=ttu',
+  },
+  {
+    id: 1,
+    name: 'Beautique Fragrances',
+    country: 'United Arab Emirates',
+    city: 'Abu Dhabi',
+    img: './assets/img/map/beautique-fragrances.jpeg',
+    lat: '24.3124232',
+    lng: '54.6208338',
+    contactNum: '+971-544-077-526',
+    address:
+      '10 Bawabat Al Sharq St - Bani Yas - Baniyas East - Abu Dhabi - United Arab Emirates',
+    googleMapLink:
+      'https://www.google.com/maps/place/BeautiqueFragrances/@24.3124232,54.6208338,15z/data=!4m14!1m7!3m6!1s0x3e5e37636bb4adbf:0xfff7b363ceb996f!2sBeautiqueFragrances!8m2!3d24.3124232!4d54.6208338!16s%2Fg%2F11f64hn15g!3m5!1s0x3e5e37636bb4adbf:0xfff7b363ceb996f!8m2!3d24.3124232!4d54.6208338!16s%2Fg%2F11f64hn15g?entry=ttu',
+  },
+
+  {
+    id: 2,
+    name: 'Beautique Dubai Festival Mall',
+    country: 'United Arab Emirates',
+    city: 'Dubai',
+    img: './assets/img/map/festival-mall.jpeg',
+    lat: '25.2219515',
+    lng: '55.3502194',
+    contactNum: '+971-800-332',
+    address: 'Crescent Rd - Dubai Festival City - Dubai - United Arab Emirates',
+    googleMapLink:
+      'https://www.google.com/maps/place/Dubai+Festival+City+Mall/@25.2219515,55.3502194,17z/data=!4m14!1m7!3m6!1s0x3e5f5d778cffffff:0xf49b6296189d22d5!2sDubai+Festival+City+Mall!8m2!3d25.2219515!4d55.3527943!16s%2Fg%2F1232t9b3_!3m5!1s0x3e5f5d778cffffff:0xf49b6296189d22d5!8m2!3d25.2219515!4d55.3527943!16s%2Fg%2F1232t9b3_?entry=ttu',
+  },
+
+  {
+    id: 3,
+    name: 'House of Niche Boutique',
+    country: 'United Arab Emirates',
+    city: 'Dubai',
+    img: './assets/img/map/hon.jpeg',
+    lat: '25.2643942',
+    lng: '55.3019206',
+    contactNum: '+971-529-872-661',
+    address:
+      'Opposite to British Consolate - Al Seef St - Al Hamriya - Dubai - United Arab Emirates',
+    googleMapLink:
+      'https://www.google.com/maps/place/House+of+Niche+Boutique/@25.2643942,55.3019206,17z/data=!4m14!1m7!3m6!1s0x3e5f4330e89e0f73:0xd96fbec53c0a84ae!2sHouse+of+Niche+Boutique!8m2!3d25.2643942!4d55.3044955!16s%2Fg%2F11gwjk6sxj!3m5!1s0x3e5f4330e89e0f73:0xd96fbec53c0a84ae!8m2!3d25.2643942!4d55.3044955!16s%2Fg%2F11gwjk6sxj?entry=ttu',
+  },
+  {
+    id: 4,
+    name: 'THAT Concept Store',
+    country: 'United Arab Emirates',
+    city: 'Dubai',
+    img: './assets/img/map/that.jpeg',
+    lat: '25.1194527',
+    lng: '55.1974407',
+    contactNum: '+971-564-114-328',
+    address:
+      'Via Rodeo, Ground & first floor, Mall of the Emirates - Dubai - United Arab Emirates',
+    googleMapLink:
+      'https://www.google.com/maps/place/THAT+Concept+Store/@25.1194527,55.1974407,17z/data=!3m1!5s0x3e5f6bbc273439f1:0xceff44c1e84ab838!4m14!1m7!3m6!1s0x3e5f6bbe873f9385:0xf58df794fe94738!2sTHAT+Concept+Store!8m2!3d25.1194527!4d55.2000156!16s%2Fg%2F11hm7pl7zk!3m5!1s0x3e5f6bbe873f9385:0xf58df794fe94738!8m2!3d25.1194527!4d55.2000156!16s%2Fg%2F11hm7pl7zk?entry=ttu',
+  },
+
+  {
+    id: 5,
+    name: 'Jovoy Parfums Rares',
+    country: 'France',
+    city: 'Paris',
+    img: './assets/img/map/paris.jpeg',
+    lat: '48.8655576',
+    lng: '2.3251333',
+    contactNum: '+331-402-006-19',
+    address: '4 Rue de Castiglione, 75001 Paris, France',
+    googleMapLink:
+      'https://www.google.com/maps/place/Jovoy+Parfums+Rares/@48.8655576,2.3251333,17z/data=!4m14!1m7!3m6!1s0x47e66e31b4150381:0x5dc72162e68f814a!2sJovoy+Parfums+Rares!8m2!3d48.8655576!4d2.3277082!16s%2Fg%2F1tnhxn57!3m5!1s0x47e66e31b4150381:0x5dc72162e68f814a!8m2!3d48.8655576!4d2.3277082!16s%2Fg%2F1tnhxn57?entry=ttu',
+  },
+  {
+    id: 6,
+    name: 'Jovoy Qatar',
+    country: 'Qatar',
+    city: 'Doha',
+    img: './assets/img/map/qatar.jpg',
+    lat: '25.2727642',
+    lng: '51.4881111',
+    contactNum: '+974-441-176-33',
+    address: 'Al Mana Business Centre 02, Doha, Qatar',
+    googleMapLink:
+      'https://www.google.com/maps/place/Jovoy+Qatar/@25.2727642,51.4881111,17z/data=!4m14!1m7!3m6!1s0x3e45daeb109ee80b:0xd3bb8d0edd8cbd84!2sJovoy+Qatar!8m2!3d25.2727642!4d51.490686!16s%2Fg%2F11cscc2ls6!3m5!1s0x3e45daeb109ee80b:0xd3bb8d0edd8cbd84!8m2!3d25.2727642!4d51.490686!16s%2Fg%2F11cscc2ls6?entry=ttu',
+  },
+];
+
+////////////////////////////////////////////////////////////
+// Sort the array by country in alphabetical order
+const storeDataSorted = storeData.sort((a, b) => {
+  if (a.country < b.country) {
+    return -1;
+  }
+  if (a.country > b.country) {
+    return 1;
+  }
+  return 0;
+});

@@ -324,10 +324,12 @@ img {
 }
 
 .assembly-layout {
-  /* Circle sits at (100,100) in a 200×360 viewBox — pin that point to the anchor. */
+  /* `--fi-pin-y` is the viewBox Y pinned to the stage centre.
+     225 = printed emblem ring on the glass. */
+  --fi-pin-y: 225;
   width: 38vmin;
   height: calc(38vmin * 360 / 200);
-  transform: translate(-50%, calc(-100 / 360 * 100%));
+  transform: translate(-50%, calc(var(--fi-pin-y) / 360 * -100%));
   overflow: visible;
 }
 
@@ -342,6 +344,7 @@ img {
   max-width: none;
 }
 
+#logo-fly,
 #chrome-mono {
   opacity: 1;
   overflow: visible;
@@ -389,16 +392,18 @@ img {
   position: absolute;
   top: 11vh;
   left: 50%;
-  width: min(92vw, 920px);
+  width: max-content;
+  max-width: 96vw;
   transform: translateX(-50%);
   opacity: 0;
   color: #e4e0d4;
   font-family: Palatino, 'Palatino Linotype', 'Didot', 'Bodoni MT', serif;
-  font-size: clamp(18px, 3.2vw, 42px);
+  font-size: clamp(12px, 2.05vw, 26px);
   font-weight: 400;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.12em;
   text-align: center;
-  line-height: 1.25;
+  line-height: 1.2;
+  white-space: nowrap;
 }
 
 /* x/y come from metrics() so each label centres under its own set. */
@@ -1027,8 +1032,8 @@ img {
   }
 
   .headline {
-    letter-spacing: 0.1em;
-    font-size: 15px;
+    letter-spacing: 0.08em;
+    font-size: clamp(11px, 3.1vw, 14px);
     top: 13vh;
   }
 

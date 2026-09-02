@@ -1,0 +1,327 @@
+// data of all stores is stored in a array
+const storeData = [
+ {
+   "id": 1,
+   "name": "Jasmin Knez Mihailov street",
+   "country": "Serbia",
+   "city": "Belgrade",
+   "img": "./assets/img/store/v2/serbia1.jpg",
+   "lat": 44.8159297,
+   "lng": 20.4594806,
+   "contactNum": 381112030864,
+   "address": "Kneza Mihaila 10, Beograd 11000, Serbia",
+   "googleMapLink": "https://maps.app.goo.gl/RhXNZgxbhAhfX5PZA"
+ },
+ {
+   "id": 2,
+   "name": "Jasmin Belgrade Waterfront Galerija\n",
+   "country": "Serbia",
+   "city": "Belgrade",
+   "img": "./assets/img/store/v2/serbia2.jpg",
+   "lat": 44.8105579,
+   "lng": 20.4534753,
+   "contactNum": 381116903320,
+   "address": "GALERIJA BELGRADE, Bulevar Vudroa Vilsona 12, Beograd 11000, Serbia",
+   "googleMapLink": "https://maps.app.goo.gl/bnpidjFALaecdn5B6"
+ },
+ {
+   "id": 3,
+   "name": "Jasmin tc Ada Mall",
+   "country": "Serbia",
+   "city": "Belgrade",
+   "img": "./assets/img/store/v2/serbia3.jpg",
+   "lat": 44.7878448,
+   "lng": 20.4180502,
+   "contactNum": 381117701539,
+   "address": "Radnička 9 ADA MALL Beograd, 11000, Serbia",
+   "googleMapLink": "https://maps.app.goo.gl/nFYfCezE2dDMnXnZA"
+ },
+ {
+   "id": 4,
+   "name": "Jasmin tc Beo centar",
+   "country": "Serbia",
+   "city": "Belgrade",
+   "img": "./assets/img/store/v2/serbia4.jpg",
+   "lat": 44.7864181,
+   "lng": 20.501029,
+   "contactNum": 381116900135,
+   "address": "Beo Shopping Center, Vojislava Ilića 141, Beograd 11000, Serbia",
+   "googleMapLink": "https://maps.app.goo.gl/k9XJBtU3u3u4CAwj6"
+ },
+ {
+   "id": 5,
+   "name": "Jasmin tc Mercator",
+   "country": "Serbia",
+   "city": "Belgrade",
+   "img": "./assets/img/store/v2/serbia5.jpg",
+   "lat": 44.8206104,
+   "lng": 20.4142713,
+   "contactNum": 381113110852,
+   "address": "Bulevar umetnosti 4, Beograd, Serbia",
+   "googleMapLink": "https://maps.app.goo.gl/J8xZ8YNUUHtpJGSc7"
+ },
+ {
+   "id": 6,
+   "name": "Jasmin tc Ušće",
+   "country": "Serbia",
+   "city": "Belgrade",
+   "img": "./assets/img/store/v2/serbia1.jpg",
+   "lat": 44.8154217,
+   "lng": 20.4368269,
+   "contactNum": 381113120587,
+   "address": "SHOPPING CENTER, Bulevar Mihajla Pupina 4 UŠĆE, Beograd 11000, Serbia",
+   "googleMapLink": "https://maps.app.goo.gl/NJh9suWvf6nwUY946"
+ },
+ {
+   "id": 7,
+   "name": "Jasmin Tc Delta Sity",
+   "country": "Serbia",
+   "city": "Belgrade",
+   "img": "./assets/img/store/v2/serbia3.jpg",
+   "lat": 44.8054287,
+   "lng": 20.3877492,
+   "contactNum": 381112203764,
+   "address": "Jurija Gagarina 16 DELTA, Beograd 11000, Serbia",
+   "googleMapLink": "https://maps.app.goo.gl/c4MoMcex3vjXHc1z7"
+ },
+ {
+   "id": 8,
+   "name": "Jasmin tc Toska",
+   "country": "Serbia",
+   "city": "Belgrade",
+   "img": "./assets/img/store/v2/serbia4.jpg",
+   "lat": 44.805497,
+   "lng": 20.3568495,
+   "contactNum": 381113120587,
+   "address": "SHOPPING CENTER, Bulevar Mihajla Pupina 4 UŠĆE, Beograd 11000, Serbia",
+   "googleMapLink": "https://maps.app.goo.gl/LdqwYv5LTSdW4jF57"
+ },
+ {
+   "id": 9,
+   "name": "Jasmin Tc Promenada",
+   "country": "Serbia",
+   "city": "Novi Sad",
+   "img": "./assets/img/store/v2/serbia2.jpg",
+   "lat": 45.2445524,
+   "lng": 19.2816541,
+   "contactNum": 381212700994,
+   "address": "PROMENADA SHOPPING CENTER, Bulevar oslobođenja 119, Novi Sad 21000, Serbia",
+   "googleMapLink": "https://maps.app.goo.gl/4tBwAdowgU6xNSqz8"
+ },
+ {
+   "id": 10,
+   "name": "Jasmin tc Plaza KG",
+   "country": "Serbia",
+   "city": "Kragujevac",
+   "img": "./assets/img/store/v2/serbia3.jpg",
+   "lat": 44.0084713,
+   "lng": 20.8962187,
+   "contactNum": 381346100075,
+   "address": "BIG FASHION Kragujevac, Bulevar Kraljice Marije 56, Kragujevac 34000, Serbia",
+   "googleMapLink": "https://maps.app.goo.gl/Nqz4yTQyPs4q5hCn6"
+ },
+ {
+   "id": 11,
+   "name": "Jasmin Delta Niš",
+   "country": "Serbia",
+   "city": "Niš",
+   "img": "./assets/img/store/v2/serbia5.jpg",
+   "lat": 43.3245072,
+   "lng": 21.9110381,
+   "contactNum": 38118220085,
+   "address": "Delta Planet (Niš), Bulevar Nemanjića 11b, Niš 18000, Serbia",
+   "googleMapLink": "https://maps.app.goo.gl/4gSMEF78R5HRywAm8"
+ },
+ {
+   "id": 12,
+   "name": "15 Berlin West",
+   "country": "Germany",
+   "city": "Berlin",
+   "img": "./assets/img/store/v2/germany1.jpeg",
+   "lat": 52.5018153,
+   "lng": 13.3106782,
+   "contactNum": 493077201922,
+   "address": "Giesebrechtstraße 15, 10629 Berlin, Germany",
+   "googleMapLink": "https://maps.app.goo.gl/jHF9SgmktbbtxjkY8"
+ },
+ {
+   "id": 13,
+   "name": "Le Parfum Tirana",
+   "country": "Albania",
+   "city": "Tirana",
+   "img": "./assets/img/store/v2/albania01.jpeg",
+   "lat": 41.3192578,
+   "lng": 19.8006285,
+   "contactNum": 355692536666,
+   "address": "Abdyl Frasheri Perballe Big Bite Pallati 9, Shkalla 5, Ap.40, Tiranë, Albania",
+   "googleMapLink": "https://maps.app.goo.gl/7JYwQzBaM3ns6sVGA"
+ },
+ {
+   "id": 14,
+   "name": "Beautique Dubai Festival Mall",
+   "country": "UAE",
+   "city": "Dubai",
+   "img": "./assets/img/store/v2/Beautique.jpeg",
+   "lat": 25.2224969,
+   "lng": 55.3523513,
+   "contactNum": 97142281181,
+   "address": "Dubai Festival City - Dubai - United Arab Emirates",
+   "googleMapLink": "https://maps.app.goo.gl/rgEMahpkEVvDTrJ56"
+ },
+ {
+   "id": 15,
+   "name": "THAT Concept Store Mall of Emirates Dubai",
+   "country": "UAE",
+   "city": "Dubai",
+   "img": "./assets/img/store/v2/Emirates.jpeg",
+   "lat": 25.1194527,
+   "lng": 55.2000156,
+   "contactNum": 971564114328,
+   "address": "Via Rodeo, Ground & first floor, Mall of the Emirates - Dubai - United Arab Emirates",
+   "googleMapLink": "https://maps.app.goo.gl/42tgnjGFWY2qFHTr9"
+ },
+ {
+   "id": 16,
+   "name": "Beautique Bawabat Al Sharq Mall Abu Dhabi",
+   "country": "UAE",
+   "city": "Abu Dhabi",
+   "img": "./assets/img/store/v2/Sharq.jpeg",
+   "lat": 24.3119784,
+   "lng": 54.6196209,
+   "contactNum": 97125031400,
+   "address": "Bawabat Al Sharq St - Bani Yas - Baniyas East - Abu Dhabi - United Arab Emirates",
+   "googleMapLink": "https://maps.app.goo.gl/s9ozYUkS1ekXNZZW8"
+ },
+ {
+   "id": 17,
+   "name": "Jovoy France",
+   "country": "France",
+   "city": "Paris",
+   "img": "./assets/img/store/v2/Jovoy-France.jpeg",
+   "lat": 24.3119784,
+   "lng": 54.6196209,
+   "contactNum": 97125031400,
+   "address": "Bawabat Al Sharq St - Bani Yas - Baniyas East - Abu Dhabi - United Arab Emirates",
+   "googleMapLink": "https://maps.app.goo.gl/s9ozYUkS1ekXNZZW8"
+ },
+ {
+   "id": 18,
+   "name": "Jovoy GCC",
+   "country": "Qatar",
+   "city": "Doha",
+   "img": "./assets/img/store/v2/Manaa1.jpg",
+   "lat": 25.2727642,
+   "lng": 51.490686,
+   "contactNum": 97444117633,
+   "address": "Al Mana Business Centre 02, Doha, Qatar",
+   "googleMapLink": "https://maps.app.goo.gl/VDyCpAs23tJwFULAA"
+ },
+ {
+   "id": 19,
+   "name": "Perfumes Real",
+   "country": "Colombia",
+   "city": "Medellin",
+   "img": "./assets/img/store/v2/Colombia01.jpg",
+   "lat": 6.1974364,
+   "lng": -75.556684,
+   "contactNum": 573116624031,
+   "address": "Cl. 2 #20-50 Oficina 302, El Poblado, Medellín, El Poblado, Medellín, Antioquia, Colombia",
+   "googleMapLink": "https://maps.app.goo.gl/D4XfbLbB5qtXFZTg6"
+ },
+ {
+   "id": 20,
+   "name": "Jovoy Mayfair",
+   "country": "UK",
+   "city": "London",
+   "img": "./assets/img/store/v2/uk01.jpg",
+   "lat": 51.5120452,
+   "lng": -0.142341,
+   "contactNum": 447745214646,
+   "address": "21 Conduit St, London W1S 2XP, United Kingdom",
+   "googleMapLink": "https://maps.app.goo.gl/xxeyETdKAfnDs2YC9"
+ },
+ {
+   "id": 21,
+   "name": "L'Attar bar-a-parfum",
+   "country": "Spain",
+   "city": "Madrid",
+   "img": "./assets/img/store/v2/Madrid01.jpg",
+   "lat": 40.4243827,
+   "lng": -3.6855605,
+   "contactNum": 34649517338,
+   "address": "Calle de Lagasca, 27, Salamanca, 28001 Madrid, Spain",
+   "googleMapLink": "https://maps.app.goo.gl/AyPz7qaiRKqDJx3YA"
+ },
+ {
+   "id": 22,
+   "name": "Linda Vuela a Rio",
+   "country": "Spain",
+   "city": "Valencia",
+   "img": "./assets/img/store/v2/Valencia.jpg",
+   "lat": 39.4663238,
+   "lng": -0.3711765,
+   "contactNum": 34963517746,
+   "address": "Gran Via del Marqués del Túria, 31, L'Eixample, 46005 València, Valencia, Spain",
+   "googleMapLink": "https://maps.app.goo.gl/weuGJED1rfKEHNqF7"
+ },
+ {
+   "id": 23,
+   "name": "Elinor Boutique Business Park",
+   "country": "Bulgaria",
+   "city": "Sofia",
+   "img": "./assets/img/store/v2/Emirates.jpeg",
+   "lat": 42.6260649,
+   "lng": 23.3768469,
+   "contactNum": 359876130043,
+   "address": "Store ELINOR, Mladost 4, ul. \"Business park Sofia\" Building 10, Sofia, Bulgaria",
+   "googleMapLink": "https://maps.app.goo.gl/nMnLJzSE6geYhpj78"
+ },
+ {
+   "id": 24,
+   "name": "Elinor Boutique Sitnyakovo",
+   "country": "Bulgaria",
+   "city": "Sofia",
+   "img": "./assets/img/store/v2/Emirates.jpeg",
+   "lat": 42.6902625,
+   "lng": 23.3543656,
+   "contactNum": 35970013133,
+   "address": "Reduta, Sitnyakovo Blvd 47a, 1505 Sofia, Bulgaria",
+   "googleMapLink": "https://maps.app.goo.gl/XBzcjdgmisNy7nZs8"
+ },
+ {
+   "id": 25,
+   "name": "Grand Hotel Plovdiv",
+   "country": "Bulgaria",
+   "city": "Plovdiv",
+   "img": "./assets/img/store/v2/Emirates.jpeg",
+   "lat": 42.1558,
+   "lng": 24.7457,
+   "contactNum": 35932934442,
+   "address": "KarshiakaSeveren, ul. \"Zlatyu Boyadzhiev\" 2, 4003 Plovdiv, Bulgaria",
+   "googleMapLink": "https://maps.app.goo.gl/8gcR2dwHHPKH3ZBS6"
+ },
+ {
+   "id": 26,
+   "name": "Tais Couture",
+   "country": "Bulgaria",
+   "city": "Varna",
+   "img": "./assets/img/store/v2/Emirates.jpeg",
+   "lat": 43.2032225,
+   "lng": 27.9169277,
+   "contactNum": 359889603633,
+   "address": "Greek NeighborhoodOdesos, ul. \"Mihail Koloni\" 2 str, 9000 Varna, Bulgaria",
+   "googleMapLink": "https://maps.app.goo.gl/Cxg81CjCPPNAQusu6"
+ },
+];
+
+////////////////////////////////////////////////////////////
+// Sort the array by country in alphabetical order
+const storeDataSorted = storeData.sort((a, b) => {
+  if (a.country < b.country) {
+    return -1;
+  }
+  if (a.country > b.country) {
+    return 1;
+  }
+  return 0;
+});

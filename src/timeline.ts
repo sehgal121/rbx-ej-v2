@@ -1,11 +1,12 @@
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { TIMING, span, FILM_END, SHOW_UNITY, isNarrow, type ActId } from './config'
+import { TIMING, span, FILM_END, SHOW_UNITY, SHOW_SKU_ACTS, isNarrow, type ActId } from './config'
 import { scrubAmount, isCoarsePointer, viewport } from './mobile-scroll'
 import { INFINITY_GONE } from './infinity'
 import {
   bodyReveal,
   fiScale,
+  logoStartScale,
   metrics,
   reunionBottleVmin,
   reunionFiScale,
@@ -20,10 +21,19 @@ export function buildMasterTimeline(scene: Scene): gsap.core.Timeline {
   const tl = gsap.timeline({ paused: true, defaults: { ease: 'none' } })
 
   gsap.set(scene.capGroup, { opacity: 1 })
-  gsap.set(scene.assembly, { scale: 1, y: 0, transformOrigin: '0px 0px', force3D: false })
+  gsap.set(scene.assembly, {
+    scale: fiScale(scene),
+    y: 0,
+    transformOrigin: '0px 0px',
+    force3D: false,
+  })
+  scene.layoutBox.style.setProperty('--fi-pin-y', String(TIMING.layout.photo.logoY))
+  gsap.set(scene.innerStars, { opacity: 0 })
+  gsap.set(scene.logoFly, { opacity: 1 })
+  paintLogoScale(scene, logoStartScale(scene))
   gsap.set(scene.marks, { opacity: 1 })
-  gsap.set(scene.photoCap, { opacity: 0 })
-  gsap.set(scene.bodyClip, { attr: { height: 0 } })
+  gsap.set([scene.photoCap, scene.photoBody], { opacity: 0 })
+  gsap.set(scene.bodyClip, { attr: { height: bodyReveal().height } })
   gsap.set(scene.infinity, { opacity: 0, visibility: 'hidden' })
   gsap.set(scene.act4Sky, { opacity: 0 })
   gsap.set(scene.act4SkyZoom, {
@@ -34,7 +44,7 @@ export function buildMasterTimeline(scene: Scene): gsap.core.Timeline {
   gsap.set(scene.vortex, { opacity: 0 })
   gsap.set(scene.journeyStill, { opacity: 0 })
   gsap.set(scene.headline, { opacity: 0 })
-  gsap.set([scene.labelOuter, scene.labelInner], { opacity: 0, xPercent: -50 })
+  gsap.set([scene.labelOuter, scene.labelFlow, scene.labelInner], { opacity: 0, xPercent: -50 })
   gsap.set([...scene.outerBottles, ...scene.innerBottles], {
     opacity: 0,
     x: 0,
@@ -77,72 +87,59 @@ export function buildMasterTimeline(scene: Scene): gsap.core.Timeline {
   act1(tl, scene)
   act2(tl, scene)
   act3(tl, scene)
-  act4(tl, scene)
-  act5(tl, scene)
-  act6(tl, scene)
-  act7(tl, scene)
+  if (SHOW_SKU_ACTS) {
+    act4(tl, scene)
+    act5(tl, scene)
+    act6(tl, scene)
+    act7(tl, scene)
+  }
 
   return tl
 }
 
+/** SVG `translate then scale` keeps the ring on the printed mark. */
+function paintLogoScale(scene: Scene, scale: number): void {
+  const { logoCx, logoFlyY } = TIMING.layout.photo
+  scene.logoFly.setAttribute('transform', `translate(${logoCx} ${logoFlyY}) scale(${scale})`)
+}
+
 function act0(tl: gsap.core.Timeline, scene: Scene): void {
-  // Full-bright logo from frame 0 — no dim / 0.62 fade-in.
-  // Act 0 is a one-tick hold; capHandoff starts at act 1 local 0.
   tl.set(scene.capGroup, { opacity: 1 }, 0)
   tl.set(scene.marks, { opacity: 1 }, 0)
-  tl.set(scene.photoCap, { opacity: 0 }, 0)
+  tl.set(scene.logoFly, { opacity: 1 }, 0)
+  tl.set([scene.photoCap, scene.photoBody], { opacity: 0 }, 0)
+  tl.set(scene.assembly, { scale: () => fiScale(scene), y: 0, force3D: false }, 0)
+  tl.call(() => paintLogoScale(scene, logoStartScale(scene)), undefined, 0)
 }
 
 function act1(tl: gsap.core.Timeline, scene: Scene): void {
-  const marks = span(1, TIMING.beats.act1.marksOut)
-  const sphere = span(1, TIMING.beats.act1.ringToSphere)
-  const handoff = span(1, TIMING.beats.act1.capHandoff)
-  const dust = span(1, TIMING.beats.act1.stardust)
-  const body = span(1, TIMING.beats.act1.bodyReveal)
-  const pull = span(1, TIMING.beats.act1.pullBack)
+  const shrink = span(1, TIMING.beats.act1.logoShrink)
+  const dissolve = span(1, TIMING.beats.act1.logoDissolve)
+  const bottle = span(1, TIMING.beats.act1.bottleIn)
+  const pose = { s: logoStartScale(scene) }
+  const apply = (): void => paintLogoScale(scene, pose.s)
 
-  tl.to(scene.innerStars, { opacity: 0, duration: sphere.duration * 0.55 }, sphere.start)
-
-  // power1.out: first wheel ticks already show the spherical cap.
-  tl.to(
-    scene.photoCap,
-    { opacity: 1, duration: handoff.duration, ease: 'power1.out' },
-    handoff.start,
-  )
-
-  tl.to(scene.marks, { opacity: 0, duration: marks.duration }, marks.start)
-
-  const halfDust = dust.duration * 0.55
   tl.fromTo(
-    scene.sparks,
-    { x: 0, y: 0, opacity: 0, scale: 0.2 },
+    pose,
+    { s: () => logoStartScale(scene) },
     {
-      x: (_i, t: HTMLElement) => Number(t.dataset.x),
-      y: (_i, t: HTMLElement) => Number(t.dataset.y),
-      opacity: 0.9,
-      scale: 1,
-      duration: halfDust,
-      stagger: halfDust / 90,
-      ease: 'power1.out',
+      s: 1,
+      duration: shrink.duration,
+      ease: 'power1.in',
+      lazy: false,
+      onStart: apply,
+      onUpdate: apply,
+      onComplete: apply,
     },
-    dust.start,
-  )
-  tl.to(
-    scene.sparks,
-    { opacity: 0, duration: dust.duration - halfDust, ease: 'power1.in' },
-    dust.start + halfDust,
+    shrink.start,
   )
 
-  tl.to(
-    scene.bodyClip,
-    { attr: { height: bodyReveal().height }, duration: body.duration, ease: 'power2.inOut' },
-    body.start,
-  )
+  tl.to(scene.logoFly, { opacity: 0, duration: dissolve.duration, ease: 'none' }, dissolve.start)
 
   tl.to(
-    scene.assembly,
-    { scale: 0.72, duration: pull.duration, ease: 'power1.inOut', force3D: false },
-    pull.start,
+    [scene.photoCap, scene.photoBody],
+    { opacity: 1, duration: bottle.duration, ease: 'power2.in' },
+    bottle.start,
   )
 }
 
@@ -177,7 +174,13 @@ function act3(tl: gsap.core.Timeline, scene: Scene): void {
 
   tl.to(
     scene.assembly,
-    { scale: () => fiScale(scene), duration: rise.duration, ease: 'power2.out', force3D: false },
+    {
+      scale: () => fiScale(scene),
+      y: () => `${isNarrow() ? TIMING.layout.act3LiftVh.narrow : TIMING.layout.act3LiftVh.wide}vh`,
+      duration: rise.duration,
+      ease: 'power2.out',
+      force3D: false,
+    },
     rise.start,
   )
 
@@ -189,7 +192,7 @@ function act3(tl: gsap.core.Timeline, scene: Scene): void {
 
   tl.to(scene.headline, { opacity: 1, duration: copy.duration * 0.7 }, copy.start)
   tl.to(
-    [scene.labelOuter, scene.labelInner],
+    [scene.labelOuter, scene.labelFlow, scene.labelInner],
     { opacity: 1, duration: copy.duration * 0.5 },
     copy.start + copy.duration * 0.35,
   )
@@ -206,7 +209,7 @@ function act4(tl: gsap.core.Timeline, scene: Scene): void {
   const { scaleFrom, scaleTo } = TIMING.layout.act4Sky
 
   tl.to(
-    [scene.headline, scene.labelOuter, scene.labelInner],
+    [scene.headline, scene.labelOuter, scene.labelFlow, scene.labelInner],
     { opacity: 0, duration: enter.duration * 0.45 },
     enter.start,
   )
@@ -279,7 +282,7 @@ const SKU_COPY_EASE = 'power2.inOut'
 function dwellTriptych(tl: gsap.core.Timeline, scene: Scene): void {
   const duration = TIMING.ctaHold[3]
   tl.to(
-    [scene.headline, scene.labelOuter, scene.labelInner],
+    [scene.headline, scene.labelOuter, scene.labelFlow, scene.labelInner],
     { opacity: 1, duration, ease: 'none' },
     TIMING.acts[3].end,
   )
@@ -654,7 +657,7 @@ function act6(tl: gsap.core.Timeline, scene: Scene): void {
   tl.to(scene.journeyStill, { opacity: 1, duration: reunion.duration * 0.5, ease: 'power2.inOut' }, reunion.start)
   tl.to(scene.headline, { opacity: 1, duration: reunion.duration * 0.45 }, reunion.start + reunion.duration * 0.32)
   tl.to(
-    [scene.labelOuter, scene.labelInner],
+    [scene.labelOuter, scene.labelFlow, scene.labelInner],
     { opacity: 1, duration: reunion.duration * 0.4 },
     reunion.start + reunion.duration * 0.42,
   )
@@ -858,6 +861,7 @@ function paintTriptych(scene: Scene, p: number): void {
   paintRow(m.baseY + (fiBottom - lineBottom))
 
   gsap.set(scene.labelOuter, { x: -m.groupCentre, y: labelY })
+  gsap.set(scene.labelFlow, { x: 0, y: labelY })
   gsap.set(scene.labelInner, { x: m.groupCentre, y: labelY })
 }
 
@@ -890,6 +894,8 @@ function buildSets(tl: gsap.core.Timeline, scene: Scene): void {
   const drive = { p: 0 }
   const paint = (): void => {
     const act3H = `${isNarrow() ? TIMING.layout.act3BottleVmin.narrow : TIMING.layout.act3BottleVmin.wide}vmin`
+    const liftPx =
+      (viewport().h * (isNarrow() ? TIMING.layout.act3LiftVh.narrow : TIMING.layout.act3LiftVh.wide)) / 100
     ;[...scene.outerBottles, ...scene.innerBottles].forEach((el) => {
       gsap.set(el, { height: act3H })
     })
@@ -905,7 +911,7 @@ function buildSets(tl: gsap.core.Timeline, scene: Scene): void {
           xPercent: -50,
           yPercent: -50,
           x: side * (from + (rest - from) * glide),
-          y: m.baseY,
+          y: m.baseY + liftPx,
           scale: 1,
           opacity: clamp01(u / 0.34),
           zIndex: 10 - i,
@@ -925,8 +931,9 @@ function buildSets(tl: gsap.core.Timeline, scene: Scene): void {
       })
     }
 
-    const labelY = m.labelY + Math.max(dy, 0) + Math.min(viewport().h * 0.03, 26)
+    const labelY = m.labelY + liftPx + dy + Math.min(viewport().h * 0.03, 26)
     gsap.set(scene.labelOuter, { x: -m.groupCentre, y: labelY })
+    gsap.set(scene.labelFlow, { x: 0, y: labelY })
     gsap.set(scene.labelInner, { x: m.groupCentre, y: labelY })
   }
 

@@ -1,0 +1,219 @@
+/* ============================================
+   Promotional Banner Overlay
+   ============================================ */
+
+/* Dark overlay behind the banner */
+.promo-banner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  animation: promoBannerFadeIn 0.5s ease forwards;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+@keyframes promoBannerFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes promoBannerFadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* Golden luxury frame container */
+.promo-banner-frame {
+  position: relative;
+  max-width: 820px;
+  width: 90%;
+  padding: 6px;
+  background: linear-gradient(
+    135deg,
+    #d4a04a 0%,
+    #f5e6a3 15%,
+    #c8922c 30%,
+    #f5e6a3 45%,
+    #d4a04a 55%,
+    #a97623 70%,
+    #f5e6a3 85%,
+    #d4a04a 100%
+  );
+  border-radius: 4px;
+  box-shadow:
+    0 0 30px rgba(212, 160, 74, 0.35),
+    0 0 60px rgba(212, 160, 74, 0.15),
+    0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: promoBannerScaleIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transform: scale(0.9);
+}
+
+@keyframes promoBannerScaleIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Inner border for double-frame luxury feel */
+.promo-banner-inner {
+  position: relative;
+  border: 1px solid rgba(212, 160, 74, 0.5);
+  border-radius: 2px;
+  overflow: hidden;
+  background: #0a0a0a;
+}
+
+/* The banner image */
+.promo-banner-inner img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* Close button */
+.promo-banner-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(212, 160, 74, 0.7);
+  background: rgba(0, 0, 0, 0.6);
+  color: #f5e6a3;
+  font-size: 20px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.25s ease;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.promo-banner-close:hover {
+  background: rgba(212, 160, 74, 0.9);
+  color: #1a1a1a;
+  border-color: #f5e6a3;
+  transform: scale(1.1);
+}
+
+/* Corner ornaments for luxury feel */
+.promo-banner-frame::before,
+.promo-banner-frame::after {
+  content: '';
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  border-color: #f5e6a3;
+  border-style: solid;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.promo-banner-frame::before {
+  top: -2px;
+  left: -2px;
+  border-width: 2px 0 0 2px;
+}
+
+.promo-banner-frame::after {
+  bottom: -2px;
+  right: -2px;
+  border-width: 0 2px 2px 0;
+}
+
+/* Tagline text */
+.promo-banner-tagline {
+  text-align: center;
+  padding: 16px 20px 14px;
+  margin: 0;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 1.15rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #f5e6a3 0%, #d4a04a 40%, #f5e6a3 60%, #c8922c 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* CTA Button */
+.promo-banner-cta {
+  display: inline-block;
+  margin: 0 auto 20px;
+  padding: 12px 36px;
+  font-family: 'Georgia', 'Times New Roman', serif;
+  font-size: 0.95rem;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  text-align: center;
+  color: #1a1a1a;
+  border: 1.5px solid #f5e6a3;
+  background: linear-gradient(135deg, #d4a04a 0%, #f5e6a3 50%, #c8922c 100%);
+  box-shadow: 0 0 20px rgba(212, 160, 74, 0.4), 0 0 40px rgba(212, 160, 74, 0.15);
+  cursor: pointer;
+  transition: all 0.35s ease;
+  position: relative;
+}
+
+.promo-banner-cta:hover {
+  background: transparent;
+  color: #f5e6a3;
+  border-color: rgba(212, 160, 74, 0.7);
+  box-shadow: none;
+  transform: translateY(-1px);
+}
+
+.promo-banner-cta:active {
+  transform: translateY(0);
+  box-shadow: 0 0 10px rgba(212, 160, 74, 0.3);
+}
+
+/* Wrapper to center the CTA */
+.promo-banner-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Mobile adjustments */
+@media (max-width: 576px) {
+  .promo-banner-frame {
+    width: 94%;
+    padding: 4px;
+  }
+
+  .promo-banner-close {
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
+    top: 8px;
+    right: 8px;
+  }
+
+  .promo-banner-cta {
+    padding: 10px 24px;
+    font-size: 0.8rem;
+    letter-spacing: 0.15em;
+    margin-bottom: 16px;
+  }
+}

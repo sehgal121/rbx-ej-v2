@@ -77,14 +77,40 @@ function fiScaleForBottleVmin(scene: Scene, vminPct: number): number {
 }
 
 /**
- * Act 3 settled scale. The hero PNG is a loose photo, so matching the
- * canvas to the cutouts leaves the glass looking small. This gain brings
- * the visible bottle up to the six.
+ * Act 3 settled scale. Flow Infinite is the still's hero — a little taller
+ * than the six cutouts.
  */
-const ACT3_FI_GAIN = 1.18
+const ACT3_FI_GAIN = 1.32
 
 export function fiScale(scene: Scene): number {
   return fiScaleForBottleVmin(scene, act3BottleVmin()) * ACT3_FI_GAIN
+}
+
+/** On-screen height of the lockup (emblem + wordmark) at scale 1. */
+export function lockupRestHeightPx(scene: Scene): number {
+  const { ring, content } = TIMING.layout.logo
+  const k = TIMING.layout.photo.logoR / ring.r
+  return ((content.h * k) / 200) * scene.layoutBox.offsetWidth * fiScale(scene)
+}
+
+/** Opening scale so the lockup fills `logo.startFill` of the shorter viewport edge. */
+export function logoStartScale(scene: Scene): number {
+  const rest = lockupRestHeightPx(scene)
+  const target = Math.min(viewport().w, viewport().h) * TIMING.layout.logo.startFill
+  if (rest < 1) return 16
+  return target / rest
+}
+
+/** Sit `#chrome-mono` on `#logo-fly`'s origin so GSAP scale 1 matches the printed ring. */
+export function placeChromeOnPrintMark(img: SVGImageElement): void {
+  const { size, ring } = TIMING.layout.logo
+  const p = TIMING.layout.photo
+  const k = p.logoR / ring.r
+  img.setAttribute('href', `${import.meta.env.BASE_URL}assets/brand/ej-logo-lockup.png`)
+  img.setAttribute('x', String(-ring.cx * k))
+  img.setAttribute('y', String(-ring.cy * k))
+  img.setAttribute('width', String(size.w * k))
+  img.setAttribute('height', String(size.h * k))
 }
 
 export function reunionFiScale(scene: Scene): number {
@@ -126,6 +152,7 @@ export interface Scene {
   capGroup: SVGGElement
   photoCap: SVGImageElement
   photoBody: SVGImageElement
+  logoFly: SVGGElement
   marks: SVGImageElement
   bodyClip: SVGRectElement
   infinity: HTMLElement
@@ -137,6 +164,7 @@ export interface Scene {
   journeyStill: HTMLElement
   headline: HTMLElement
   labelOuter: HTMLElement
+  labelFlow: HTMLElement
   labelInner: HTMLElement
   sparks: HTMLElement[]
   innerStars: SVGCircleElement[]
@@ -230,7 +258,9 @@ export function buildScene(): Scene {
   const photoCap = pick<SVGImageElement>('#fi-photo-cap')
   const photoBody = pick<SVGImageElement>('#fi-photo-body')
   const bodyClip = pick<SVGRectElement>('#body-clip-rect')
+  const marks = pick<SVGImageElement>('#chrome-mono')
   registerPhoto(photoCap, photoBody, bodyClip)
+  placeChromeOnPrintMark(marks)
 
   const starField = pick<HTMLElement>('#unity-stars')
   const starRand = rng(1337)
@@ -272,7 +302,8 @@ export function buildScene(): Scene {
     capGroup: pick('#cap-group'),
     photoCap,
     photoBody,
-    marks: pick('#chrome-mono'),
+    logoFly: pick('#logo-fly'),
+    marks,
     bodyClip,
     infinity,
     act4Sky: pick('#act4-sky'),
@@ -282,6 +313,7 @@ export function buildScene(): Scene {
     journeyStill: pick('#journey-still'),
     headline: pick('#headline'),
     labelOuter: pick('#label-outer'),
+    labelFlow: pick('#label-flow'),
     labelInner: pick('#label-inner'),
     sparks,
     innerStars,
@@ -369,7 +401,8 @@ export function metrics(scene: Scene, scale = fiScale(scene)): Metrics {
   // The trios are cropped tight, the hero photo is not: measure to its glass
   // base so all seven bottles stand on one line.
   const glass = fit.y + fit.h * (l.photo.glassY / l.photo.size.h)
-  const fiBase = (glass - l.photo.circle.cy) * vb * scale
+  const pinY = l.photo.logoY
+  const fiBase = (glass - pinY) * vb * scale
 
   const maxX = w * 0.5 - bottleW * (0.5 + g.edgePad)
   const minStep = bottleW * g.minStep

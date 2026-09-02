@@ -97,6 +97,7 @@
   border-top: 1px solid #1c222c;
   border-bottom: 1px solid #1c222c;
   background: #07080b;
+  padding-top: 2vh;
 }
 
 @media (min-width: 820px) {
@@ -136,10 +137,12 @@
 .ground-line h2 {
   color: #e8eaed;
   font-family: var(--font-display);
-  font-size: clamp(18px, 2.2vw, 26px);
+  font-size: clamp(15px, 1.7vw, 22px);
   font-weight: 400;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
+  text-align: center;
+  white-space: nowrap;
 }
 
 .ground-line p {
@@ -676,20 +679,11 @@
 }
 
 .ground-mono {
-  width: min(36vmin, 240px);
+  width: min(52vmin, 340px);
   height: auto;
-  aspect-ratio: 389 / 464;
+  aspect-ratio: 1024 / 743;
   max-width: none;
   margin-top: auto;
-}
-
-.ground-close p {
-  margin-top: 1.8rem;
-  color: #6a717a;
-  font-family: var(--font-display);
-  font-size: 12px;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
 }
 
 .ground-legal {

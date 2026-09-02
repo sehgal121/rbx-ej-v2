@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>Eternal Journey</title>
+    <title>Eternal Journey 2.5</title>
     <meta
       name="description"
       content="Eternal Journey — luxury fragrance by Pierre Ravan. Outer Journey, Inner Journey, and Flow Infinite. Are you ready for the journey?"
     />
-    <meta property="og:title" content="Eternal Journey" />
+    <meta property="og:title" content="Eternal Journey 2.5" />
     <meta
       property="og:description"
       content="Luxury fragrance by Pierre Ravan. Outer Journey, Inner Journey, and Flow Infinite."
@@ -96,15 +96,12 @@
               <g id="cap-group">
                 <g id="inner-stars" clip-path="url(#cap-clip)"></g>
                 <image id="fi-photo-cap" class="fi-photo" clip-path="url(#cap-clip)" />
-                <!-- QR logo-steel.png 389×464; ring outer (194.5, 248.5) r 183.5
-                     → circle r 56 (k=56/183.5) so ring diameter = cap diameter. -->
+              </g>
+              <!-- Emblem + ETERNAL JOURNEY lockup; JS places and scales #logo-fly. -->
+              <g id="logo-fly">
                 <image
                   id="chrome-mono"
-                  href="/assets/brand/ej-logo-steel.png"
-                  x="40.638"
-                  y="24.163"
-                  width="118.714"
-                  height="141.602"
+                  href="/assets/brand/ej-logo-lockup.png"
                   preserveAspectRatio="xMidYMid meet"
                 />
               </g>
@@ -125,6 +122,7 @@
       <header class="copy" id="copy">
         <p class="headline" id="headline">ARE YOU READY FOR THE JOURNEY?</p>
         <p class="label label-outer" id="label-outer">Outer Journey</p>
+        <p class="label label-flow" id="label-flow">Flow Infinite</p>
         <p class="label label-inner" id="label-inner">Inner Journey</p>
       </header>
 
@@ -277,6 +275,21 @@
     </div>
 
     <section id="ground">
+      <nav class="ground-lines" aria-label="Collections">
+        <a class="ground-line" href="outer.html">
+          <h2>Explore Outer Journey</h2>
+          <p>Night, structure, movement</p>
+        </a>
+        <a class="ground-line" href="flow-infinite.html">
+          <h2>Explore Flow Infinite</h2>
+          <p>The crossing</p>
+        </a>
+        <a class="ground-line" href="inner.html">
+          <h2>Explore Inner Journey</h2>
+          <p>Light, surrender, pulse</p>
+        </a>
+      </nav>
+
       <section id="stores">
         <div class="ground-section-head">
           <h2>Store locator</h2>
@@ -300,30 +313,14 @@
         </div>
       </section>
 
-      <nav class="ground-lines" aria-label="Collections">
-        <a class="ground-line" href="flow-infinite.html">
-          <h2>Flow Infinite</h2>
-          <p>The crossing</p>
-        </a>
-        <a class="ground-line" href="outer.html">
-          <h2>Outer Journey</h2>
-          <p>Night, structure, movement</p>
-        </a>
-        <a class="ground-line" href="inner.html">
-          <h2>Inner Journey</h2>
-          <p>Light, surrender, pulse</p>
-        </a>
-      </nav>
-
       <footer class="ground-close">
         <img
           class="ground-mono"
-          src="/assets/brand/ej-logo-steel.png"
+          src="/assets/brand/ej-logo-lockup.png"
           alt="Eternal Journey"
-          width="389"
-          height="464"
+          width="1024"
+          height="743"
         />
-        <p>The circle closes.</p>
         <button
           type="button"
           class="ground-join"
