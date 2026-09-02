@@ -153,7 +153,7 @@ function act2(tl: gsap.core.Timeline, scene: Scene): void {
 
   tl.to(
     scene.assembly,
-    { scale: () => fiScale(), y: '0vh', duration: pull.duration, ease: 'power1.inOut', force3D: false },
+    { scale: () => fiScale(scene), y: '0vh', duration: pull.duration, ease: 'power1.inOut', force3D: false },
     pull.start,
   )
 
@@ -177,7 +177,7 @@ function act3(tl: gsap.core.Timeline, scene: Scene): void {
 
   tl.to(
     scene.assembly,
-    { scale: () => fiScale(), duration: rise.duration, ease: 'power2.out', force3D: false },
+    { scale: () => fiScale(scene), duration: rise.duration, ease: 'power2.out', force3D: false },
     rise.start,
   )
 
@@ -305,6 +305,21 @@ function collectionLine(narrow: boolean, w: number): { step: number; scale: numb
   }
 }
 
+/** Inner trio after Happiness: same size as the 98% reunion row. */
+function innerGatherLine(
+  scene: Scene,
+  narrow: boolean,
+  w: number,
+): { step: number; scale: number; y: number; heightVmin: number } {
+  const m = metrics(scene, reunionFiScale(scene))
+  return {
+    step: narrow ? Math.min(w * 0.28, 136) : Math.min(w * 0.17, 200),
+    scale: 1,
+    y: m.baseY,
+    heightVmin: reunionBottleVmin(),
+  }
+}
+
 function mix(a: number, b: number, t: number): number {
   return a + (b - a) * t
 }
@@ -372,20 +387,21 @@ function placeInner(scene: Scene, focus: number, gather = 0): void {
         { x: heroX + gap, y: 64, scale: 1.02, z: 5, bright: 0.94, glow: 0.14 },
         { x: heroX + gap * 1.45, y: 78, scale: SKU_REST_SCALE, z: 2, bright: SKU_REST_BRIGHT, glow: 0.08 },
       ]
-  const line = collectionLine(narrow, w)
+  const gatherLine = innerGatherLine(scene, narrow, w)
   const f = Math.min(2, Math.max(0, focus))
   const fromInt = Math.floor(f)
   const toInt = Math.ceil(f)
   const u = f - fromInt
   const g = Math.min(1, Math.max(0, gather))
+  const skuH = narrow ? 42 : 22
 
   scene.innerBottles.forEach((el, i) => {
     const fromSlot = slots[((i - fromInt) % 3 + 3) % 3]
     const toSlot = slots[((i - toInt) % 3 + 3) % 3]
     const glow = mix(mix(fromSlot.glow, toSlot.glow, u), 0.16, g)
-    const x = mix(mix(fromSlot.x, toSlot.x, u), (i - 1) * line.step, g)
-    const y = mix(mix(fromSlot.y, toSlot.y, u), line.y, g)
-    const scale = mix(mix(fromSlot.scale, toSlot.scale, u), line.scale, g)
+    const x = mix(mix(fromSlot.x, toSlot.x, u), (i - 1) * gatherLine.step, g)
+    const y = mix(mix(fromSlot.y, toSlot.y, u), gatherLine.y, g)
+    const scale = mix(mix(fromSlot.scale, toSlot.scale, u), gatherLine.scale, g)
     gsap.set(el, {
       xPercent: -50,
       yPercent: -50,
@@ -393,7 +409,7 @@ function placeInner(scene: Scene, focus: number, gather = 0): void {
       y,
       scale,
       zIndex: Math.round(mix(mix(fromSlot.z, toSlot.z, u), 8, g)),
-      height: narrow ? SKU_NARROW_H : '',
+      height: `${mix(skuH, gatherLine.heightVmin, g)}vmin`,
       force3D: false,
       filter: narrow
         ? 'none'
@@ -573,6 +589,21 @@ function act6(tl: gsap.core.Timeline, scene: Scene): void {
     },
     collection.start,
   )
+  const gatherHold = reunion.start - (collection.start + collection.duration)
+  if (gatherHold > 0) {
+    tl.to(
+      gather,
+      {
+        t: 1,
+        duration: gatherHold,
+        ease: 'none',
+        lazy: false,
+        onStart: () => placeInner(scene, 2, 1),
+        onUpdate: () => placeInner(scene, 2, 1),
+      },
+      collection.start + collection.duration,
+    )
+  }
   const arrive = { p: 0 }
   tl.fromTo(
     arrive,
@@ -780,45 +811,54 @@ function paintTriptych(scene: Scene, p: number): void {
   const { startSpread } = TIMING.layout.travel
   const m = metrics(scene, reunionFiScale(scene))
   const narrow = isNarrow()
-  const line = collectionLine(narrow, viewport().w)
+  const w = viewport().w
+  const fromLine = innerGatherLine(scene, narrow, w)
   const u = clamp01(p)
   const glide = 1 - (1 - u) ** 2
   const reunionH = `${reunionBottleVmin()}vmin`
+  const labelY = m.labelY + Math.min(viewport().h * 0.05, 44)
 
-  scene.innerBottles.forEach((el, i) => {
-    gsap.set(el, {
-      xPercent: -50,
-      yPercent: -50,
-      x: mix((i - 1) * line.step, m.slots[i], glide),
-      y: mix(line.y, m.baseY, glide),
-      scale: mix(line.scale, 1, glide),
-      opacity: 1,
-      zIndex: 10 - i,
-      height: narrow ? (u < 0.55 ? SKU_NARROW_H : reunionH) : reunionH,
-      force3D: false,
-      filter: narrow ? 'none' : BOTTLE_SHADOW,
+  const paintRow = (rowY: number): void => {
+    scene.innerBottles.forEach((el, i) => {
+      gsap.set(el, {
+        xPercent: -50,
+        yPercent: -50,
+        x: mix((i - 1) * fromLine.step, m.slots[i], glide),
+        y: mix(fromLine.y, rowY, glide),
+        scale: 1,
+        opacity: 1,
+        zIndex: 10 - i,
+        height: reunionH,
+        force3D: false,
+        filter: narrow ? 'none' : BOTTLE_SHADOW,
+      })
     })
-  })
 
-  ;[...scene.outerBottles].reverse().forEach((el, i) => {
-    const rest = m.slots[i]
-    const from = Math.min(rest * startSpread, m.maxX)
-    gsap.set(el, {
-      xPercent: -50,
-      yPercent: -50,
-      x: -(from + (rest - from) * glide),
-      y: m.baseY,
-      scale: 1,
-      opacity: clamp01(u / 0.38),
-      zIndex: 10 - i,
-      height: reunionH,
-      force3D: false,
-      filter: narrow ? 'none' : BOTTLE_SHADOW,
+    ;[...scene.outerBottles].reverse().forEach((el, i) => {
+      const rest = m.slots[i]
+      const from = Math.min(rest * startSpread, m.maxX)
+      gsap.set(el, {
+        xPercent: -50,
+        yPercent: -50,
+        x: -(from + (rest - from) * glide),
+        y: rowY,
+        scale: 1,
+        opacity: clamp01(u / 0.38),
+        zIndex: 10 - i,
+        height: reunionH,
+        force3D: false,
+        filter: narrow ? 'none' : BOTTLE_SHADOW,
+      })
     })
-  })
+  }
 
-  gsap.set(scene.labelOuter, { x: -m.groupCentre, y: m.labelY })
-  gsap.set(scene.labelInner, { x: m.groupCentre, y: m.labelY })
+  paintRow(m.baseY)
+  const fiBottom = scene.photoBody.getBoundingClientRect().bottom
+  const lineBottom = scene.outerBottles[0]?.getBoundingClientRect().bottom ?? fiBottom
+  paintRow(m.baseY + (fiBottom - lineBottom))
+
+  gsap.set(scene.labelOuter, { x: -m.groupCentre, y: labelY })
+  gsap.set(scene.labelInner, { x: m.groupCentre, y: labelY })
 }
 
 /**
@@ -849,6 +889,10 @@ function buildSets(tl: gsap.core.Timeline, scene: Scene): void {
 
   const drive = { p: 0 }
   const paint = (): void => {
+    const act3H = `${isNarrow() ? TIMING.layout.act3BottleVmin.narrow : TIMING.layout.act3BottleVmin.wide}vmin`
+    ;[...scene.outerBottles, ...scene.innerBottles].forEach((el) => {
+      gsap.set(el, { height: act3H })
+    })
     const m = metrics(scene)
 
     for (const { row, side } of sets) {
@@ -865,15 +909,25 @@ function buildSets(tl: gsap.core.Timeline, scene: Scene): void {
           scale: 1,
           opacity: clamp01(u / 0.34),
           zIndex: 10 - i,
-          height: isNarrow() ? '20vmin' : '',
+          height: act3H,
           force3D: false,
           filter: isNarrow() ? 'none' : BOTTLE_SHADOW,
         })
       })
     }
 
-    gsap.set(scene.labelOuter, { x: -m.groupCentre, y: m.labelY })
-    gsap.set(scene.labelInner, { x: m.groupCentre, y: m.labelY })
+    const fiBottom = scene.photoBody.getBoundingClientRect().bottom
+    const lineBottom = scene.outerBottles[0]?.getBoundingClientRect().bottom ?? fiBottom
+    const dy = fiBottom - lineBottom
+    if (Math.abs(dy) > 0.5) {
+      ;[...scene.outerBottles, ...scene.innerBottles].forEach((el) => {
+        gsap.set(el, { y: `+=${dy}` })
+      })
+    }
+
+    const labelY = m.labelY + Math.max(dy, 0) + Math.min(viewport().h * 0.03, 26)
+    gsap.set(scene.labelOuter, { x: -m.groupCentre, y: labelY })
+    gsap.set(scene.labelInner, { x: m.groupCentre, y: labelY })
   }
 
   const act = TIMING.acts[3]

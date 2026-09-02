@@ -48,9 +48,14 @@ export function ribbonSide(): number {
   return Math.min(w * vwFactor, h * vhFactor)
 }
 
-export function fiScale(): number {
+function fallbackFiScale(): number {
   const { wide, narrow } = TIMING.layout.fiScale
   return isNarrow() ? narrow : wide
+}
+
+export function act3BottleVmin(): number {
+  const n = TIMING.layout.act3BottleVmin
+  return isNarrow() ? n.narrow : n.wide
 }
 
 export function reunionBottleVmin(): number {
@@ -59,16 +64,31 @@ export function reunionBottleVmin(): number {
 }
 
 /** Scale that makes the Flow Infinite glass the same height as a trio cutout. */
-export function reunionFiScale(scene: Scene): number {
+function fiScaleForBottleVmin(scene: Scene, vminPct: number): number {
   const fit = photoFit()
   const { size, glassY } = TIMING.layout.photo
   const vmin = Math.min(viewport().w, viewport().h)
-  const bottleH = vmin * (reunionBottleVmin() / 100)
+  const bottleH = vmin * (vminPct / 100)
   const vb = scene.layoutBox.offsetWidth / 200
   const glass = fit.y + fit.h * (glassY / size.h)
   const fiH = Math.max(0, glass - fit.y) * vb
-  if (bottleH < 1 || fiH < 1) return fiScale()
+  if (bottleH < 1 || fiH < 1) return fallbackFiScale()
   return bottleH / fiH
+}
+
+/**
+ * Act 3 settled scale. The hero PNG is a loose photo, so matching the
+ * canvas to the cutouts leaves the glass looking small. This gain brings
+ * the visible bottle up to the six.
+ */
+const ACT3_FI_GAIN = 1.18
+
+export function fiScale(scene: Scene): number {
+  return fiScaleForBottleVmin(scene, act3BottleVmin()) * ACT3_FI_GAIN
+}
+
+export function reunionFiScale(scene: Scene): number {
+  return fiScaleForBottleVmin(scene, reunionBottleVmin())
 }
 
 function photoFit(): { k: number; x: number; y: number; w: number; h: number } {
@@ -322,7 +342,7 @@ function registerPhoto(
   clip.setAttribute('y', String(reveal.y))
 }
 
-let memo: { w: number; h: number; scale: number; value: Metrics } | null = null
+let memo: { w: number; h: number; scale: number; bottleH: number; value: Metrics } | null = null
 
 /**
  * Single source of truth for where the seven bottles sit once settled.
@@ -333,14 +353,16 @@ let memo: { w: number; h: number; scale: number; value: Metrics } | null = null
  * of the Flow Infinite silhouette, so the gap either side of the centre bottle
  * is guaranteed no matter how the ∞ box or the breakpoint scales.
  */
-export function metrics(scene: Scene, scale = fiScale()): Metrics {
+export function metrics(scene: Scene, scale = fiScale(scene)): Metrics {
   const { w, h } = viewport()
-  if (memo && memo.w === w && memo.h === h && memo.scale === scale) return memo.value
+  const bottleH = scene.outerBottles[0].offsetHeight
+  if (memo && memo.w === w && memo.h === h && memo.scale === scale && memo.bottleH === bottleH) {
+    return memo.value
+  }
 
   const l = TIMING.layout
   const g = l.group
   const fit = photoFit()
-  const bottleH = scene.outerBottles[0].offsetHeight
   const bottleW = bottleH * l.bottleAspect
   const vb = scene.layoutBox.offsetWidth / 200
   const fiHalf = (fit.w * vb * scale) / 2
@@ -368,6 +390,6 @@ export function metrics(scene: Scene, scale = fiScale()): Metrics {
     baseY: fiBase - bottleH * 0.5,
     labelY: fiBase + Math.max(bottleH * 0.16, 16),
   }
-  if (bottleH > 0 && vb > 0) memo = { w, h, scale, value }
+  if (bottleH > 0 && vb > 0) memo = { w, h, scale, bottleH, value }
   return value
 }

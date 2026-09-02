@@ -283,6 +283,7 @@ async function filmCast(page) {
         height: r.height,
         left: r.left,
         right: r.right,
+        bottom: r.bottom,
         midX: (r.left + r.right) / 2,
       }
     }
@@ -293,9 +294,14 @@ async function filmCast(page) {
       pct: parseFloat(document.querySelector('#review-pct')?.textContent ?? 'NaN'),
       assemblyOpacity: assembly ? Number(getComputedStyle(assembly).opacity) : 0,
       assemblyHeight: photo?.getBoundingClientRect().height ?? 0,
+      assemblyBottom: photo?.getBoundingClientRect().bottom ?? 0,
       stillOpacity: still ? Number(getComputedStyle(still).opacity) : 0,
       outers: [...document.querySelectorAll('.line-bottle.outer')].map(card),
       inners: [...document.querySelectorAll('.line-bottle.inner')].map(card),
+      labelTops: ['#label-outer', '#label-inner'].map((sel) => {
+        const el = document.querySelector(sel)
+        return el ? el.getBoundingClientRect().top : 0
+      }),
     }
   })
 }
@@ -366,6 +372,38 @@ test('triptych bottles stay in two rows after reversing from the reunion', async
       `${label} bottles overlapping after reverse at ${m.pct}%: midX ${xs.map((n) => n.toFixed(0)).join(', ')}`,
     )
   }
+})
+
+test('at 54% the six triptych bottles are larger than the default line cutouts', async () => {
+  const context = await browser.newContext(DESKTOP)
+  const page = await context.newPage()
+  await page.goto(origin, { waitUntil: 'networkidle' })
+  await page.waitForSelector('.line-bottle.inner', { state: 'attached' })
+  await page.waitForTimeout(250)
+
+  await scrollFilm(page, 54)
+  await page.waitForTimeout(200)
+
+  const m = await filmCast(page)
+  await context.close()
+
+  const six = [...m.outers, ...m.inners].filter((b) => b.opacity > 0.5)
+  assert.equal(six.length, 6, `six bottles missing at ${m.pct}%`)
+  const heights = six.map((b) => b.height)
+  assert.ok(
+    heights.every((h) => h > 240),
+    `Act 3 six bottles too small at ${m.pct}%: ${heights.map((n) => n.toFixed(0)).join(', ')}`,
+  )
+  const ratio = Math.max(...heights) / Math.min(...heights)
+  assert.ok(
+    ratio < 1.12,
+    `Act 3 six bottles not the same height at ${m.pct}%: ${heights.map((n) => n.toFixed(0)).join(', ')}`,
+  )
+  const lineH = heights.reduce((s, n) => s + n, 0) / heights.length
+  assert.ok(
+    m.assemblyHeight > lineH * 1.02 && m.assemblyHeight < lineH * 1.4,
+    `Flow Infinite should read as large as the six at ${m.pct}%: FI ${m.assemblyHeight.toFixed(0)} line ${lineH.toFixed(0)}`,
+  )
 })
 
 test('at 58% the six triptych bottles dissolve together', async () => {
@@ -574,7 +612,7 @@ test('after Happiness the Inner Journey shows the three-bottle collection', asyn
     `inner collection is still a hero stack at ${m.pct}%: heights ${heights.map((n) => n.toFixed(0)).join(', ')}`,
   )
   assert.ok(
-    heights[0] > 230,
+    heights[0] > 270,
     `inner collection bottles too small at ${m.pct}%: ${heights.map((n) => n.toFixed(0)).join(', ')}`,
   )
   assert.ok(
@@ -628,6 +666,21 @@ test('after Inner Journey the seven bottles gather like the Act 3 triptych', asy
   assert.ok(
     Math.abs(m.assemblyHeight - lineH) / lineH < 0.16,
     `seven bottles not the same height at ${m.pct}%: FI ${m.assemblyHeight.toFixed(0)} line ${lineH.toFixed(0)}`,
+  )
+  const bottoms = [...inners, ...outers].map((b) => b.bottom)
+  assert.ok(
+    Math.max(...bottoms) - Math.min(...bottoms) < 36,
+    `reunion bottles not on one line at ${m.pct}%: bottoms ${bottoms.map((n) => n.toFixed(0)).join(', ')}`,
+  )
+  const lineBottom = bottoms.reduce((s, n) => s + n, 0) / bottoms.length
+  assert.ok(
+    Math.abs(m.assemblyBottom - lineBottom) < 28,
+    `Flow Infinite is not on the same line at ${m.pct}%: FI ${m.assemblyBottom.toFixed(0)} line ${lineBottom.toFixed(0)}`,
+  )
+  const lowest = Math.max(...bottoms)
+  assert.ok(
+    m.labelTops.every((top) => top > lowest + 8),
+    `labels sit under the bottles at ${m.pct}%: bottle ${lowest.toFixed(0)} labels ${m.labelTops.map((n) => n.toFixed(0)).join(', ')}`,
   )
 })
 

@@ -173,7 +173,7 @@ export const TIMING = {
     /** Width ÷ height of the product cutouts. */
     bottleAspect: 0.41,
 
-    /** Act 3 scale of the Flow Infinite assembly. */
+    /** Fallback Flow Infinite scale before the layout box is measured. */
     fiScale: { wide: 0.48, narrow: 0.34 },
 
     /**
@@ -199,9 +199,12 @@ export const TIMING = {
      */
     group: { innerPad: 1.22, setStep: 0.78, minStep: 0.7, edgePad: 0.16 },
 
+    /** Act 3 settled cutouts (the six bottles beside Flow Infinite). */
+    act3BottleVmin: { wide: 30, narrow: 26 },
+
     /**
      * Settled seven-bottle row from Inner reunion (≈98%) through the pin
-     * end. Larger than the Act 3 22vmin / 20vmin cutouts.
+     * end. Larger than the Act 3 cutouts.
      */
     reunionBottleVmin: { wide: 34, narrow: 30 },
 
