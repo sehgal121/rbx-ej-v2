@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -9,48 +9,117 @@
       content="Eternal Journey introduces Flow Infinite. Extrait de Parfum."
     />
     <link rel="icon" href="./assets/brand/ej-logo-lockup.png" type="image/png" />
+    <link rel="stylesheet" href="./assets/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./assets/css/style.css" />
     <style>
-      * { box-sizing: border-box; margin: 0; padding: 0; }
-      html, body { min-height: 100%; background: #050506; color: #c8cdd4; }
-      body {
-        display: grid;
-        place-items: center;
-        min-height: 100vh;
+      .flow-blank {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 70vh;
         padding: 8vh 6vw;
-        font-family: 'Century Gothic', sans-serif;
+        background: #050506;
         text-align: center;
       }
-      img {
+      .flow-blank img {
         width: min(52vmin, 340px);
         height: auto;
         margin-bottom: 2.4rem;
       }
-      h1 {
+      .flow-blank h1 {
+        margin: 0;
+        color: #f0f2f4;
         font-size: clamp(18px, 3vw, 28px);
         font-weight: 400;
         letter-spacing: 0.28em;
         text-transform: uppercase;
-        color: #f0f2f4;
       }
-      a {
+      .flow-blank .flow-home {
         display: inline-block;
         margin-top: 2.4rem;
+        padding-bottom: 4px;
+        border-bottom: 1px solid #3a3d42;
         color: #c8cdd4;
         font-size: 11px;
         letter-spacing: 0.28em;
         text-transform: uppercase;
         text-decoration: none;
-        border-bottom: 1px solid #3a3d42;
-        padding-bottom: 4px;
       }
-      a:hover { color: #e0b45c; border-color: #e0b45c; }
+      .flow-blank .flow-home:hover {
+        border-color: #e0b45c;
+        color: #e0b45c;
+      }
     </style>
   </head>
-  <body>
-    <main>
-      <img src="./assets/brand/ej-logo-lockup.png" alt="Eternal Journey" width="1024" height="743" />
+  <body class="bg-dark">
+    <main class="flow-blank">
+      <img
+        src="./assets/brand/ej-logo-lockup.png"
+        alt="Eternal Journey"
+        width="1024"
+        height="743"
+      />
       <h1>Flow Infinite</h1>
-      <a href="./">Return to Eternal Journey</a>
+      <a class="flow-home" href="./">Return to Eternal Journey</a>
     </main>
+
+    <footer id="contactSection" class="bg-dark text-light">
+      <div
+        class="container d-flex flex-column align-items-center justify-content-between text-center min-vh-100 py-5">
+        <h2 class="display-6 fw-bold w-lg-50 mb-4">
+          Are you ready for the journey?
+        </h2>
+        <div class="d-flex flex-column flex-lg-row flex-wrap justify-content-center gap-1 gap-lg-5">
+          <a
+            href="./outer.html"
+            class="btn btn-outline-light rounded-0 text-uppercase mt-auto mb-3">
+            Explore outer journey
+          </a>
+          <a
+            href="./flow-infinite.html"
+            class="btn btn-outline-light rounded-0 text-uppercase mt-auto mb-3">
+            Explore flow infinite
+          </a>
+          <a
+            href="./inner.html"
+            class="btn btn-outline-light rounded-0 text-uppercase mt-auto mb-3">
+            Explore inner journey
+          </a>
+        </div>
+        <div class="my-auto">
+          <img
+            src="./assets/brand/ej-logo-lockup.png"
+            alt="Eternal Journey"
+            class="img-fluid footer-logo mt-5"
+            width="1024"
+            height="743" />
+        </div>
+        <a
+          href="./#contact"
+          class="btn btn-outline-light rounded-0 text-uppercase mt-auto mb-3">
+          To be a part of the journey click here!
+        </a>
+        <div class="row gy-1 border-top align-self-stretch text-light">
+          <div class="col-lg-4 text-lg-start">
+            <a
+              class="text-decoration-none text-light opacity-50 footer-link"
+              href="./privacy-policy.html"
+              >Privacy Policy</a
+            >
+          </div>
+          <div class="col-lg-4">
+            <p class="m-0 opacity-50">
+              <small>&copy; All copyrights reserved.</small>
+            </p>
+          </div>
+          <div class="col-lg-4 text-xl-end">
+            <address class="m-0 opacity-50">
+              10 rue de Penthievre 75008 Paris - France
+            </address>
+          </div>
+        </div>
+      </div>
+    </footer>
   </body>
 </html>

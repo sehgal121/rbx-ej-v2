@@ -73,28 +73,8 @@
     <!-- Custom CSS -->
     <link rel="stylesheet" href="./assets/css/style.css" />
     <title>ETERNAL JOURNEY | Inner Journey</title>
-    <!-- Promo Banner CSS -->
-    <link rel="stylesheet" href="./assets/css/promo-banner.css" />
   </head>
   <body>
-    <!-- Promotional Banner Overlay -->
-    <div class="promo-banner-overlay" id="promoBannerOverlay" onclick="if(event.target===this)closePromoBanner()">
-      <div class="promo-banner-frame">
-        <div class="promo-banner-inner">
-          <button class="promo-banner-close" onclick="closePromoBanner()" aria-label="Close banner">&times;</button>
-          <img src="./assets/img/flow-infinite-banner.jpg" alt="Eternal Journey - Flow Infinite - Extrait de Parfum" />
-          <p class="promo-banner-tagline">Get ready to experience soon!</p>
-          <a href="javascript:void(0)" class="promo-banner-cta" onclick="closePromoBanner()">Continue to Eternal Journey</a>
-        </div>
-      </div>
-    </div>
-    <script>
-      function closePromoBanner() {
-        var overlay = document.getElementById('promoBannerOverlay');
-        overlay.style.animation = 'promoBannerFadeOut 0.3s ease forwards';
-        setTimeout(function() { overlay.remove(); }, 300);
-      }
-    </script>
     <!----------------------------------------------------->
     <!-- Header start -->
     <!----------------------------------------------------->
@@ -1442,11 +1422,16 @@
         <h2 class="display-6 fw-bold w-lg-50 mb-4">
           Are you ready for the journey?
         </h2>
-        <div class="d-flex flex-column flex-lg-row gap-1 gap-lg-5">
+        <div class="d-flex flex-column flex-lg-row flex-wrap justify-content-center gap-1 gap-lg-5">
           <a
             href="./outer.html"
             class="btn btn-outline-light rounded-0 text-uppercase mt-auto mb-3">
             Explore outer journey
+          </a>
+          <a
+            href="./flow-infinite.html"
+            class="btn btn-outline-light rounded-0 text-uppercase mt-auto mb-3">
+            Explore flow infinite
           </a>
           <a
             href="./inner.html"
@@ -1456,9 +1441,11 @@
         </div>
         <div class="my-auto">
           <img
-            src="./assets/img/hero-logo.svg"
-            alt="Logo"
-            class="img-fluid footer-logo mt-5" />
+            src="./assets/brand/ej-logo-lockup.png"
+            alt="Eternal Journey"
+            class="img-fluid footer-logo mt-5"
+            width="1024"
+            height="743" />
         </div>
 
         <button

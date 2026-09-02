@@ -23,7 +23,7 @@ export const SHOW_UNITY = false
 /**
  * V2.5: the reel ends on the Act 3 triptych (Are you ready / seven bottles).
  * Acts 4–6 markup stays in the tree but is not scheduled, so Ground
- * (collection links, then store locator) follows the pin.
+ * (store locator, then the shared footer) follows the pin.
  */
 export const SHOW_SKU_ACTS = false
 
@@ -98,6 +98,10 @@ export const TIMING = {
       fiRise: { from: 0.08, to: 0.52 },
       settle: { from: 0.66, to: 0.88 },
       copy: { from: 0.62, to: 0.92 },
+      /** After the seven bottles land: fade, hold, then the next label. */
+      labelOuter: { from: 0.68, to: 0.74 },
+      labelFlow: { from: 0.82, to: 0.88 },
+      labelInner: { from: 0.96, to: 1.0 },
       vortex: { from: 0.3, to: 0.8 },
     },
     act4: {

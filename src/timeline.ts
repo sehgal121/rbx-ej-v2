@@ -44,7 +44,10 @@ export function buildMasterTimeline(scene: Scene): gsap.core.Timeline {
   gsap.set(scene.vortex, { opacity: 0 })
   gsap.set(scene.journeyStill, { opacity: 0 })
   gsap.set(scene.headline, { opacity: 0 })
-  gsap.set([scene.labelOuter, scene.labelFlow, scene.labelInner], { opacity: 0, xPercent: -50 })
+  gsap.set([scene.labelOuter, scene.labelFlow, scene.labelInner], {
+    autoAlpha: 0,
+    xPercent: -50,
+  })
   gsap.set([...scene.outerBottles, ...scene.innerBottles], {
     opacity: 0,
     x: 0,
@@ -169,6 +172,9 @@ function act3(tl: gsap.core.Timeline, scene: Scene): void {
   const settle = span(3, TIMING.beats.act3.settle)
   const copy = span(3, TIMING.beats.act3.copy)
   const vortex = span(3, TIMING.beats.act3.vortex)
+  const labelOuter = span(3, TIMING.beats.act3.labelOuter)
+  const labelFlow = span(3, TIMING.beats.act3.labelFlow)
+  const labelInner = span(3, TIMING.beats.act3.labelInner)
 
   buildSets(tl, scene)
 
@@ -191,11 +197,9 @@ function act3(tl: gsap.core.Timeline, scene: Scene): void {
   tl.to(scene.journeyStill, { opacity: 1, duration: vortex.duration, ease: 'power2.inOut' }, vortex.start)
 
   tl.to(scene.headline, { opacity: 1, duration: copy.duration * 0.7 }, copy.start)
-  tl.to(
-    [scene.labelOuter, scene.labelFlow, scene.labelInner],
-    { opacity: 1, duration: copy.duration * 0.5 },
-    copy.start + copy.duration * 0.35,
-  )
+  tl.to(scene.labelOuter, { autoAlpha: 1, duration: labelOuter.duration, ease: 'power1.out' }, labelOuter.start)
+  tl.to(scene.labelFlow, { autoAlpha: 1, duration: labelFlow.duration, ease: 'power1.out' }, labelFlow.start)
+  tl.to(scene.labelInner, { autoAlpha: 1, duration: labelInner.duration, ease: 'power1.out' }, labelInner.start)
 
   dwellTriptych(tl, scene)
 }

@@ -456,14 +456,20 @@ body {
 /*****************************************/
 /* 7. Footer */
 /*****************************************/
-.footer-logo {
-  width: 18rem;
+#contactSection {
+  position: relative;
 }
 
-@media (min-width: 992px) {
-  .footer-logo {
-    width: 24rem;
-  }
+.footer-logo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(52vmin, 340px);
+  height: auto;
+  max-width: none;
+  margin: 0 !important;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
 }
 
 /*****************************************/

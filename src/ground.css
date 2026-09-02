@@ -89,69 +89,6 @@
   outline-offset: 3px;
 }
 
-/* ---------- collection headings ---------- */
-
-.ground-lines {
-  display: grid;
-  grid-template-columns: 1fr;
-  border-top: 1px solid #1c222c;
-  border-bottom: 1px solid #1c222c;
-  background: #07080b;
-  padding-top: 2vh;
-}
-
-@media (min-width: 820px) {
-  .ground-lines {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-}
-
-.ground-line {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.55rem;
-  min-height: 16vh;
-  padding: 2.2rem 1.5rem;
-  text-decoration: none;
-  border-bottom: 1px solid #1c222c;
-  transition: background 0.35s ease;
-}
-
-@media (min-width: 820px) {
-  .ground-line {
-    border-bottom: 0;
-    border-right: 1px solid #1c222c;
-  }
-
-  .ground-line:last-child {
-    border-right: 0;
-  }
-}
-
-.ground-line:hover {
-  background: #0c1528;
-}
-
-.ground-line h2 {
-  color: #e8eaed;
-  font-family: var(--font-display);
-  font-size: clamp(15px, 1.7vw, 22px);
-  font-weight: 400;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  text-align: center;
-  white-space: nowrap;
-}
-
-.ground-line p {
-  color: #6a717a;
-  font-size: 12px;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-
 /* ---------- stores ---------- */
 
 #stores {
@@ -466,22 +403,7 @@
 
 .ground-join {
   margin-top: auto;
-  margin-bottom: 7vh;
-  padding: 14px 28px;
-  border: 0;
-  background: #f4f6f8;
-  color: #050506;
-  font-family: var(--font-body);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.16em;
-  line-height: 1.35;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-
-.ground-join:hover {
-  background: #ffffff;
+  margin-bottom: 1.2rem;
 }
 
 #contact {
@@ -667,23 +589,80 @@
 /* ---------- close ---------- */
 
 .ground-close {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
   box-sizing: border-box;
   min-height: 100vh;
   min-height: 100dvh;
   padding: 6vh 6vw max(3.5vh, env(safe-area-inset-bottom, 0px));
-  background: #050506;
+  background: #212529;
   text-align: center;
 }
 
+.ground-ready {
+  margin: 0 0 1.4rem;
+  max-width: 18em;
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: clamp(1.65rem, 3.4vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+}
+
+.ground-explore {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+@media (min-width: 992px) {
+  .ground-explore {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2.5rem;
+  }
+}
+
+#ground .ground-explore a,
+#ground .ground-join {
+  display: inline-block;
+  padding: 0.65rem 1.15rem;
+  border: 1px solid #fff;
+  background: transparent;
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  line-height: 1.35;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#ground .ground-explore a:hover,
+#ground .ground-join:hover {
+  background: #fff;
+  color: #050506;
+}
+
 .ground-mono {
+  position: absolute;
+  left: 50%;
+  top: 50%;
   width: min(52vmin, 340px);
   height: auto;
   aspect-ratio: 1024 / 743;
   max-width: none;
-  margin-top: auto;
+  margin: 0;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
 }
 
 .ground-legal {

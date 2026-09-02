@@ -1,5 +1,5 @@
 /**
- * V2.5 film ends on the Act 3 triptych. Ground (collection links, then stores)
+ * V2.5 film ends on the Act 3 triptych. Ground (store locator, then footer)
  * follows the pin. SKU acts are not on this reel.
  */
 import assert from 'node:assert/strict'
@@ -73,12 +73,13 @@ async function filmCast(page) {
     }
     const label = (sel) => {
       const el = document.querySelector(sel)
-      if (!el) return { opacity: 0, text: '', top: 0 }
+      if (!el) return { opacity: 0, text: '', top: 0, href: '' }
       const r = el.getBoundingClientRect()
       return {
         opacity: Number(getComputedStyle(el).opacity),
-        text: (el.textContent ?? '').trim(),
+        text: (el.textContent ?? '').replace(/\s+/g, ' ').trim(),
         top: r.top,
+        href: el.getAttribute('href') ?? '',
       }
     }
     const assembly = document.querySelector('#assembly')
@@ -191,6 +192,19 @@ test('at 96% the seven bottles and three collection labels are up', async () => 
   await page.waitForSelector('.line-bottle.inner', { state: 'attached' })
   await page.waitForTimeout(250)
 
+  await scrollFilm(page, 87)
+  await page.waitForTimeout(200)
+  const mid = await filmCast(page)
+  assert.ok(mid.labels.outer.opacity > 0.35, `Explore Outer should lead at ${mid.pct}%: ${mid.labels.outer.opacity}`)
+  assert.ok(mid.labels.flow.opacity < 0.2, `Explore Flow arrived too early at ${mid.pct}%: ${mid.labels.flow.opacity}`)
+  assert.ok(mid.labels.inner.opacity < 0.2, `Explore Inner arrived too early at ${mid.pct}%: ${mid.labels.inner.opacity}`)
+
+  await scrollFilm(page, 92)
+  await page.waitForTimeout(200)
+  const late = await filmCast(page)
+  assert.ok(late.labels.flow.opacity > 0.35, `Explore Flow should lead Inner at ${late.pct}%: ${late.labels.flow.opacity}`)
+  assert.ok(late.labels.inner.opacity < 0.2, `Explore Inner arrived too early at ${late.pct}%: ${late.labels.inner.opacity}`)
+
   await scrollFilm(page, 96)
   await page.waitForTimeout(200)
 
@@ -203,12 +217,15 @@ test('at 96% the seven bottles and three collection labels are up', async () => 
   assert.equal(inners.length, 3, `inner trio missing at ${m.pct}%`)
   assert.ok(m.assemblyOpacity > 0.7, `Flow Infinite missing at ${m.pct}%: ${m.assemblyOpacity}`)
   assert.ok(m.stillOpacity > 0.8, `campaign nebula missing at ${m.pct}%: ${m.stillOpacity}`)
-  assert.equal(m.labels.outer.text, 'Outer Journey')
-  assert.equal(m.labels.flow.text, 'Flow Infinite')
-  assert.equal(m.labels.inner.text, 'Inner Journey')
-  assert.ok(m.labels.outer.opacity > 0.9, `Outer Journey label faded at ${m.pct}%`)
-  assert.ok(m.labels.flow.opacity > 0.9, `Flow Infinite label faded at ${m.pct}%`)
-  assert.ok(m.labels.inner.opacity > 0.9, `Inner Journey label faded at ${m.pct}%`)
+  assert.equal(m.labels.outer.text, 'Explore Outer Journey')
+  assert.equal(m.labels.flow.text, 'Explore Flow Infinite')
+  assert.equal(m.labels.inner.text, 'Explore Inner Journey')
+  assert.equal(m.labels.outer.href, 'outer.html')
+  assert.equal(m.labels.flow.href, 'flow-infinite.html')
+  assert.equal(m.labels.inner.href, 'inner.html')
+  assert.ok(m.labels.outer.opacity > 0.9, `Explore Outer faded at ${m.pct}%`)
+  assert.ok(m.labels.flow.opacity > 0.9, `Explore Flow Infinite faded at ${m.pct}%`)
+  assert.ok(m.labels.inner.opacity > 0.9, `Explore Inner faded at ${m.pct}%`)
   const lowest = Math.max(...[...outers, ...inners].map((b) => b.bottom))
   const heights = [...outers, ...inners].map((b) => b.height)
   assert.ok(
@@ -305,7 +322,7 @@ test('mobile document ends at the footer with a single pin spacer', async () => 
   )
 })
 
-test('collection pages live above the store locator, not on the film', async () => {
+test('after the film, store locator is first, then the shared footer', async () => {
   const context = await browser.newContext(DESKTOP)
   const page = await context.newPage()
   await page.goto(origin, { waitUntil: 'networkidle' })
@@ -313,37 +330,42 @@ test('collection pages live above the store locator, not on the film', async () 
 
   const m = await page.evaluate(() => {
     const links = [...document.querySelectorAll('.act-link')]
-    const nav = document.querySelector('.ground-lines')
+    const ground = document.querySelector('#ground')
     const stores = document.querySelector('#stores')
     const footer = document.querySelector('.ground-close')
-    const beforeStores =
-      nav && stores ? Boolean(nav.compareDocumentPosition(stores) & Node.DOCUMENT_POSITION_FOLLOWING) : false
+    const firstGround = ground?.querySelector(':scope > *')
     const storesBeforeFooter =
       stores && footer ? Boolean(stores.compareDocumentPosition(footer) & Node.DOCUMENT_POSITION_FOLLOWING) : false
+    const explore = [...(footer?.querySelectorAll('.ground-explore a') ?? [])].map((a) => ({
+      href: a.getAttribute('href'),
+      text: (a.textContent ?? '').trim().toLowerCase(),
+    }))
     return {
       actLinks: links.length,
-      beforeStores,
+      firstGround: firstGround?.id ?? firstGround?.className ?? null,
+      hasGroundLines: Boolean(document.querySelector('.ground-lines')),
       storesBeforeFooter,
-      hrefs: [...(nav?.querySelectorAll('a') ?? [])].map((a) => a.getAttribute('href')),
-      titles: [...(nav?.querySelectorAll('h2') ?? [])].map((h) => (h.textContent ?? '').trim()),
+      explore,
       footerSrc: document.querySelector('.ground-mono')?.getAttribute('src'),
+      ready: (document.querySelector('.ground-ready')?.textContent ?? '').trim(),
     }
   })
   await context.close()
 
   assert.equal(m.actLinks, 0, `film still has ${m.actLinks} act hyperlinks`)
-  assert.ok(m.beforeStores, 'collection nav is not above the store locator')
+  assert.equal(m.hasGroundLines, false, 'collection cards still sit after the clip')
+  assert.equal(m.firstGround, 'stores', `ground starts at ${m.firstGround}, not the store locator`)
   assert.ok(m.storesBeforeFooter, 'store locator is not before the footer')
-  assert.deepEqual(m.hrefs, ['outer.html', 'flow-infinite.html', 'inner.html'])
-  assert.deepEqual(m.titles, [
-    'Explore Outer Journey',
-    'Explore Flow Infinite',
-    'Explore Inner Journey',
-  ])
-  assert.ok(
-    m.footerSrc?.includes('ej-logo-lockup.png'),
-    `footer still uses ${m.footerSrc}`,
+  assert.equal(m.ready, 'Are you ready for the journey?')
+  assert.deepEqual(
+    m.explore.map((e) => e.href),
+    ['outer.html', 'flow-infinite.html', 'inner.html'],
   )
+  assert.deepEqual(
+    m.explore.map((e) => e.text),
+    ['explore outer journey', 'explore flow infinite', 'explore inner journey'],
+  )
+  assert.ok(m.footerSrc?.includes('ej-logo-lockup.png'), `footer still uses ${m.footerSrc}`)
 })
 
 test('store map tiles do not ask for a Carto API key', async () => {
@@ -383,6 +405,30 @@ test('inner, outer, privacy, and Flow Infinite pages resolve from the homepage l
     assert.match(title, spec.title, `${spec.path} title is ${title}`)
     const assetRes = await page.request.get(new URL(spec.asset, origin + spec.path).href)
     assert.equal(assetRes.ok(), true, `${spec.path} missing ${spec.asset}`)
+    const footerLinks = await page.evaluate(() => {
+      const footer = document.querySelector('#contactSection, .ground-close')
+      return [...(footer?.querySelectorAll('a') ?? [])].map((a) => ({
+        href: a.getAttribute('href') ?? '',
+        text: (a.textContent ?? '').replace(/\s+/g, ' ').trim().toLowerCase(),
+      }))
+    })
+    const hrefs = footerLinks.map((l) => l.href)
+    assert.ok(
+      hrefs.some((h) => h.includes('outer.html')),
+      `${spec.path} footer missing Outer`,
+    )
+    assert.ok(
+      hrefs.some((h) => h.includes('flow-infinite.html')),
+      `${spec.path} footer missing Flow Infinite`,
+    )
+    assert.ok(
+      hrefs.some((h) => h.includes('inner.html')),
+      `${spec.path} footer missing Inner`,
+    )
+    assert.ok(
+      footerLinks.some((l) => l.text.includes('explore flow infinite')),
+      `${spec.path} footer missing Flow Infinite label`,
+    )
   }
   await context.close()
 })

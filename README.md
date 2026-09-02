@@ -2,9 +2,9 @@
 
 Separate clone of V2 for a shorter client cut. **Does not share files with `V2/`.**
 
-The film is acts 0–3 only: monogram → dissolve into Flow Infinite → infinity ribbon → seven-bottle triptych (“Are you ready for the journey?”). Outer Journey, Flow Infinite, and Inner Journey labels sit under that frame. After the pin: Explore Outer Journey, Explore Flow Infinite, Explore Inner Journey, then the store locator. Inner and Outer are the V1 pages unchanged; Flow Infinite is a blank placeholder; Privacy Policy is the V1 policy page.
+The film is acts 0–3 only: monogram → dissolve into Flow Infinite → infinity ribbon → seven-bottle triptych (“Are you ready for the journey?”). Outer Journey, Flow Infinite, and Inner Journey labels sit under that frame. After the pin: store locator, then the shared footer (Are you ready / Outer · Flow Infinite · Inner / join / legal). Inner and Outer are the V1 pages; Flow Infinite is a blank placeholder; Privacy Policy is the V1 policy page. All four share that footer.
 
-V2 still has Outer / Inner SKU acts and lives at [https://sehgal121.github.io/](https://sehgal121.github.io/).
+Live review: [https://sehgal121.github.io/](https://sehgal121.github.io/). The longer V2 cut with Outer / Inner SKU acts stays in `V2/`.
 
 ## Run
 
